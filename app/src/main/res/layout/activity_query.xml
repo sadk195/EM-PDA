@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackGround">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="실적 조회"
+        android:textSize="20dp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorHeadTitle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:text="실 적 일 자"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:textColor="@color/colorBodyTitle"/>
+
+        <EditText
+            android:id="@+id/date"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="10"
+            android:background="@drawable/bg_text"
+            android:focusable="false" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:text="제 조 오 더"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:textColor="@color/colorBodyTitle"/>
+
+        <EditText
+            android:id="@+id/txt_result2"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="작 업 장 "
+            android:textAlignment="center"
+            android:textColor="@color/colorBodyTitle"
+            android:textSize="15dp" />
+        <Spinner
+            android:id="@+id/spinner_wc_cd"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_text" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:layout_marginRight="15dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="제조오더 | 품목 | 공순 | 오더수량 | 실적량"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="@color/design_default_color_primary"
+        />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/listOrder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_box"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:scrollbars="none"/>
+</LinearLayout>

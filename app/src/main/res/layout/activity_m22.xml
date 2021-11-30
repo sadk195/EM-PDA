@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackGround">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/colorHeadTitle"
+        android:gravity="center"
+        android:text="메뉴 > 생산입고등록 > 입고등록"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="검사요청번호"
+            android:textAlignment="center"
+            android:textColor="@color/colorBodyTitle"
+            android:textStyle="bold"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/insp_req_no"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="10"
+            android:background="@drawable/bg_text"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:focusable="false"
+            android:textAlignment="center" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="82dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="검 사 일 자"
+            android:textAlignment="center"
+            android:textColor="@color/colorBodyTitle"
+            android:textStyle="bold"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/start_dt"
+            android:layout_width="317dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:focusable="false"
+            android:background="@drawable/bg_text"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="82dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="품 번"
+            android:textAlignment="center"
+            android:textColor="@color/colorBodyTitle"
+            android:textStyle="bold"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/item_cd"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_text"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:focusable="false"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="품 명"
+            android:textAlignment="center"
+            android:textColor="@color/colorBodyTitle"
+            android:textStyle="bold"
+            android:textSize="15dp" />
+        <EditText
+            android:id="@+id/item_nm"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_text"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:focusable="false"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="82dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="진 행 상 태"
+            android:textAlignment="center"
+            android:textColor="@color/colorBodyTitle"
+            android:textStyle="bold"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/STS"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_text"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:focusable="false"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="검 사 원 "
+            android:textAlignment="center"
+            android:textColor="@color/colorBodyTitle"
+            android:textStyle="bold"
+            android:textSize="15dp" />
+        <EditText
+            android:id="@+id/INSPECTOR_NM"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_text"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:focusable="false"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:layout_width="409dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="요청수량 | 양품수량 | 불량수량 | 제조오더번호"
+            android:textColor="@color/design_default_color_primary"
+            android:textSize="15dp" />
+
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listOrder"
+        android:layout_width="match_parent"
+        android:layout_height="265dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/bg_box"
+        android:padding="5dp"
+        android:scrollbars="none" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="82dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="입 고 일 자"
+            android:textAlignment="center"
+            android:textColor="@color/colorBodyTitle"
+            android:textStyle="bold"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/save_dt"
+            android:layout_width="314dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_text" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_btn"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="255dp"
+        android:text="입고 등록"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:textAlignment="center" />
+
+</LinearLayout>
+
+
+

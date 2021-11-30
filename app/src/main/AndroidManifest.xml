@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.EM_KOREA.myapplication">
+    <!-- WebService 사용시 추가 할 코드 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application
+        android:name=".MySession"
+        android:allowBackup="true"
+        android:icon="@drawable/login1"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".TestXmlPage" />
+        <activity android:name=".TestPageActivity" />
+        <activity
+            android:name=".TestProgressActivity"
+            android:theme="@style/halfDim" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SubActivity" />
+        <activity
+            android:name=".MenuActivity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity android:name=".DownloadActivity" />
+        <activity
+            android:name=".I10_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I11_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I11_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I13_QUERY_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I20_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I21_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I21_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I22_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I22_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I25_QUERY_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I26_HDR_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I27_HDR_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <activity
+            android:name=".I27_DTL_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".I30_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I31_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I31_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I34_QUERY_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I35_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I35_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I36_QUERY_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I37_HDR_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <activity
+            android:name=".I37_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I38_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I38_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I40_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I50_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I60_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I62_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I70_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I71_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I72_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I73_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I74_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I75_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I76_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I77_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I78_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".I79_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M10_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M11_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M11_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M12_QUERY_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M20_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M21_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M21_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M21_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M22_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M22_QUERY_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M30_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M31_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S10_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S11_QUERY_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S12_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S12_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S14_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S14_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S15_QUERY_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S16_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S16_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".S17_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".P10_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".P14_QUERY_ELSE_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".P14_QUERY_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".P14_PROD_ORDER_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".P14_SAVE2_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".P14_SAVE_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <!-- 안드로이드 7.0 버전 이상 부터는. 파일 경로 보안처리를해주어야 합니다. -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.EM_KOREA.myapplication.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+        <activity android:name=".RegisterActivity" />
+        <activity
+            android:name=".ConfigActivity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".TestPopupActivity"
+            android:theme="@style/halfDim" />
+        <activity
+            android:name=".TestProgressBarActivity"
+            android:theme="@style/halfDim" />
+        <activity
+            android:name=".ErrorPopupActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

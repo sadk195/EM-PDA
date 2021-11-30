@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackGround"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="작업 지시서 선택"
+        android:textSize="20dp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorHeadTitle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="생산 일자"
+                android:textAlignment="center"
+                android:textColor="@color/colorBodyTitle"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/work_fr_dt"
+                android:layout_width="116dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="6"
+                android:background="@drawable/bg_text"
+                android:ems="10"
+                android:focusable="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:text="~"
+                android:textAlignment="center"
+                android:textSize="15dp"
+                android:gravity="center"
+                android:textColor="@color/colorBodyTitle"/>
+
+
+            <EditText
+                android:id="@+id/work_to_dt"
+                android:layout_width="116dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="6"
+                android:background="@drawable/bg_text"
+                android:ems="10"
+                android:focusable="false" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:text="작업장"
+                android:textAlignment="center"
+                android:textSize="15dp"
+                android:gravity="center"
+                android:textColor="@color/colorBodyTitle"/>
+
+            <Spinner
+
+                android:id="@+id/cmb_work_center"
+                android:layout_width="243dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="8"
+                android:background="@drawable/bg_text"
+                android:spinnerMode="dialog" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:layout_marginRight="15dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=" 제조오더 | 공순 | 품번 |품명| 수량"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/design_default_color_primary"
+                />
+        </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/listOrder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:layout_weight="97"
+            android:background="@drawable/bg_box"
+            android:padding="5dp"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/linear_interpolator"
+    android:repeatCount="infinite"
+    android:duration="4000"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:fromDegrees="0"
+    android:toDegrees="360">
+    <!-- interpolator = 애니메이션의 이동 속도, 패턴
+    - 동속 : linear
+    - 증속 : accelerate
+    - 감속 : decelerate
+    - 증속후정지 : accelerate_decelerate
+    - 마지막에 더 진행 후 제자리 : overshoot
+    - 마지막 바운스 : bounce
+    - 마지막까지 갔다가 처음으로 회전 후 다시 회전 : cycle -->
+    <!-- repeatCount = 반복횟수
+    - 기본 : 0
+    - 무한 : infinite
+    -->
+    <!-- duration = 동작시간
+    - 1000 : 1초, 4000 : 4초
+    -->
+    <!-- pivotX,Y = 기준 점
+    - 기본 : 좌측 상단
+    - X, Y의 pivot(기준점)을 50%로 설정해주어야 View의 중앙으로 이동한다.
+    -->
+    <!-- from, to ~~ = from 부터 to 까지 회전
+    - 0, 360 : 시계방향
+    - 360, 0 : 반시계방향 -->
+</rotate>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true"
+        android:top="2dp"
+        android:bottom="10dp"
+          >
+        <shape> <!--모양-->
+            <solid android:color="#ffffff"><!--모양-->
+
+            </solid>
+            <stroke android:width="10dp"
+
+                android:color="#0eb1c7">  <!--테두리 설정-->
+            </stroke>
+        </shape>
+    </item>
+
+
+</selector>

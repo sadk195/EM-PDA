@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">EM_KOREA</string>
+
+    <string-array name="ProductOrderNo">
+        <item>PD2018110501</item>
+        <item>PD2018110502</item>
+        <item>PD2018110503</item>
+        <item>PD2018110504</item>
+        <item>PD2018110505</item>
+    </string-array>
+
+    <integer-array name="int_activity_xml">
+        <item>@layout/activity_menu</item>
+        <item>@layout/activity_m11_dtl</item>
+        <item>@layout/activity_m21_dtl</item>
+        <item>@layout/activity_i11_dtl</item>
+        <item>@layout/activity_i21_dtl</item>
+        <item>@layout/activity_i22_dtl</item>
+        <item>@layout/activity_i26_dtl</item>
+        <item>@layout/activity_i27_dtl</item>
+        <item>@layout/activity_i31_dtl</item>
+        <item>@layout/activity_i35_dtl</item>
+        <item>@layout/activity_i37_dtl</item>
+        <item>@layout/activity_i38_dtl</item>
+        <item>@layout/activity_s12_dtl</item>
+        <item>@layout/activity_s14_dtl</item>
+        <item>@layout/activity_s16_dtl</item>
+    </integer-array>
+
+    <string-array name="str_activity_xml">
+        <item>activity_m11_dtl</item> <!-- M11_DTL_Activity -->
+        <item>activity_m21_dtl</item> <!-- M21_DTL_Activity -->
+        <item>activity_i11_dtl</item> <!-- I11_DTL_Activity -->
+        <item>activity_i21_dtl</item> <!-- I21_DTL_Activity -->
+        <item>activity_i22_dtl</item> <!-- M22_DTL_Activity -->
+        <item>activity_i26_dtl</item> <!-- I26_DTL_Activity -->
+        <item>activity_i27_dtl</item> <!-- I27_DTL_Activity -->
+        <item>activity_i31_dtl</item> <!-- I31_DTL_Activity -->
+        <item>activity_i35_dtl</item> <!-- I35_DTL_Activity -->
+        <item>activity_i37_dtl</item> <!-- I37_DTL_Activity -->
+        <item>activity_i38_dtl</item> <!-- I38_DTL_Activity -->
+        <item>activity_s12_dtl</item> <!-- S12_DTL_Activity -->
+        <item>activity_s14_dtl</item> <!-- S14_DTL_Activity -->
+        <item>activity_s16_dtl</item> <!-- S16_DTL_Activity -->
+    </string-array>
+
+</resources>
