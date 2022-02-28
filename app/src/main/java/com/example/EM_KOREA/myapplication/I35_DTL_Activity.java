@@ -202,20 +202,20 @@ public class I35_DTL_Activity extends BaseActivity {
                 CHK = req_qty.getText().toString().equals("0.0") ? "N" : "Y";
 
                 if (CHK.equals("Y")) {
-                    int good_on_hand_qty_int = Integer.parseInt(jObject.getString("GOOD_ON_HAND_QTY").replace(".0", ""));
-                    int req_qty_int = Integer.parseInt(req_qty.getText().toString().replace(".0", ""));
-                    int remain_req_qty_int = Integer.parseInt(remain_req_qty.getText().toString());
+                    double double_good_on_hand_qty = Double.parseDouble(jObject.getString("GOOD_ON_HAND_QTY"));
+                    double double_req_qty = Double.parseDouble(req_qty.getText().toString());
+                    double double_remain_req_qty = Double.parseDouble(remain_req_qty.getText().toString());
 
-                    if (good_on_hand_qty_int >= req_qty_int) {
-                        grid_chk_qty_sum.setText(String.valueOf(req_qty_int));
-                        CHK_QTY = String.valueOf(req_qty_int);
+                    if (double_good_on_hand_qty >= double_req_qty) {
+                        grid_chk_qty_sum.setText(String.valueOf(double_req_qty));
+                        CHK_QTY = String.valueOf(double_req_qty);
                         remain_req_qty.setText("0");
                     } else {
-                        grid_chk_qty_sum.setText(String.valueOf(good_on_hand_qty_int));
-                        CHK_QTY = String.valueOf(good_on_hand_qty_int);
+                        grid_chk_qty_sum.setText(String.valueOf(double_good_on_hand_qty));
+                        CHK_QTY = String.valueOf(double_good_on_hand_qty);
 
-                        remain_req_qty_int = req_qty_int - good_on_hand_qty_int;
-                        remain_req_qty.setText(String.valueOf(remain_req_qty_int));
+                        double_remain_req_qty = double_req_qty - double_good_on_hand_qty;
+                        remain_req_qty.setText(String.valueOf(double_remain_req_qty));
                     }
                 } else {
                     remain_req_qty.setText(req_qty.getText().toString());
@@ -273,18 +273,18 @@ public class I35_DTL_Activity extends BaseActivity {
                     CheckedTextView chk = (CheckedTextView) v.findViewById(R.id.chk);
                     TextView chk_qty = (TextView) v.findViewById(R.id.chk_qty);
 
-                    int grid_chk_qty_sum_int = Integer.parseInt(grid_chk_qty_sum.getText().toString());                        // 총 이동수량
-                    int req_qty_int = Integer.parseInt(req_qty.getText().toString().replace(".0", ""));      // 요청량
+                    double double_grid_chk_qty_sum = Double.parseDouble(grid_chk_qty_sum.getText().toString());                        // 총 이동수량
+                    double req_qty_int = Double.parseDouble(req_qty.getText().toString());      // 요청량
                     int good_int = Integer.parseInt(item.GOOD_ON_HAND_QTY.replace(".0", ""));                // 그리드의 양품수량
-                    int remain_req_qty_int = Integer.parseInt(remain_req_qty.getText().toString().replace(".0", ""));    // 연산하기 위한 수량
+                    double double_remain_req_qty = Double.parseDouble(remain_req_qty.getText().toString());    // 연산하기 위한 수량
 
                     if (chk.isChecked() == true) {      //체크를 풀려고 했을 때
 
-                        remain_req_qty_int = remain_req_qty_int + Integer.parseInt(chk_qty.getText().toString());
-                        remain_req_qty.setText(String.valueOf(remain_req_qty_int));
+                        double_remain_req_qty = double_remain_req_qty + Double.parseDouble(chk_qty.getText().toString());
+                        remain_req_qty.setText(String.valueOf(double_remain_req_qty));
 
-                        grid_chk_qty_sum_int = grid_chk_qty_sum_int - Integer.parseInt(chk_qty.getText().toString());
-                        grid_chk_qty_sum.setText(String.valueOf(grid_chk_qty_sum_int));
+                        double_grid_chk_qty_sum = double_grid_chk_qty_sum - Double.parseDouble(chk_qty.getText().toString());
+                        grid_chk_qty_sum.setText(String.valueOf(double_grid_chk_qty_sum));
 
                         chk_qty.setText("0");
                         item.setCHK_QTY(chk_qty.getText().toString());
@@ -293,28 +293,28 @@ public class I35_DTL_Activity extends BaseActivity {
                         item.CHK = "";
 
                     } else {        //체크 할려고 했을 때
-                        if (remain_req_qty_int == 0) {
+                        if (double_remain_req_qty == 0) {
                             TGSClass.AlterMessage(getApplicationContext(), "남은 요청량이 없습니다");
                             return;
                         } else {
-                            if (good_int >= req_qty_int - grid_chk_qty_sum_int)     //선택한 양품 수량이 요청량보다 크거나 같을 경우
+                            if (good_int >= req_qty_int - double_grid_chk_qty_sum)     //선택한 양품 수량이 요청량보다 크거나 같을 경우
                             {
                                 grid_chk_qty_sum.setText(String.valueOf(req_qty_int));
 
-                                chk_qty.setText(String.valueOf(req_qty_int - grid_chk_qty_sum_int));
+                                chk_qty.setText(String.valueOf(req_qty_int - double_grid_chk_qty_sum));
                                 item.setCHK_QTY(chk_qty.getText().toString());
 
                                 remain_req_qty.setText("0");
                             } else                            // 선택한 양품 수량이 요청량보다 작은 경우
                             {
-                                grid_chk_qty_sum_int = grid_chk_qty_sum_int + good_int;
-                                grid_chk_qty_sum.setText(String.valueOf(grid_chk_qty_sum_int));
+                                double_grid_chk_qty_sum = double_grid_chk_qty_sum + good_int;
+                                grid_chk_qty_sum.setText(String.valueOf(double_grid_chk_qty_sum));
 
                                 chk_qty.setText(String.valueOf(good_int));
                                 item.setCHK_QTY(chk_qty.getText().toString());
 
-                                remain_req_qty_int = remain_req_qty_int - good_int;
-                                remain_req_qty.setText(String.valueOf(remain_req_qty_int));
+                                double_remain_req_qty = double_remain_req_qty - good_int;
+                                remain_req_qty.setText(String.valueOf(double_remain_req_qty));
                             }
                         }
 
