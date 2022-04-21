@@ -26,8 +26,8 @@ public class TGSClass {
 
     //웹서비스 네임스페이스 정의
     public static String ws_name_space = "http://tgs.com/";
-//    public static String ws_url= "http://125.135.140.21/MES_ANDROID/webService.asmx"; //-- EMK 실DB(unierp5)
-    public static String ws_url = "http://125.135.140.21/MES_ANDROID_TEST/webService.asmx"; //-- EMK 테스트DB(unierp5_dev)
+    public static String ws_url= "http://125.135.140.21/MES_ANDROID/webService.asmx"; //-- EMK 실DB(unierp5)
+//    public static String ws_url = "http://125.135.140.21/MES_ANDROID_TEST/webService.asmx"; //-- EMK 테스트DB(unierp5_dev)
 //    public static String ws_url= "http://localhost:6260/MES_ANDROID_TEST/WebServiceEM"; //-- EMK 테스트DB(local)
 
     public TGSClass() {

@@ -387,6 +387,11 @@ public class M21_DTL_Activity extends BaseActivity {
                 parm12.setValue(vUNIT_CD);
                 parm12.setType(String.class);
 
+                PropertyInfo parm13 = new PropertyInfo();
+                parm13.setName("user_id");
+                parm13.setValue(vUSER_ID);
+                parm13.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
@@ -399,6 +404,7 @@ public class M21_DTL_Activity extends BaseActivity {
                 pParms.add(parm10);
                 pParms.add(parm11);
                 pParms.add(parm12);
+                pParms.add(parm13);
 
                 result_msg = dba.SendHttpMessage("BL_Prodt_Warehousing_Out_save_ANDROID", pParms);
             }

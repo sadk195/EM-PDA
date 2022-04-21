@@ -286,10 +286,16 @@ public class M11_DTL_Activity extends BaseActivity {
                 parm4.setValue(unit_cd);
                 parm4.setType(String.class);
 
+                PropertyInfo parm5 = new PropertyInfo();
+                parm4.setName("user_id");
+                parm4.setValue(vUSER_ID);
+                parm4.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
                 pParms.add(parm4);
+                pParms.add(parm5);
 
                 result_msg = dba.SendHttpMessage("BL_SetInspectResult_ANDROID", pParms);
             }
@@ -366,6 +372,11 @@ public class M11_DTL_Activity extends BaseActivity {
                 parm9.setValue(unit_cd);
                 parm9.setType(String.class);
 
+                PropertyInfo parm10 = new PropertyInfo();
+                parm9.setName("user_id");
+                parm9.setValue(vUSER_ID);
+                parm9.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
@@ -375,6 +386,7 @@ public class M11_DTL_Activity extends BaseActivity {
                 pParms.add(parm7);
                 pParms.add(parm8);
                 pParms.add(parm9);
+                pParms.add(parm10);
 
                 result_msg = dba.SendHttpMessage("BL_Test_Results_ANDROID", pParms);
             }

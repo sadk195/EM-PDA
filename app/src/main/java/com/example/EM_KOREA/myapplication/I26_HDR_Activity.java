@@ -446,9 +446,15 @@ public class I26_HDR_Activity extends BaseActivity {
                 parm3.setValue(vUNIT_CD);
                 parm3.setType(String.class);
 
+                PropertyInfo parm4 = new PropertyInfo();
+                parm3.setName("user_id");
+                parm3.setValue(vUSER_ID);
+                parm3.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
+                pParms.add(parm4);
 
                 result_msg = dba.SendHttpMessage("BL_MOVE_REQ", pParms);
 

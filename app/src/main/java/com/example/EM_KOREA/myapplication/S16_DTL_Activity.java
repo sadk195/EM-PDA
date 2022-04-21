@@ -985,6 +985,11 @@ public class S16_DTL_Activity extends BaseActivity {
                 parm11.setValue(unit_cd);
                 parm11.setType(String.class);
 
+                PropertyInfo parm12 = new PropertyInfo();
+                parm11.setName("user_id");
+                parm11.setValue(vUSER_ID);
+                parm11.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
@@ -996,6 +1001,7 @@ public class S16_DTL_Activity extends BaseActivity {
                 pParms.add(parm9);
                 pParms.add(parm10);
                 pParms.add(parm11);
+                pParms.add(parm12);
 
                 result_msg = dba.SendHttpMessage("BL_Set_Shipment_Location_ANDROID", pParms);
             }

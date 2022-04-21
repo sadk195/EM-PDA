@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -1603,6 +1602,11 @@ public class P14_SAVE_CHANGWON_Activity extends AppCompatActivity {
                 parm11.setValue(unit_cd_parm);
                 parm11.setType(String.class);
 
+                PropertyInfo parm13 = new PropertyInfo();
+                parm11.setName("user_id");
+                parm11.setValue(global.getLoginString());
+                parm11.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
@@ -1615,6 +1619,7 @@ public class P14_SAVE_CHANGWON_Activity extends AppCompatActivity {
                 pParms.add(parm10);
                 pParms.add(parm11);
                 pParms.add(parm12);
+                pParms.add(parm13);
 
                 result_msg = dba.SendHttpMessage("BL_Set_SetPartListOut_ANDROID", pParms);
             }

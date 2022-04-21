@@ -1,7 +1,6 @@
 package com.example.EM_KOREA.myapplication;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -367,6 +366,11 @@ public class I22_DTL_Activity extends BaseActivity {
                 parm13.setValue(vUNIT_CD);
                 parm13.setType(String.class);
 
+                PropertyInfo parm14 = new PropertyInfo();
+                parm13.setName("user_id");
+                parm13.setValue(vUSER_ID);
+                parm13.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
@@ -380,6 +384,7 @@ public class I22_DTL_Activity extends BaseActivity {
                 pParms.add(parm11);
                 pParms.add(parm12);
                 pParms.add(parm13);
+                pParms.add(parm14);
 
                 result_msg = dba.SendHttpMessage("BL_Set_INVENTORY_MOVE_ANDROID", pParms);
             }
