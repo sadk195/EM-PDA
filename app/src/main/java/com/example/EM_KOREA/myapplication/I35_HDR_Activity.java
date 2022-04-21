@@ -7,6 +7,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,6 +32,9 @@ public class I35_HDR_Activity extends BaseActivity {
 
     //== View 선언(EditText) ==//
     private EditText txt_Scan_sl_cd, txt_Scan_prodt_order_no, txt_Scan_item_cd;
+
+    //== View 선언(CheckBox) ==//
+    private CheckBox chk_option;
 
     //== View 선언(ImageView) ==//
     private ImageView img_barcode_sl_cd, img_barcode_prodt_order_no, img_barcode_item_cd;
@@ -75,6 +80,8 @@ public class I35_HDR_Activity extends BaseActivity {
         img_barcode_prodt_order_no  = (ImageView) findViewById(R.id.img_barcode_prodt_order_no);
         img_barcode_sl_cd           = (ImageView) findViewById(R.id.img_barcode_sl_cd);
         img_barcode_item_cd         = (ImageView) findViewById(R.id.img_barcode_item_cd);
+
+        chk_option                  = (CheckBox) findViewById(R.id.chk_option);
 
         btn_query                   = (Button) findViewById(R.id.btn_query);
 
@@ -122,6 +129,18 @@ public class I35_HDR_Activity extends BaseActivity {
         img_barcode_item_cd.setOnClickListener(qrClickListener);
         //**
 
+        chk_option.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(txt_Scan_prodt_order_no.getText().toString().equals("") || txt_Scan_sl_cd.getText().toString().equals("")) {     //제조오더, 출고창고 조회조건 필수 입력사항
+                    TGSClass.AlterMessage(getApplicationContext(), "제조오더 또는 출고창고의 조회조건은 \n필수 입력 사항입니다!");
+                    return;
+                } else {
+                    start();
+                }
+            }
+        });
+
         //== 조회 버튼 이벤트 ==//
         btn_query.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,8 +166,9 @@ public class I35_HDR_Activity extends BaseActivity {
         String txt_Scan_prodt_order_no_st = txt_Scan_prodt_order_no.getText().toString();
         String txt_Scan_sl_cd_st = txt_Scan_sl_cd.getText().toString();
         String txt_Scan_item_cd_st = txt_Scan_item_cd.getText().toString();
+        String str_chk_option = chk_option.isChecked() ? "Y" : "N";
 
-        dbQuery(txt_Scan_prodt_order_no_st, txt_Scan_sl_cd_st, txt_Scan_item_cd_st);
+        dbQuery(txt_Scan_prodt_order_no_st, txt_Scan_sl_cd_st, txt_Scan_item_cd_st, str_chk_option);
 
         try {
             JSONArray ja = new JSONArray(sJson);
@@ -200,7 +220,7 @@ public class I35_HDR_Activity extends BaseActivity {
         }
     }
 
-    private void dbQuery(final String prodt_order_no, final String sl_cd, final String item_cd) {
+    private void dbQuery(final String prodt_order_no, final String sl_cd, final String item_cd, final String chk_option) {
         Thread workThd_dbQuery = new Thread() {
             public void run() {
                 String sql = " EXEC XUSP_MES_APK_PRODT_OUT_LOCATION_MOVE_ANDROID ";
@@ -212,6 +232,7 @@ public class I35_HDR_Activity extends BaseActivity {
                     sql += " ,@SL_CD = '" + sl_cd + "'";
                 }
                 sql += " ,@ITEM_CD = '" + item_cd + "'";
+                sql += " ,@CHK = '" + chk_option + "'";
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();

@@ -3,10 +3,41 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i35_hdr.xml" value="0.2046875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable-v24/bg_header.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_end.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_etc.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_gray.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_green.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_left_after.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_left_before.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_popup.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_red.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_right_after.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_right_before.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_user.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_btn_user_notend.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_combo.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_left_btn.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_prg_menu1.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_right_btn.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_table.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/drawable/bg_text.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i11_hdr.xml" value="0.33" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i13_query.xml" value="0.2046875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i21_hdr.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i35_dtl.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i35_hdr.xml" value="0.33" />
         <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i37_hdr.xml" value="0.3088768115942029" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i72.xml" value="0.2046875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i78.xml" value="0.2046875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_i79.xml" value="0.33" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_m11_dtl.xml" value="0.3120471014492754" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_menu.xml" value="0.17864583333333334" />
         <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_s10_sub_menu.xml" value="0.2046875" />
         <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/activity_s16_dtl.xml" value="0.221875" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/list_view_i11_hdr.xml" value="0.3515625" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/list_view_i21_hdr.xml" value="0.2046875" />
         <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/list_view_i35_hdr.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/list_view_s16_dtl.xml" value="0.221875" />
         <entry key="..\:/Users/user/AndroidStudioProjects/EMKOREA/app/src/main/res/layout/list_view_s16_hdr.xml" value="0.36614583333333334" />

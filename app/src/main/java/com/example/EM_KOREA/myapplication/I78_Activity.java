@@ -3,8 +3,8 @@ package com.example.EM_KOREA.myapplication;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -49,6 +49,9 @@ public class I78_Activity extends BaseActivity {
     private Calendar cal;
 
     public String INV_NO = "", CNT = "", SL_CD = "", SL_NM = "", WC_CD = "", WC_NM = "", STOCKYARD = "";
+
+    //== ActivityForResult 관련 변수 선언 ==//
+    private final int I79_REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +145,7 @@ public class I78_Activity extends BaseActivity {
                 intent.putExtra("SL_NM", SL_NM);
                 intent.putExtra("WC_CD", WC_CD);
                 intent.putExtra("INVENTORY_COUNT_DATE", vINVENTORY_COUNT_DATE);
-                startActivity(intent);
+                startActivityForResult(intent, I79_REQUEST_CODE);
             }
         });
 
@@ -399,5 +402,35 @@ public class I78_Activity extends BaseActivity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case I79_REQUEST_CODE:
+                    String sign = data.getStringExtra("SIGN");
+                    if (sign.equals("EXIT")) {
+                        Toast.makeText(I78_Activity.this, "저장 되었습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else if (sign.equals("ADD")) {
+                        Toast.makeText(I78_Activity.this, "추가 되었습니다.", Toast.LENGTH_SHORT).show();
+                        start();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } else if (resultCode == RESULT_CANCELED) {
+            switch (requestCode) {
+                case I79_REQUEST_CODE:
+                    Toast.makeText(I78_Activity.this, "취소", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

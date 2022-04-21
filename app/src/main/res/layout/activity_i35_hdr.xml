@@ -186,6 +186,29 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/box_view"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="5dp" >
+
+            <CheckBox
+                android:id="@+id/chk_option"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:checked="false"
+                android:text="총필요량으로 비교"
+                android:textColor="@color/colorBodyTitle"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:textAlignment="center"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/layout_query"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -50,12 +50,24 @@
         android:paddingRight="10dp"
         android:weightSum="12">
 
+        <!-- 창고명 -->
+        <TextView
+            android:id="@+id/sl_nm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center|left"
+            android:text="SlNm"
+            android:textColor="@color/colorHeadTitle"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
         <!-- 적치장 -->
         <TextView
             android:id="@+id/location"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:gravity="center|left"
             android:text="Location"
             android:textColor="@color/colorHeadTitle"
@@ -65,9 +77,9 @@
         <!-- 양품수량 -->
         <TextView
             android:id="@+id/good_on_hand_qty"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="GoodOnHandQty"
@@ -78,9 +90,9 @@
         <!-- ? -->
         <TextView
             android:id="@+id/item_acct_nm"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:gravity="center|left"
             android:paddingLeft="10dp"
             android:text="ItemAcctNm"

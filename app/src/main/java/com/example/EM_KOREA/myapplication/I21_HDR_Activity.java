@@ -320,6 +320,7 @@ public class I21_HDR_Activity extends BaseActivity {
                 item.ITEM_ACCT_NM       = jObject.getString("ITEM_ACCT_NM");        //품목계정
 
                 item.SL_CD              = jObject.getString("SL_CD");               //업체코드
+                item.SL_NM              = jObject.getString("SL_NM");               //업체명
                 item.PLANT_CD           = jObject.getString("PLANT_CD");            //공장코드
                 item.TRACKING_NO        = jObject.getString("TRACKING_NO");         //트레킹번호
 

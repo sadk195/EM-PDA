@@ -2,18 +2,17 @@ package com.example.EM_KOREA.myapplication;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.icu.text.DecimalFormat;
-import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,20 +22,42 @@ import org.json.JSONObject;
 import org.ksoap2.serialization.PropertyInfo;
 
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
 
-public class I79_Activity extends AppCompatActivity {
+public class I79_Activity extends BaseActivity {
 
+    //== JSON 선언 ==//
+    private String sJson = "";
+
+    //== Intent에서 받을 값 선언 ==//
+    private String vMenuID, vMenuNm, vMenuRemark, vStartCommand, SL_NM;
+
+    //== View 선언(EditText) ==//
+    private EditText txt_Scan, txt_tracking_no, txt_lot_no, txt_stockyard, txt_item_cd, txt_inventory_qty;
+
+    //== View 선언(TextView) ==//
+    private TextView txt_inventory_stock_qty, txt_sl_cd,app_title, txt_item_nm;
+
+    //== View 선언(CheckBox) ==//
+    private CheckBox chk_option;
+
+    //== View 선언(ImageView) ==//
+    private ImageView img_barcode;
+
+    //== View 선언(ListView) ==//
+    private ListView listview;
+
+    //== View 선언(Button) ==//
+    public Button btn_list, btn_save;
+
+    //== ActivityForResult 관련 변수 선언 ==//
+    private final int I79_DTL_REQUEST_CODE = 0;
     private final long INTERVAL_TIME = 500;  //간격
     private long inputEnterPressedTime = 0;  //엔터키 입력 시간.
-    public String sJson = "";
-    public ImageView img_barcode;
-    public EditText txt_Scan;
+
     public String sJobCode;
     public String sMenuRemark;
-    public MySession global;
     public String Plant_CD;
-    public String INV_NO, SL_CD, SL_NM , WC_CD, ITEM_NM, STOCKYARD, ITEM_CD, INVENTORY_QTY, TRACKING_NO, LOT_NO, INVENTORY_COUNT_DATE, MAJOR_SL_CD, UPPER_INV_NO, formattedStringPrice;
+    public String INV_NO, SL_CD , WC_CD, ITEM_NM, STOCKYARD, ITEM_CD, INVENTORY_QTY, TRACKING_NO, LOT_NO, INVENTORY_COUNT_DATE, MAJOR_SL_CD, UPPER_INV_NO, formattedStringPrice;
     private  String m_item_cd="";
     private  String m_tracking_no="";
     public int GOOD_ON_HAND_QTY;
@@ -48,52 +69,66 @@ public class I79_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_i79);
 
-        String vMenuName = getIntent().getStringExtra("MENU_NM");
-        sMenuRemark = getIntent().getStringExtra("MENU_REMARK");
-        sJobCode = getIntent().getStringExtra("START_COMMAND"); //다음 페이지에 가지고 넘어갈 코드
-        INVENTORY_COUNT_DATE = getIntent().getStringExtra("INVENTORY_COUNT_DATE");
-        UPPER_INV_NO = getIntent().getStringExtra("INV_NO");
+        this.initializeView();
 
-        final EditText txt_tracking_no = (EditText) findViewById(R.id.txt_tracking_no);
-        final EditText txt_lot_no = (EditText) findViewById(R.id.txt_lot_no);
-        final TextView txt_inventory_stock_qty = findViewById(R.id.txt_inventory_stock_qty);
-        final TextView txt_sl_cd = findViewById(R.id.txt_sl_cd);
+        this.initializeListener();
 
-        TextView lbl_view_title = findViewById(R.id.lbl_view_title);
-        lbl_view_title.setText(vMenuName);
+        this.initializeData();
+    }
 
-        txt_sl_cd.setText(SL_NM);
+    private void initializeView() {
+        //== BaseActivity 에서 SESSION 값 셋팅 ==//
+        this.init();
 
-        EditText txt_stockyard = (EditText) findViewById(R.id.txt_stockyard);
-        EditText txt_item_cd = (EditText) findViewById(R.id.txt_item_cd);
-        EditText txt_inventory_qty = (EditText) findViewById(R.id.txt_inventory_qty);
+        //== Intent 값 바인딩 ==//
+        vMenuID                     = getIntent().getStringExtra("MENU_ID");
+        vMenuNm                     = getIntent().getStringExtra("MENU_NM");
+        vMenuRemark                 = getIntent().getStringExtra("MENU_REMARK");
+        vStartCommand               = getIntent().getStringExtra("START_COMMAND"); //다음 페이지에 가지고 넘어갈 코드
 
+        SL_NM                       = getIntent().getStringExtra("SL_NM");
+        UPPER_INV_NO                = getIntent().getStringExtra("INV_NO");
+        INVENTORY_COUNT_DATE        = getIntent().getStringExtra("INVENTORY_COUNT_DATE");
 
+        //== ID 값 바인딩 ==//
+        txt_tracking_no             = (EditText) findViewById(R.id.txt_tracking_no);
+        txt_lot_no                  = (EditText) findViewById(R.id.txt_lot_no);
+        txt_inventory_stock_qty     = (TextView) findViewById(R.id.txt_inventory_stock_qty);
+        txt_sl_cd                   = (TextView) findViewById(R.id.txt_sl_cd);
+        txt_item_nm                 = (TextView) findViewById(R.id.txt_item_nm);
 
+        txt_stockyard               = (EditText) findViewById(R.id.txt_stockyard);
+        txt_item_cd                 = (EditText) findViewById(R.id.txt_item_cd);
+        txt_inventory_qty           = (EditText) findViewById(R.id.txt_inventory_qty);
 
+        app_title                   = (TextView) findViewById(R.id.app_title);
 
+        chk_option                  = (CheckBox) findViewById(R.id.chk_option);
 
+        btn_list                    = (Button) findViewById(R.id.btn_save);
+        btn_save                    = (Button) findViewById(R.id.btn_save);
+
+        listview                    = (ListView) findViewById(R.id.listOrder);
+    }
+
+    private void initializeListener() {
+
+        //== 이벤트 ==//
         txt_item_cd.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction()== KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER)
                 {
-                    global = (MySession)getApplication(); //전역 클래스
-                    String vPlant_CD = getIntent().getStringExtra("pPLANT_CD");
-                    if(vPlant_CD == null) vPlant_CD = global.getPlantCDString();
+                    String vItem_nm = txt_item_cd.getText().toString();
+                    String vTracking_no;
 
-                    EditText txt_item_cd = (EditText) findViewById(R.id.txt_item_cd);
-                    TextView txt_item_nm = (TextView) findViewById(R.id.txt_item_nm);
-                    String vitem_nm = txt_item_cd.getText().toString();
-                    String vtracking_no;
-
-                    if(scandata(vitem_nm)==true);
+                    if(scandata(vItem_nm)==true);
                     {
-                        vitem_nm = m_item_cd;
-                        vtracking_no = m_tracking_no;
+                        vItem_nm = m_item_cd;
+                        vTracking_no = m_tracking_no;
                     }
 
-                    item_info_query(vitem_nm,vPlant_CD,vtracking_no);
+                    item_info_query(vItem_nm,vPLANT_CD,vTracking_no);
                     txt_item_cd.setText(ITEM_CD);
                     txt_item_nm.setText(ITEM_NM);
                     txt_sl_cd.setText(SL_NM);
@@ -101,19 +136,14 @@ public class I79_Activity extends AppCompatActivity {
                     txt_lot_no.setText(LOT_NO);
                     txt_inventory_stock_qty.setText(formattedStringPrice);
 
-
-                    EditText txt_stockyard = (EditText) findViewById(R.id.txt_stockyard);
-                    EditText txt_inventory_qty = (EditText) findViewById(R.id.txt_inventory_qty);
-                    if (vPlant_CD.equals("C1")) {
+                    if (vPLANT_CD.equals("C1")) {
                         txt_stockyard.requestFocus();
                     }
                     else {
                         txt_inventory_qty.requestFocus();
                     }
-
                     return true;
                 }
-
                 return false;
             }
         });
@@ -123,7 +153,6 @@ public class I79_Activity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction()== KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER)
                 {
-                    EditText txt_inventory_qty = (EditText) findViewById(R.id.txt_inventory_qty);
                     txt_inventory_qty.requestFocus();
                     return true;
                 }
@@ -132,14 +161,11 @@ public class I79_Activity extends AppCompatActivity {
 
         });
 
-
         txt_inventory_qty.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction()== KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER)
                 {
-
-                    Button btn_save = (Button) findViewById(R.id.btn_save);
                     btn_save.requestFocus();
                     return true;
                 }
@@ -147,7 +173,6 @@ public class I79_Activity extends AppCompatActivity {
                 return false;
             }
         });
-
 
         /*
         txt_tracking_no.setOnKeyListener(new View.OnKeyListener() {
@@ -182,23 +207,9 @@ public class I79_Activity extends AppCompatActivity {
         });
         */
 
-
-
-
-
-
-        Button btn_list = findViewById(R.id.btn_save);   //findViewById = @+id/### 의 ###을 읽어와 데이터 바인딩
         btn_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                final EditText txt_stockyard = (EditText) findViewById(R.id.txt_stockyard);
-                final EditText txt_item_cd = (EditText) findViewById(R.id.txt_item_cd);
-                final EditText txt_inventory_qty = (EditText) findViewById(R.id.txt_inventory_qty);
-                final EditText txt_tracking_no = (EditText) findViewById(R.id.txt_tracking_no);
-                final EditText txt_lot_no = (EditText) findViewById(R.id.txt_lot_no);
-                final TextView txt_item_nm = (TextView) findViewById(R.id.txt_item_nm);
-
 
                 STOCKYARD = txt_stockyard.getText().toString();
                 ITEM_CD = txt_item_cd.getText().toString();
@@ -267,22 +278,17 @@ public class I79_Activity extends AppCompatActivity {
                         txt_inventory_stock_qty.setText("");
 
                         txt_item_cd.requestFocus();
-
                     }
                     Toast.makeText(getApplicationContext(),"실사등록이 완료되었습니다.", Toast.LENGTH_LONG).show();
-
-
-
-
-
-
                 }
             }
         });
+    }
 
+    private void initializeData() {
+        app_title.setText(vMenuNm);
 
-
-
+        txt_sl_cd.setText(SL_NM);
     }
 
     public  boolean scandata(String pITEM_CD)
@@ -356,8 +362,6 @@ public class I79_Activity extends AppCompatActivity {
         } catch (InterruptedException ex) {
             TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
         }
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

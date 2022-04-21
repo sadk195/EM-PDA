@@ -9,6 +9,7 @@ public class I11_HDR implements Serializable {   //Serializable 객체를 파라
     public  String ITEM_NM;
     public  String GOOD_ON_HAND_QTY;
     public  String ITEM_ACCT_NM;
+    public  String SL_NM;
     public  String SL_CD;
     public  String PLANT_CD;
     public  String TRACKING_NO;
@@ -31,6 +32,9 @@ public class I11_HDR implements Serializable {   //Serializable 객체를 파라
 
     public String getSL_CD() { return SL_CD; }
     public void setSL_CD(String sl_cd) { SL_CD = sl_cd; }
+
+    public String getSL_NM() { return SL_NM; }
+    public void setSL_NM(String sl_nm) { SL_NM = sl_nm; }
 
     public String getPLANT_CD() { return PLANT_CD; }
     public void setPLANT_CD(String plant_cd) { PLANT_CD = plant_cd; }

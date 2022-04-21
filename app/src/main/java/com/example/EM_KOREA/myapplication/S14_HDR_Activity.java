@@ -1,5 +1,7 @@
 package com.example.EM_KOREA.myapplication;
 
+import static java.lang.Thread.sleep;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -210,6 +212,12 @@ public class S14_HDR_Activity extends BaseActivity {
                         finish();
                     } else if (sign.equals("ADD")) {
                         Toast.makeText(getApplicationContext(), "추가 되었습니다.", Toast.LENGTH_SHORT).show();
+                        try {
+                            sleep(500);
+                        }
+                        catch (InterruptedException ex) {
+                            ex.printStackTrace();;
+                        }
                         start();
                     }
                     break;

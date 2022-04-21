@@ -52,6 +52,7 @@ public class I21_HDR_ListViewAdapter extends BaseAdapter {
         TextView item_acct_nm       = (TextView) convertView.findViewById(R.id.item_acct_nm);
 
         TextView sl_cd              = (TextView) convertView.findViewById(R.id.sl_cd);
+        TextView sl_nm              = (TextView) convertView.findViewById(R.id.sl_nm);
         TextView plant_cd           = (TextView) convertView.findViewById(R.id.plant_cd);
         TextView tracking_no        = (TextView) convertView.findViewById(R.id.tracking_no);
 
@@ -66,6 +67,7 @@ public class I21_HDR_ListViewAdapter extends BaseAdapter {
         item_acct_nm.setText(item.getITEM_ACCT_NM());
 
         sl_cd.setText(item.getSL_CD());
+        sl_nm.setText(item.getSL_NM());
         plant_cd.setText(item.getPLANT_CD());
         tracking_no.setText(item.getTRACKING_NO());
 
