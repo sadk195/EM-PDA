@@ -447,9 +447,9 @@ public class I26_HDR_Activity extends BaseActivity {
                 parm3.setType(String.class);
 
                 PropertyInfo parm4 = new PropertyInfo();
-                parm3.setName("user_id");
-                parm3.setValue(vUSER_ID);
-                parm3.setType(String.class);
+                parm4.setName("user_id");
+                parm4.setValue(vUSER_ID);
+                parm4.setType(String.class);
 
                 pParms.add(parm);
                 pParms.add(parm2);

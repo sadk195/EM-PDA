@@ -1598,14 +1598,14 @@ public class P14_SAVE_CHANGWON_Activity extends AppCompatActivity {
                 parm11.setType(String.class);
 
                 PropertyInfo parm12 = new PropertyInfo();
-                parm11.setName("unit_cd");
-                parm11.setValue(unit_cd_parm);
-                parm11.setType(String.class);
+                parm12.setName("unit_cd");
+                parm12.setValue(unit_cd_parm);
+                parm12.setType(String.class);
 
                 PropertyInfo parm13 = new PropertyInfo();
-                parm11.setName("user_id");
-                parm11.setValue(global.getLoginString());
-                parm11.setType(String.class);
+                parm13.setName("user_id");
+                parm13.setValue(global.getLoginString());
+                parm13.setType(String.class);
 
                 pParms.add(parm);
                 pParms.add(parm2);

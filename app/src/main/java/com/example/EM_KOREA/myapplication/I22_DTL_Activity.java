@@ -367,9 +367,9 @@ public class I22_DTL_Activity extends BaseActivity {
                 parm13.setType(String.class);
 
                 PropertyInfo parm14 = new PropertyInfo();
-                parm13.setName("user_id");
-                parm13.setValue(vUSER_ID);
-                parm13.setType(String.class);
+                parm14.setName("user_id");
+                parm14.setValue(vUSER_ID);
+                parm14.setType(String.class);
 
                 pParms.add(parm);
                 pParms.add(parm2);

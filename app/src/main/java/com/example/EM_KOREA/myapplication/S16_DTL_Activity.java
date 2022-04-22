@@ -986,9 +986,9 @@ public class S16_DTL_Activity extends BaseActivity {
                 parm11.setType(String.class);
 
                 PropertyInfo parm12 = new PropertyInfo();
-                parm11.setName("user_id");
-                parm11.setValue(vUSER_ID);
-                parm11.setType(String.class);
+                parm12.setName("user_id");
+                parm12.setValue(vUSER_ID);
+                parm12.setType(String.class);
 
                 pParms.add(parm);
                 pParms.add(parm2);

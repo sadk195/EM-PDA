@@ -287,9 +287,9 @@ public class M11_DTL_Activity extends BaseActivity {
                 parm4.setType(String.class);
 
                 PropertyInfo parm5 = new PropertyInfo();
-                parm4.setName("user_id");
-                parm4.setValue(vUSER_ID);
-                parm4.setType(String.class);
+                parm5.setName("user_id");
+                parm5.setValue(vUSER_ID);
+                parm5.setType(String.class);
 
                 pParms.add(parm);
                 pParms.add(parm2);
@@ -373,9 +373,9 @@ public class M11_DTL_Activity extends BaseActivity {
                 parm9.setType(String.class);
 
                 PropertyInfo parm10 = new PropertyInfo();
-                parm9.setName("user_id");
-                parm9.setValue(vUSER_ID);
-                parm9.setType(String.class);
+                parm10.setName("user_id");
+                parm10.setValue(vUSER_ID);
+                parm10.setType(String.class);
 
                 pParms.add(parm);
                 pParms.add(parm2);
