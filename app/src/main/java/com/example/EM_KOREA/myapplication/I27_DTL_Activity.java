@@ -613,7 +613,7 @@ public class I27_DTL_Activity extends BaseActivity {
         ////////////////////////////// 웹 서비스 호출 시 쓰레드 사용 ////////////////////////////////////////////////////////
         Thread workThd_dbQuery_getComboData = new Thread() {
             public void run() {
-                String sql = " EXEC XUSP_APK_STORAGE_GET_COMBODATA ";
+                String sql = " EXEC XUSP_APK_STORAGE_GET_COMBODATA_WMS ";
                 sql += " @FLAG= 'Y'";
                 sql += ", @PLANT_CD= '" + "H1" + "'";
 
@@ -750,6 +750,16 @@ public class I27_DTL_Activity extends BaseActivity {
                 listViewAdapter.RemoveDTLItem(i);
                 listViewAdapter.notifyDataSetChanged();
             }
+
+            txt_item_nm.setText("");
+            txt_spec.setText("");
+            txt_good_on_hand_qty.setText("");
+            txt_division_nm.setText("");
+            txt_procur_type.setText("");
+            txt_location.setText("");
+            txt_out_qty.setText("");
+            txt_item_cd.setText("");
+            txt_item_cd_t.setText("");
 
             TGSClass.AlterMessage(getApplicationContext(), msg, 10000);
             /*//== STEP 4. 현재 Activity 종료 ==//
