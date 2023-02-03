@@ -127,7 +127,7 @@ public class I20_Activity extends BaseActivity {
                 } else if (v == btn_item_qty_move) {        // 7. 품목재고이동(함안)
                     if (start_grant("I27")) {
                         String sMenuName = "재고이동 > 품목재고이동\n\n품번 입력";
-                        Intent intent = TGSClass.ChangeView(getPackageName(), I27_HDR_Activity.class.getSimpleName());
+                        Intent intent = TGSClass.ChangeView(getPackageName(), I27_DTL_Activity.class.getSimpleName());
                         intent.putExtra("MENU_ID", "I27");
                         intent.putExtra("MENU_NM", sMenuName);
                         intent.putExtra("MENU_REMARK", vMenuRemark);

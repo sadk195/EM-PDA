@@ -597,7 +597,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private String dbQuery(final String pDevice) {
+    protected String dbQuery(final String pDevice) {
         String vPLANT_CD = "";
         String vUNIT_CD = "";
         String vUNIT_NM = "";
@@ -606,6 +606,7 @@ public class MainActivity extends AppCompatActivity {
         Thread workThd_dbQuery = new Thread() {
             public void run() {
                 String sql = " exec XUSP_AND_APK_DEVICE_CHECK @UNIT_CD='" + pDevice + "'";
+                System.out.println("sql:"+sql);
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
 
@@ -619,6 +620,7 @@ public class MainActivity extends AppCompatActivity {
                 pParms.add(parm);
 
                 strJson = dba.SendHttpMessage("GetSQLData", pParms);
+                System.out.println("strJson:"+strJson);
             }
         };
         workThd_dbQuery.start();   //스레드 시작

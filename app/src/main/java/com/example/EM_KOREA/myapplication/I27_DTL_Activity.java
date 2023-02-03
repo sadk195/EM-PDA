@@ -1,11 +1,8 @@
 package com.example.EM_KOREA.myapplication;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,9 +21,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ksoap2.serialization.PropertyInfo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class I27_DTL_Activity extends BaseActivity {
@@ -36,35 +35,35 @@ public class I27_DTL_Activity extends BaseActivity {
 
     //== Intent에서 받을 값 선언 ==//
     private String vMenuID, vMenuNm, vMenuRemark, vStartCommand;
-    private I27_HDR vGetHDRItem;
+    private I27_DTL vItem;
 
     //== View 선언(TextView) ==//
-    private TextView txt_item_cd, txt_item_nm, txt_spec, txt_location_nm, txt_tracking_no, txt_good_qty, txt_down, txt_sl_nm;
+    private TextView  txt_item_nm, txt_spec,  txt_division_nm, txt_procur_type, txt_location,txt_good_on_hand_qty,txt_item_cd_t;
+
+    //== View 선언(EditText) ==//
+    private EditText txt_item_cd, txt_out_qty;
+
+    //== View 선언(CheckBox) ==//
+    private CheckBox chk_direct;
 
     //== View 선언(ListView) ==//
     private ListView listview;
 
     //== View 선언(Spinner) ==//
-    private Spinner spinner_storage;
-
-    //== View 선언(EditText) ==//
-    private EditText move_date, move_qty;
+    private Spinner cmb_origin,cmb_move;
 
     //== View 선언(Button) ==//
-    private Button btn_save;
+    private Button btn_open,btn_hide,btn_save,btn_add,btn_del,btn_clear;
 
     //== View 선언(Layout) ==//
     private LinearLayout box_view2;
     private RelativeLayout layout_btn;
 
-    //== View 선언(CheckBox) ==//
-    private CheckBox chk_out_storage;
-
     //== 날짜관련 변수 선언 ==//
     private Calendar cal;
 
     //== Dialog ==//
-    private DBQueryList dbQueryList;
+    //private DBQueryList dbQueryList;
 
     //== Spinner에 필요한 변수 ==//
     private String str_storage;
@@ -72,19 +71,14 @@ public class I27_DTL_Activity extends BaseActivity {
     //== itme 선택 시 몇 번째 item을 선택한지 판단하는 변수 선언 ==//
     private int sel_item_idx;
 
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(txt_item_nm.getText())
-                .setMessage("해당 품목의 재고이동을 취소하시겠습니까?")
-                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                })
-                .create().show();
-    }
+  /*  //== View 선언(DrawerLayout) ==//
+    private DrawerLayout DrawerView;*/
+
+    private String tx_item_cd="";
+    private I27_DTL_ListViewAdapter listViewAdapter;
+
+    private I27_DTL current_dtl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,30 +104,39 @@ public class I27_DTL_Activity extends BaseActivity {
         vMenuRemark             = getIntent().getStringExtra("MENU_REMARK");
         vStartCommand           = getIntent().getStringExtra("START_COMMAND");
 
-        vGetHDRItem             = (I27_HDR)getIntent().getSerializableExtra("HDR");
+        //vGetHDRItem             = (I27_HDR)getIntent().getSerializableExtra("HDR");
 
         //== ID 값 바인딩 ==//
-        txt_item_cd             = (TextView) findViewById(R.id.txt_item_cd);
         txt_item_nm             = (TextView) findViewById(R.id.txt_item_nm);
         txt_spec                = (TextView) findViewById(R.id.txt_spec);
-        txt_location_nm         = (TextView) findViewById(R.id.txt_location_nm);
-        txt_tracking_no         = (TextView) findViewById(R.id.txt_tracking_no);
-        txt_good_qty            = (TextView) findViewById(R.id.txt_good_qty);
+        txt_division_nm         = (TextView) findViewById(R.id.txt_division_nm);
+        txt_procur_type         = (TextView) findViewById(R.id.txt_procur_type);
+        txt_location            = (TextView) findViewById(R.id.txt_location);
+        txt_good_on_hand_qty    = (TextView) findViewById(R.id.txt_good_on_hand_qty);
+        txt_item_cd_t           = (TextView) findViewById(R.id.txt_item_cd_t);
 
+        txt_item_cd             = (EditText) findViewById(R.id.txt_item_cd);
+
+        txt_out_qty             = (EditText) findViewById(R.id.txt_out_qty);
         listview                = (ListView) findViewById(R.id.listOrder);
 
-        txt_down                = (TextView) findViewById(R.id.txt_down);
-        txt_sl_nm               = (TextView) findViewById(R.id.txt_sl_nm);
-        move_date               = (EditText) findViewById(R.id.move_date);
-        spinner_storage         = (Spinner) findViewById(R.id.spinner_storage);
-        chk_out_storage         = (CheckBox) findViewById(R.id.chk_out_storage);
-        move_qty                = (EditText) findViewById(R.id.move_qty);
+        cmb_origin              = (Spinner) findViewById(R.id.cmb_origin);
+        cmb_move                = (Spinner) findViewById(R.id.cmb_move);
+        chk_direct              = (CheckBox) findViewById(R.id.chk_direct);
 
         btn_save                = (Button) findViewById(R.id.btn_save);
+        btn_hide                = (Button) findViewById(R.id.btn_hide);
+        btn_open                = (Button) findViewById(R.id.btn_open);
+        btn_add                 = (Button) findViewById(R.id.btn_add);
+        btn_del                 = (Button) findViewById(R.id.btn_del);
+        btn_clear               = (Button) findViewById(R.id.btn_clear);
+        //DrawerView       = (DrawerLayout) findViewById(R.id.drawer);
 
-        box_view2               = (LinearLayout) findViewById(R.id.box_view2);
-        layout_btn              = (RelativeLayout) findViewById(R.id.layout_btn);
+        box_view2            =(LinearLayout) findViewById(R.id.box_view2);
+
+        //layout_btn              = (RelativeLayout) findViewById(R.id.layout_btn);
     }
+
 
     private void initializeCalendar() {
         cal = Calendar.getInstance();
@@ -141,30 +144,62 @@ public class I27_DTL_Activity extends BaseActivity {
     }
 
     private void initializeListener() {
-        //== 날짜 이벤트 ==//
-        move_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openPopupDate(v, move_date, cal);
-            }
-        });
 
         //== 외부창고 Check 이벤트 ==//
-        chk_out_storage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        chk_direct.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 //== 체크박스 클릭 시 창고 목록(Spinner) 재조회
-                dbQuery_getComboData();
+                if(b){
+                    txt_out_qty.setVisibility(View.VISIBLE);
+                    txt_out_qty.setEnabled(true);
+                    btn_add.setEnabled(true);
+                }
+                else{
+                    txt_out_qty.setVisibility(View.GONE);
+                    txt_out_qty.setEnabled(false);
+                    btn_add.setEnabled(false);
+                }
             }
         });
 
-        //== 내리기 버튼 이벤트 ==//
-        txt_down.setOnClickListener(new View.OnClickListener() {
+        btn_open.setOnClickListener(new Button.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                //== 레이아웃 숨기기 ==//
+            public void onClick(View v) {
+                box_view2.setVisibility(View.VISIBLE);
+            }
+        });
+        btn_hide.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 box_view2.setVisibility(View.GONE);
-                layout_btn.setVisibility(View.GONE);
+            }
+        });
+
+        txt_item_cd.setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                   /* String temp=txt_item_cd.getText().toString().replaceFirst(tx_item_cd,"");
+                    txt_item_cd.setText(temp);
+                    tx_item_cd=txt_item_cd.getText().toString();*/
+
+                    //직접입력이 아닐때만
+                   /* if(!chk_direct.isChecked()){
+                        txt_out_qty.setText("1");
+                        dbQueryList();
+                    }*/
+
+                    dbQueryList();
+
+                    txt_item_cd.setText("");
+                    txt_item_cd.requestFocus();
+                    //start();
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -175,43 +210,230 @@ public class I27_DTL_Activity extends BaseActivity {
                 dbSave("EXIT");
             }
         });
+
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(current_dtl == null){
+                    return;
+                }
+
+                if(Integer.parseInt(current_dtl.getGOOD_ON_HAND_QTY()) < Integer.parseInt(txt_out_qty.getText().toString())){
+                    TGSClass.AlterMessage(getApplicationContext(), "출고수량이 재고수량보다 많습니다.",5000);
+                    return;
+                }
+
+                //직접입력일때만
+                if(chk_direct.isChecked()){
+                    current_dtl.setMOVE_QTY(txt_out_qty.getText().toString());
+
+                    //이동 수량
+                    listViewAdapter.addDTLItem(current_dtl);
+                    listview.setAdapter(listViewAdapter);
+                    listViewAdapter.notifyDataSetChanged();
+
+
+                    txt_item_nm.setText("");
+                    txt_spec.setText("");
+                    txt_good_on_hand_qty.setText("");
+                    txt_division_nm.setText("");
+                    txt_procur_type.setText("");
+                    txt_location.setText("");
+                    txt_out_qty.setText("");
+                    txt_item_cd.setText("");
+                    txt_item_cd_t.setText("");
+                }
+
+            }
+        });
+
+        btn_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listViewAdapter.delDTLItem(sel_item_idx);
+                listViewAdapter.notifyDataSetChanged();
+
+                txt_item_nm.setText("");
+                txt_spec.setText("");
+                txt_good_on_hand_qty.setText("");
+                txt_division_nm.setText("");
+                txt_procur_type.setText("");
+                txt_location.setText("");
+                txt_item_cd_t.setText("");
+
+            }
+        });
+
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txt_item_cd.setText("");
+            }
+        });
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                vItem = (I27_DTL) parent.getItemAtPosition(position);
+                //== 선택 된 item의 position을 전역변수에 저장(재고이동시 선택한 item의 position값이 필요함) ==//
+                sel_item_idx = position;
+
+                //txt_item_cd.setText(vItem.getITEM_CD());
+                txt_item_nm.setText(vItem.getITEM_NM());
+                txt_spec.setText(vItem.getSPEC());
+                txt_division_nm.setText(vItem.getDIVISION_NM());
+                txt_procur_type.setText(vItem.getPROCUR_TYPE());
+                txt_location.setText(vItem.getLOCATION());
+                txt_item_cd_t.setText(vItem.getITEM_CD());
+
+            }
+        });
+
     }
 
     private void initializeData() {
-        txt_item_cd.setText(vGetHDRItem.getITEM_CD());
-        txt_item_nm.setText(vGetHDRItem.getITEM_NM());
-        txt_spec.setText(vGetHDRItem.getSPEC());
-        txt_location_nm.setText(vGetHDRItem.getLOCATION_NM());
-        txt_tracking_no.setText(vGetHDRItem.getTRACKING_NO());
-        txt_good_qty.setText(decimalForm.format(vGetHDRItem.getSUM_GOOD_ON_HAND_QTY()));
-
-        move_date.setText(df.format(cal.getTime()));
-
-        dbQuery_getComboData();
+        //콤보박스 데이터 조회
+        setCmb_move();
+        setCmb_origin();
+        //dbQuery_getComboData();
 
         start();
-
-        sel_item_idx = 0;
     }
 
+
+
     private void start() {
-        dbQueryList();
+        sel_item_idx = 0;
+
+        txt_out_qty.setEnabled(false);
+        btn_add.setEnabled(false);
+        txt_out_qty.setVisibility(View.GONE);
+
+        listViewAdapter = new I27_DTL_ListViewAdapter();
     }
 
     public void dbQueryList() {
-        progressStart(this);
+      /*  progressStart(this);
 
         dbQueryList = new DBQueryList();
-        dbQueryList.start();
+        dbQueryList.start();*/
+
+        GetComboNUM spinner_origin = (GetComboNUM) cmb_origin.getSelectedItem();
+        if(spinner_origin == null){
+            TGSClass.AlterMessage(getApplicationContext(), "현재 창고를 입력하여 주시기 바랍니다.",5000);
+            return;
+        }
+
+        if (spinner_origin.getMINOR_CD().equals("")) {
+            TGSClass.AlterMessage(getApplicationContext(), "현재 창고를 입력하여 주시기 바랍니다.",5000);
+            return;
+        }
+
+        String origin=  spinner_origin.getMINOR_CD();
+        dbquery(origin);
+        cmb_move.setEnabled(false);
+        cmb_origin.setEnabled(false);
+
     }
 
+
+    //LOT번호 스캔하여 데이터 저장
+    private void dbquery(final String sl_cd) {
+        ////////////////////////////// 웹 서비스 호출 시 쓰레드 사용 ////////////////////////////////////////////////////////
+        Thread wkThd_dbQuery = new Thread() {
+            public void run() {
+
+
+                String sql = " EXEC XUSP_APK_I27_GET_HDR_LIST ";
+                sql += " @PLANT_CD = '" + "H1" + "' ";
+                sql += ", @ITEM_CD = '" + txt_item_cd.getText().toString() + "'";
+                sql += ", @SL_CD = '" + sl_cd + "'";
+
+                System.out.println("sql:"+sql);
+                DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
+
+                ArrayList<PropertyInfo> pParms = new ArrayList<>();
+
+                PropertyInfo parm = new PropertyInfo();
+                parm.setName("pSQL_Command");
+                parm.setValue(sql);
+                parm.setType(String.class);
+                pParms.add(parm);
+
+                sJson = dba.SendHttpMessage("GetSQLData", pParms);
+                //handler.sendMessage(handler.obtainMessage());
+
+            }
+        };
+        wkThd_dbQuery.start();   //스레드 시작
+
+        try {
+            wkThd_dbQuery.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+
+            JSONArray ja = new JSONArray(sJson);
+
+            // 빈 데이터 리스트 생성.
+            //final ArrayList<String> items = new ArrayList<String>();
+
+            for (int idx = 0; idx < 1; idx++) {
+                JSONObject jObject = ja.getJSONObject(idx);//
+
+                I27_DTL item = new I27_DTL();
+
+                item.setITEM_CD           (jObject.getString("ITEM_CD"));                             // 품번
+                item.setITEM_NM           (jObject.getString("ITEM_NM"));                             // 품명
+                item.setSL_CD             (jObject.getString("SL_CD"));                               // 창고코드
+                item.setSL_NM             (jObject.getString("SL_NM"));                               // 창고명
+                item.setGOOD_ON_HAND_QTY  (decimalForm.format(jObject.getInt("GOOD_ON_HAND_QTY")));   // 양품수량
+                item.setBAD_ON_HAND_QTY   (decimalForm.format(jObject.getInt("BAD_ON_HAND_QTY")));    // 불량품수량
+                item.setTRACKING_NO       (jObject.getString("TRACKING_NO"));                         // T/K
+                item.setLOT_NO            (jObject.getString("LOT_NO"));                              // LOT번호
+                item.setLOT_SUB_NO        (jObject.getString("LOT_SUB_NO"));                          // LOT순번
+                item.setBASIC_UNIT        (jObject.getString("BASIC_UNIT"));                          // 재고단위
+                item.setLOCATION          (jObject.getString("LOCATION"));                            // 적치장
+                item.setMOVE_QTY          (txt_out_qty.getText().toString());
+
+
+                txt_item_cd_t.setText(item.getITEM_CD());
+                txt_item_nm.setText(item.getITEM_NM());
+                txt_spec.setText(item.getSPEC());
+                txt_good_on_hand_qty.setText(item.getGOOD_ON_HAND_QTY());
+                txt_division_nm.setText(item.getDIVISION_NM());
+                txt_procur_type.setText(item.getPROCUR_TYPE());
+                txt_location.setText(item.getLOCATION());
+                current_dtl=item;
+            }
+
+            //직접입력일때만
+            if(!chk_direct.isChecked()){
+                current_dtl.setMOVE_QTY("1");
+                txt_out_qty.setText("1");
+                //이동 수량
+                listViewAdapter.addDTLItem(current_dtl);
+                listview.setAdapter(listViewAdapter);
+                listViewAdapter.notifyDataSetChanged();
+            }
+
+
+
+        } catch (InterruptedException ex) {
+            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+        }
+        catch (JSONException ex) {
+            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+        } catch (Exception e1) {
+            TGSClass.AlterMessage(getApplicationContext(), e1.getMessage());
+        }
+    }
+/*
     private class DBQueryList extends Thread {
         @Override
         public void run() {
             try {
                 String sql = " EXEC XUSP_APK_I27_GET_HDR_LIST ";
                 sql += " @PLANT_CD = '" + "H1" + "' ";
-                sql += ", @ITEM_CD = '" + vGetHDRItem.getITEM_CD() + "'";
+                sql += ", @ITEM_CD = '" + txt_item_cd.getText().toString() + "'";
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
 
@@ -225,7 +447,8 @@ public class I27_DTL_Activity extends BaseActivity {
 
                 sJson = dba.SendHttpMessage("GetSQLData", pParms);
                 handler.sendMessage(handler.obtainMessage());
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
                 progressEnd();
             }
@@ -245,24 +468,24 @@ public class I27_DTL_Activity extends BaseActivity {
 
                     // 빈 데이터 리스트 생성.
                     //final ArrayList<String> items = new ArrayList<String>();
-                    I27_DTL_ListViewAdapter listViewAdapter = new I27_DTL_ListViewAdapter();
-                    for (int idx = 0; idx < ja.length(); idx++) {
+                    listViewAdapter = new I27_DTL_ListViewAdapter();
+                    for (int idx = 0; idx < 1; idx++) {
                         JSONObject jObject = ja.getJSONObject(idx);//
 
                         I27_DTL item = new I27_DTL();
 
-                        item.ITEM_CD            = jObject.getString("ITEM_CD");                             // 품번
-                        item.ITEM_NM            = jObject.getString("ITEM_NM");                             // 품명
-                        item.SL_CD              = jObject.getString("SL_CD");                               // 창고코드
-                        item.SL_NM              = jObject.getString("SL_NM");                               // 창고명
-                        item.GOOD_ON_HAND_QTY   = decimalForm.format(jObject.getInt("GOOD_ON_HAND_QTY"));   // 양품수량
-                        item.BAD_ON_HAND_QTY    = decimalForm.format(jObject.getInt("BAD_ON_HAND_QTY"));    // 불량품수량
-                        item.TRACKING_NO        = jObject.getString("TRACKING_NO");                         // T/K
-                        item.LOT_NO             = jObject.getString("LOT_NO");                              // LOT번호
-                        item.LOT_SUB_NO         = jObject.getString("LOT_SUB_NO");                          // LOT순번
-                        item.BASIC_UNIT         = jObject.getString("BASIC_UNIT");                          // 재고단위
-                        item.LOCATION           = jObject.getString("LOCATION");                            // 적치장
-
+                        item.setITEM_CD           (jObject.getString("ITEM_CD"));                             // 품번
+                        item.setITEM_NM           (jObject.getString("ITEM_NM"));                             // 품명
+                        item.setSL_CD             (jObject.getString("SL_CD"));                               // 창고코드
+                        item.setSL_NM             (jObject.getString("SL_NM"));                               // 창고명
+                        item.setGOOD_ON_HAND_QTY  (decimalForm.format(jObject.getInt("GOOD_ON_HAND_QTY")));   // 양품수량
+                        item.setBAD_ON_HAND_QTY   (decimalForm.format(jObject.getInt("BAD_ON_HAND_QTY")));    // 불량품수량
+                        item.setTRACKING_NO       (jObject.getString("TRACKING_NO"));                         // T/K
+                        item.setLOT_NO            (jObject.getString("LOT_NO"));                              // LOT번호
+                        item.setLOT_SUB_NO        (jObject.getString("LOT_SUB_NO"));                          // LOT순번
+                        item.setBASIC_UNIT        (jObject.getString("BASIC_UNIT"));                          // 재고단위
+                        item.setLOCATION          (jObject.getString("LOCATION"));                            // 적치장
+                        item.setMOVE_QTY          (txt_out_qty.getText().toString());                                //이동 수량
                         listViewAdapter.addDTLItem(item);
                     }
                     listview.setAdapter(listViewAdapter);
@@ -270,22 +493,19 @@ public class I27_DTL_Activity extends BaseActivity {
                     listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView parent, View v, int position, long id) {
-                            I27_DTL vItem = (I27_DTL) parent.getItemAtPosition(position);
+                            vItem = (I27_DTL) parent.getItemAtPosition(position);
                             //== 선택 된 item의 position을 전역변수에 저장(재고이동시 선택한 item의 position값이 필요함) ==//
                             sel_item_idx = position;
-                            //TGSClass.AlterMessage(getApplicationContext(), position + "번째 ITEM CLICK, 양품 : " + vItem.GOOD_ON_HAND_QTY + "개");
-                            //== 레이아웃 보이기 ==//
-                            box_view2.setVisibility(View.VISIBLE);
-                            layout_btn.setVisibility(View.VISIBLE);
-                            //== 창고명 세팅 ==//
-                            txt_sl_nm.setText(vItem.SL_NM);
-                            //== 이동일자 세팅 ==//
-                            move_date.setText(df.format(cal.getTime()));
-                            //== 이동수량 세팅 ==//
-                            String good_qty = vItem.GOOD_ON_HAND_QTY.replace(",", "");
-                            move_qty.setText(good_qty);
-                            //== 이동할 창고에 포커스 ==//
-                            spinner_storage.requestFocus();
+
+                            //txt_item_cd.setText(vItem.getITEM_CD());
+                            txt_item_nm.setText(vItem.getITEM_NM());
+                            txt_spec.setText(vItem.getSPEC());
+                            txt_division_nm.setText(vItem.getDIVISION_NM());
+                            txt_procur_type.setText(vItem.getPROCUR_TYPE());
+                            txt_location.setText(vItem.getLOCATION());
+
+
+
                         }
                     });
                 } catch (JSONException ex) {
@@ -298,16 +518,103 @@ public class I27_DTL_Activity extends BaseActivity {
                 retry = false;
             }
         }
-    };
+    };*/
 
+    //이동창고 스피너 세팅
+    private void setCmb_move(){
+        dbQuery_getComboData();
+        try {
+            JSONArray ja = new JSONArray(sJsonCombo);
+
+            final ArrayList<GetComboNUM> lstItem = new ArrayList<>();
+
+            /*기본값 세팅*/
+            GetComboNUM itemBase = new GetComboNUM();
+
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jObject = ja.getJSONObject(i);
+
+                GetComboNUM item = new GetComboNUM();
+                item.setNUM(jObject.getInt("NUM"));
+                item.setMINOR_CD(jObject.getString("CODE"));
+                item.setMINOR_NM(jObject.getString("NAME"));
+
+                lstItem.add(item);
+            }
+            ArrayAdapter<GetComboNUM> adapter = new ArrayAdapter<GetComboNUM>(this, android.R.layout.simple_dropdown_item_1line, lstItem);
+
+            cmb_move.setAdapter(adapter);
+            //로딩시 기본값 세팅
+            cmb_move.setSelection(adapter.getPosition(itemBase));
+            //콤보박스 클릭 이벤트 정의
+            cmb_move.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    str_storage = ((GetComboNUM) parent.getSelectedItem()).getMINOR_CD();
+                    //Start();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } catch (JSONException ex) {
+            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+        } catch (Exception ex) {
+            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+        }
+    }
+    //기존창고 스피너 세팅
+    private void setCmb_origin(){
+        dbQuery_getComboData();
+        try {
+            JSONArray ja = new JSONArray(sJsonCombo);
+
+            final ArrayList<GetComboNUM> lstItem = new ArrayList<>();
+
+            /*기본값 세팅*/
+            GetComboNUM itemBase = new GetComboNUM();
+
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jObject = ja.getJSONObject(i);
+
+                GetComboNUM item = new GetComboNUM();
+                item.setNUM(jObject.getInt("NUM"));
+                item.setMINOR_CD(jObject.getString("CODE"));
+                item.setMINOR_NM(jObject.getString("NAME"));
+
+                lstItem.add(item);
+            }
+            ArrayAdapter<GetComboNUM> adapter = new ArrayAdapter<GetComboNUM>(this, android.R.layout.simple_dropdown_item_1line, lstItem);
+
+            cmb_origin.setAdapter(adapter);
+            //로딩시 기본값 세팅
+            cmb_origin.setSelection(adapter.getPosition(itemBase));
+            //콤보박스 클릭 이벤트 정의
+            cmb_origin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    str_storage = ((GetComboNUM) parent.getSelectedItem()).getMINOR_CD();
+                    //Start();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } catch (JSONException ex) {
+            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+        } catch (Exception ex) {
+            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+        }
+    }
+    //창고 스피너 데이터 조회
     private void dbQuery_getComboData() {
         ////////////////////////////// 웹 서비스 호출 시 쓰레드 사용 ////////////////////////////////////////////////////////
         Thread workThd_dbQuery_getComboData = new Thread() {
             public void run() {
-                String chk = chk_out_storage.isChecked() ? "Y" : "N";
-
                 String sql = " EXEC XUSP_APK_STORAGE_GET_COMBODATA ";
-                sql += " @FLAG= '" + chk + "'";
+                sql += " @FLAG= 'Y'";
                 sql += ", @PLANT_CD= '" + "H1" + "'";
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
@@ -333,145 +640,147 @@ public class I27_DTL_Activity extends BaseActivity {
             TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
         }
 
-        try {
-            JSONArray ja = new JSONArray(sJsonCombo);
 
-            final ArrayList<GetComboNUM> lstItem = new ArrayList<>();
-
-            /*기본값 세팅*/
-            GetComboNUM itemBase = new GetComboNUM();
-
-            for (int i = 0; i < ja.length(); i++) {
-                JSONObject jObject = ja.getJSONObject(i);
-
-                GetComboNUM item = new GetComboNUM();
-                item.setNUM(jObject.getInt("NUM"));
-                item.setMINOR_CD(jObject.getString("CODE"));
-                item.setMINOR_NM(jObject.getString("NAME"));
-
-                lstItem.add(item);
-            }
-            ArrayAdapter<GetComboNUM> adapter = new ArrayAdapter<GetComboNUM>(this, android.R.layout.simple_dropdown_item_1line, lstItem);
-
-            spinner_storage.setAdapter(adapter);
-            //로딩시 기본값 세팅
-            spinner_storage.setSelection(adapter.getPosition(itemBase));
-            //콤보박스 클릭 이벤트 정의
-            spinner_storage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    str_storage = ((GetComboNUM) parent.getSelectedItem()).getMINOR_CD();
-                    //Start();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-        } catch (JSONException ex) {
-            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
-        } catch (Exception ex) {
-            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
-        }
     }
 
     private void dbSave(String val) {
-        GetComboNUM spinner_sl_cd = (GetComboNUM) spinner_storage.getSelectedItem();
+        try {
 
-        String str_move_qty = move_qty.getText().toString();
+            GetComboNUM spinner_move = (GetComboNUM) cmb_move.getSelectedItem();
+            GetComboNUM spinner_origin = (GetComboNUM) cmb_origin.getSelectedItem();
 
-        if (spinner_sl_cd.getMINOR_CD().equals("") || str_move_qty.isEmpty()) {
-            TGSClass.AlterMessage(getApplicationContext(), "이동창고 또는 이동수량을 입력하여 주시기 바랍니다.");
-            return;
-        } else {
-            double double_move_qty = Double.parseDouble(move_qty.getText().toString());
-
-            I27_DTL_ListViewAdapter listViewAdapter = (I27_DTL_ListViewAdapter) listview.getAdapter();
-            I27_DTL item = (I27_DTL) listViewAdapter.getItem(sel_item_idx);
-
-            if (item.getSL_CD().equals(spinner_sl_cd.getMINOR_CD())) {
-                TGSClass.AlterMessage(getApplicationContext(), "동일한 창고로 이동할 수 없습니다.");
+            if (spinner_move.getMINOR_CD().equals("")) {
+                TGSClass.AlterMessage(getApplicationContext(), "이동 창고를 입력하여 주시기 바랍니다.",5000);
+                return;
+            } else
+            if (spinner_origin.getMINOR_CD().equals(spinner_move.getMINOR_CD())) {
+                TGSClass.AlterMessage(getApplicationContext(), "동일한 창고로 이동할 수 없습니다.",5000);
                 return;
             }
 
-            double qty = Double.parseDouble(item.getGOOD_ON_HAND_QTY());
+            int idx =0;
+            ArrayList<Integer> s_idxs = new ArrayList<>();
+            String msg ="";
+            for(I27_DTL item :  (ArrayList<I27_DTL>)listViewAdapter.getItems()) {
 
-            if (qty < double_move_qty) {
-                TGSClass.AlterMessage(getApplicationContext(), "현재고수량보다 이동수량이 초과되었습니다.");
-                return;
-            }
+                //I27_DTL_ListViewAdapter listViewAdapter = (I27_DTL_ListViewAdapter) listview.getAdapter();
+                //I27_DTL item = (I27_DTL) listViewAdapter.getItem(sel_item_idx);
 
-            try {
-                String sl_cd            = item.getSL_CD();
-                String item_cd          = item.getITEM_CD();
-                String tracking_no      = item.getTRACKING_NO();
-                String lot_no           = item.getLOT_NO();
-                String lot_sub_no       = item.getLOT_SUB_NO();
+                double double_move_qty = Double.parseDouble(item.getMOVE_QTY());
+                double qty = Double.parseDouble(item.getGOOD_ON_HAND_QTY());
+
+                if (qty < double_move_qty) {
+                    msg += "(" + item.getITEM_CD() + ")" + item.getITEM_NM() + "의 현재고수량보다 이동수량이 초과되었습니다."+"\n\r";
+                    //TGSClass.AlterMessage(getApplicationContext(), "현재고수량보다 이동수량이 초과되었습니다.");
+                    continue;
+                }
+
+
+                String sl_cd = item.getSL_CD();
+                String item_cd = item.getITEM_CD();
+                String tracking_no = item.getTRACKING_NO();
+                String lot_no = item.getLOT_NO();
+                String lot_sub_no = item.getLOT_SUB_NO();
+                String move_qty = item.getMOVE_QTY();
 
                 //== STEP 1. BL 실행 ==//
-                BL_DATASET_SELECT(sl_cd, item_cd, tracking_no, lot_no, lot_sub_no);
+                BL_DATASET_SELECT(sl_cd, item_cd, tracking_no, lot_no, lot_sub_no,move_qty);
+                System.out.println("result_msg:"+result_msg+":");
                 //== STEP 2. BL 실행 후 반환 메시지 확인 ==//
-                if (result_msg.equals("") || result_msg.isEmpty()) {
-                    TGSClass.AlterMessage(getApplicationContext(), result_msg);
-                    return;
-                } else if (result_msg.contains("재고이동 성공")) {
+                if (!result_msg.contains("재고이동 성공")) {
+                    msg +=result_msg;
+                    //TGSClass.AlterMessage(getApplicationContext(), "(" + item.getITEM_CD() + ")" + item.getITEM_NM() + " 재고이동 실패");
+                    continue;
+                }
+                else{
                     //== STEP 3. 뭐해야할까? ==//
                     if (!dbSave_HDR()) {
-                        return;
-                    } else {
-                        try {
-                            JSONArray ja_HDR = new JSONArray(sJsonHDR);
-                            JSONObject jObj_HDR = ja_HDR.getJSONObject(0);
-
-                            String RTN_ITEM_DOCUMENT_NO     = jObj_HDR.getString("RTN_ITEM_DOCUMENT_NO");
-                            String dtl_sl_cd                = item.getSL_CD();
-                            String dtl_item_cd              = item.getITEM_CD();
-                            String dtl_tracking_no          = item.getTRACKING_NO();
-                            String dtl_lot_no               = item.getLOT_NO();
-                            String dtl_lot_sub_no           = item.getLOT_SUB_NO();
-                            String dtl_qty                  = item.getGOOD_ON_HAND_QTY();
-                            String dtl_basic_unit           = item.getBASIC_UNIT();
-                            String dtl_location             = item.getLOCATION();
-                            String dtl_bad_on_hand_qty      = item.getBAD_ON_HAND_QTY();
-
-                            dbSave_DTL(RTN_ITEM_DOCUMENT_NO, dtl_sl_cd, dtl_item_cd, dtl_tracking_no, dtl_lot_no, dtl_lot_sub_no, dtl_qty, dtl_basic_unit, dtl_location, dtl_bad_on_hand_qty);
-                        } catch (JSONException exJson) {
-                            TGSClass.AlterMessage(getApplicationContext(), exJson.getMessage());
-                        } catch (Exception ex) {
-                            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
-                        }
-                        String msg = "(" + item.getITEM_CD() + ")" + item.getITEM_NM() + "의 재고가 이동되었습니다.";
-                        TGSClass.AlterMessage(getApplicationContext(), msg, 2000);
-
-                        //== STEP 4. 현재 Activity 종료 ==//
-                        // 저장 후 결과 값 돌려주기
-                        Intent resultIntent = new Intent();
-                        // 결과처리 후 부른 Activity에 보낼 값
-                        resultIntent.putExtra("SIGN", val);
-                        // 부른 Activity에게 결과 값 반환
-                        setResult(RESULT_OK, resultIntent);
-                        // 현재 Activity 종료
-                        finish();
+                        msg +="(" + item.getITEM_CD() + ")" + item.getITEM_NM() + " 수불대장 저장 실패";
+                        TGSClass.AlterMessage(getApplicationContext(), "(" + item.getITEM_CD() + ")" + item.getITEM_NM() + " 수불대장 저장 실패");
+                        continue;
                     }
-                } else {
-                    TGSClass.AlterMessage(getApplicationContext(), result_msg);
-                    return;
+
+                    try {
+                        JSONArray ja_HDR = new JSONArray(sJsonHDR);
+                        JSONObject jObj_HDR = ja_HDR.getJSONObject(0);
+
+                        String RTN_ITEM_DOCUMENT_NO = jObj_HDR.getString("RTN_ITEM_DOCUMENT_NO");
+                        String dtl_sl_cd = item.getSL_CD();
+                        String dtl_item_cd = item.getITEM_CD();
+                        String dtl_tracking_no = item.getTRACKING_NO();
+                        String dtl_lot_no = item.getLOT_NO();
+                        String dtl_lot_sub_no = item.getLOT_SUB_NO();
+                        String dtl_qty = item.getGOOD_ON_HAND_QTY();
+                        String dtl_basic_unit = item.getBASIC_UNIT();
+                        String dtl_location = item.getLOCATION();
+                        String dtl_bad_on_hand_qty = item.getBAD_ON_HAND_QTY();
+
+                        dbSave_DTL(RTN_ITEM_DOCUMENT_NO, dtl_sl_cd, dtl_item_cd, dtl_tracking_no, dtl_lot_no, dtl_lot_sub_no,
+                                dtl_qty, dtl_basic_unit, dtl_location, dtl_bad_on_hand_qty,move_qty);
+                        System.out.println("dtl");
+
+                    } catch (JSONException exJson) {
+                        TGSClass.AlterMessage(getApplicationContext(), exJson.getMessage());
+                    } catch (Exception ex) {
+                        TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+                    }
+
+                    //재고이동 메시지 추가
+                    msg += "(" + item.getITEM_CD() + ")" + item.getITEM_NM() + "의 재고가 이동되었습니다."+"\n\r";
+
+                    //재고이동 완료된항목 리스트에 추가하여 재고이동 완료된 항목은 삭제
+                    s_idxs.add(idx);
+
                 }
-            } catch (Exception e1) {
-                TGSClass.AlterMessage(getApplicationContext(), e1.getMessage());
+                idx ++;
             }
+
+            // 리스트 거꾸로 정렬하기위한 리스트
+            ArrayList<Integer> r_idx = new ArrayList<>();
+
+            //리스트의 뒤부도 조회하여 새로운 리스트에 입력
+            for (int i = s_idxs.size() - 1;i >= 0; i--) {
+                r_idx.add(s_idxs.indexOf(i));
+
+            }
+
+            //뒤쪽 항목부터 삭제해야 인덱스 오류가 없음
+            for(int i : r_idx){
+                //재고이동 완료된 항목은 삭제처리
+                listViewAdapter.RemoveDTLItem(i);
+                listViewAdapter.notifyDataSetChanged();
+            }
+
+            TGSClass.AlterMessage(getApplicationContext(), msg, 10000);
+            /*//== STEP 4. 현재 Activity 종료 ==//
+            // 저장 후 결과 값 돌려주기
+            Intent resultIntent = new Intent();
+            // 결과처리 후 부른 Activity에 보낼 값
+            resultIntent.putExtra("SIGN", val);
+            // 부른 Activity에게 결과 값 반환
+            setResult(RESULT_OK, resultIntent);
+            // 현재 Activity 종료
+            finish();*/
+        } catch (Exception e1) {
+            TGSClass.AlterMessage(getApplicationContext(), e1.getMessage());
+            System.out.println("err:"+e1);
         }
+
     }
 
     //== BL 만드는 메서드(I22_DTL 참고) ==//
-    private boolean BL_DATASET_SELECT(final String SL_CD, final String ITEM_CD, final String TRACKING_NO, final String LOT_NO, final String LOT_SUB_NO) {
+    private boolean BL_DATASET_SELECT(final String SL_CD, final String ITEM_CD, final String TRACKING_NO, final String LOT_NO, final String LOT_SUB_NO,final String MOVE_QTY) {
         Thread wkThd_BL_DATASET_SELECT = new Thread() {
             public void run() {
 
-                String str_move_date    = move_date.getText().toString();
-                GetComboNUM spinner_sl_cd = (GetComboNUM) spinner_storage.getSelectedItem();
-                String str_move_qty     = move_qty.getText().toString();
+                String str_move_date    = getCurrentDate();
+                //str_move_date    = "2022-12-26"
+                System.out.println("str_move_date:"+str_move_date);
+                GetComboNUM spinner_move= (GetComboNUM) cmb_move.getSelectedItem();
+                GetComboNUM spinner_origin= (GetComboNUM) cmb_origin.getSelectedItem();
 
+                //String str_move_qty     = txt_out_qty.getText().toString();
+                //String str_move_qty     = MOVE_QTY;
                 String cud_flag         = "C";
                 String plant_cd         = "H1";
                 String trans_plant_cd   = "H1";
@@ -480,10 +789,23 @@ public class I27_DTL_Activity extends BaseActivity {
                 String trns_tracking_no = TRACKING_NO;
                 String lot_no           = LOT_NO;
                 int lot_sub_no          = Integer.parseInt(LOT_SUB_NO);
-                String major_sl_cd      = SL_CD;
-                String issued_sl_cd     = spinner_sl_cd.getMINOR_CD();
-                String qty              = str_move_qty;
+                String major_sl_cd      = spinner_origin.getMINOR_CD();
+                String issued_sl_cd     = spinner_move.getMINOR_CD();
+                //String qty              = str_move_qty;
+                String qty              = MOVE_QTY;
                 String document_dt      = str_move_date;
+
+                System.out.println("item_cd:"+item_cd+":");
+                System.out.println("tracking_no:"+tracking_no+":");
+                System.out.println("trns_tracking_no:"+trns_tracking_no+":");
+                System.out.println("lot_no:"+lot_no+":");
+                System.out.println("lot_sub_no:"+lot_sub_no+":");
+                System.out.println("major_sl_cd:"+major_sl_cd+":");
+                System.out.println("issued_sl_cd:"+issued_sl_cd+":");
+                System.out.println("qty:"+qty+":");
+                System.out.println("document_dt:"+document_dt+":");
+
+
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
@@ -592,8 +914,8 @@ public class I27_DTL_Activity extends BaseActivity {
     private boolean dbSave_HDR() {
         Thread wkThd_dbSave_HDR = new Thread() {
             public void run() {
-                String str_move_date = move_date.getText().toString();
-
+                //String str_move_date = move_date.getText().toString();
+                String str_move_date = getCurrentDate();
                 String sql = " EXEC XUSP_WMS_LOCATION_I_GOODS_MOVEMENT_HDR_SET ";
                 sql += "@RTN_ITEM_DOCUMENT_NO = ''";
                 sql += ",@DOCUMENT_YEAR = ''";
@@ -639,15 +961,18 @@ public class I27_DTL_Activity extends BaseActivity {
 
     //== 수불정보_DTL 저장(?) ==//
     private boolean dbSave_DTL(final String ITEM_DOCUMENT_NO, final String SL_CD, final String ITEM_CD, final String TRACKING_NO, final String LOT_NO,
-                               final String LOT_SUB_NO, final String QTY, final String BASIC_UNIT, final String LOCATION, final String BAD_ON_HAND_QTY) {
+                               final String LOT_SUB_NO, final String QTY, final String BASIC_UNIT, final String LOCATION, final String BAD_ON_HAND_QTY,final  String move_qty) {
         Thread wkThd_dbSave_DTL = new Thread() {
             public void run() {
-                GetComboNUM spinner_sl_cd = (GetComboNUM) spinner_storage.getSelectedItem();
+                GetComboNUM spinner_move= (GetComboNUM) cmb_move.getSelectedItem();
+                GetComboNUM spinner_origin= (GetComboNUM) cmb_origin.getSelectedItem();
 
-                String str_move_date = move_date.getText().toString();
+                //String str_move_date = move_date.getText().toString();
+                String str_move_date = getCurrentDate();
 
-                String str_move_qty = move_qty.getText().toString();
+                //String str_move_qty = txt_out_qty.getText().toString();
 
+                String str_move_qty = move_qty;
                 String sql = " EXEC XUSP_WMS_LOCATION_I_GOODS_MOVEMENT_DTL_SET ";
                 sql += "@ITEM_DOCUMENT_NO = '" + ITEM_DOCUMENT_NO + "'";        // 채번
                 sql += ",@DOCUMENT_YEAR = ''";                                  // 년도
@@ -658,7 +983,7 @@ public class I27_DTL_Activity extends BaseActivity {
                 sql += ",@DOCUMENT_DT = '" + str_move_date + "'";               // 이동일자
 
                 /* I_ONHAND_STOCK_DETAIL 에서 바인딩 받아야 하므로 ListView에 조회되도록 SELECT 프로시저에 DTL항목 추가하고 바인딩 한 후 가져와야됨*/
-                sql += ",@SL_CD = '" + SL_CD + "'";                             // 창고코드
+                sql += ",@SL_CD = '" + spinner_origin.getMINOR_CD() + "'";                             // 창고코드
                 sql += ",@ITEM_CD = '" + ITEM_CD + "'";                         // 품목코드
                 sql += ",@TRACKING_NO = '" + TRACKING_NO + "'";                 // TRACKING_NO
                 sql += ",@LOT_NO = '" + LOT_NO + "'";                           // LOT_NO
@@ -670,7 +995,7 @@ public class I27_DTL_Activity extends BaseActivity {
                 sql += ",@TRNS_LOT_NO = '" + LOT_NO + "'";                      /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
                 sql += ",@TRNS_LOT_SUB_NO = " + LOT_SUB_NO;                     /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
                 sql += ",@TRNS_PLANT_CD = '" + "H1" + "'";                 /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
-                sql += ",@TRNS_SL_CD = '" + spinner_sl_cd.getMINOR_CD() + "'";  /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
+                sql += ",@TRNS_SL_CD = '" + spinner_move.getMINOR_CD() + "'";  /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
                 sql += ",@TRNS_ITEM_CD = '" + ITEM_CD + "'";                    /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
 
                 sql += ",@RECORD_NO = ''";                                      // 제조오더
@@ -708,4 +1033,11 @@ public class I27_DTL_Activity extends BaseActivity {
         }
         return true;
     }
+
+    public static String getCurrentDate() {
+        Date currentTime = Calendar.getInstance().getTime();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        return format.format(currentTime);
+    }
+
 }

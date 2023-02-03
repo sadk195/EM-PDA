@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class I27_DTL_ListViewAdapter extends BaseAdapter {
         return listViewItem.get(position);
     }
 
+    public Object getItems(){return listViewItem;}
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -46,22 +49,15 @@ public class I27_DTL_ListViewAdapter extends BaseAdapter {
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         TextView ITEM_CD            = (TextView) convertView.findViewById(R.id.ITEM_CD);
         TextView ITEM_NM            = (TextView) convertView.findViewById(R.id.ITEM_NM);
-        TextView SL_CD              = (TextView) convertView.findViewById(R.id.SL_CD);
-        TextView SL_NM              = (TextView) convertView.findViewById(R.id.SL_NM);
-        TextView GOOD_ON_HAND_QTY   = (TextView) convertView.findViewById(R.id.GOOD_ON_HAND_QTY);
-        TextView BAD_ON_HAND_QTY    = (TextView) convertView.findViewById(R.id.BAD_ON_HAND_QTY);
-        TextView TRACKING_NO        = (TextView) convertView.findViewById(R.id.TRACKING_NO);
-
+        TextView MOVE_QTY           = (TextView) convertView.findViewById(R.id.MOVE_QTY);
+        Button btn_del              = (Button) convertView.findViewById(R.id.btn_del);
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         I27_DTL item = listViewItem.get(position);
 
         ITEM_CD.setText(item.getITEM_CD());
         ITEM_NM.setText(item.getITEM_NM());
-        SL_CD.setText(item.getSL_CD());
-        SL_NM.setText(item.getSL_NM());
-        GOOD_ON_HAND_QTY.setText(item.getGOOD_ON_HAND_QTY());
-        BAD_ON_HAND_QTY.setText(item.getBAD_ON_HAND_QTY());
-        TRACKING_NO.setText(item.getTRACKING_NO());
+        MOVE_QTY.setText(item.getMOVE_QTY());
+
 
         return convertView;
     }
@@ -82,5 +78,13 @@ public class I27_DTL_ListViewAdapter extends BaseAdapter {
 
     protected void addDTLItem(I27_DTL item) {
         listViewItem.add(item);
+    }
+
+    protected void RemoveDTLItem(int idx) {
+        listViewItem.remove(idx);
+    }
+
+    protected void delDTLItem(int idx) {
+        listViewItem.remove(idx);
     }
 }

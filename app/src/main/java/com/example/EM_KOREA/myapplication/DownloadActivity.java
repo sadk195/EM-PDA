@@ -166,7 +166,7 @@ public class DownloadActivity extends AppCompatActivity {
 
     //업데이트 정보가 없으면 앱 실행.
     public void start() {
-        sPlantCD = dbQuery(global.getmUnitCDString()); // 등록된 기기이면 공장 코드값을 불러옴.
+        sPlantCD = ((MainActivity) MainActivity.mContext).dbQuery(global.getmUnitCDString()); // 등록된 기기이면 공장 코드값을 불러옴.
 
         if (sPlantCD.equals("")) {
             //등록되지 않은 단말기 이면 단말기 등록 요청 페이지로 이동한다.
