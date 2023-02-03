@@ -73,11 +73,12 @@ public class I27_DTL_ListViewAdapter extends BaseAdapter {
         item.setBAD_ON_HAND_QTY(BAD_ON_HAND_QTY);
         item.setTRACKING_NO(TRACKING_NO);
 
-        listViewItem.add(item);
+        //listViewItem.add(item);
+        listViewItem.add(0,item);
     }
 
     protected void addDTLItem(I27_DTL item) {
-        listViewItem.add(item);
+        listViewItem.add(0,item);
     }
 
     protected void RemoveDTLItem(int idx) {

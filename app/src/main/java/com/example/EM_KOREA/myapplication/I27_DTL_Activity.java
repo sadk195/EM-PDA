@@ -405,7 +405,7 @@ public class I27_DTL_Activity extends BaseActivity {
                 current_dtl=item;
             }
 
-            //직접입력일때만
+            //직접입력 아닐때만
             if(!chk_direct.isChecked()){
                 current_dtl.setMOVE_QTY("1");
                 txt_out_qty.setText("1");
