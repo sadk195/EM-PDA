@@ -128,96 +128,97 @@ public class M21_DTL_Activity extends BaseActivity {
                 if (save_location.getText().toString().equals("")) {
                     TGSClass.AlterMessage(getApplicationContext(), "입고할 적치장을 선택해주세요.");
                     return;
-                } else {
-                    dbQuery_SELECT_LOCATION_MASTER();
+                }
 
-                    if (sJson_select_location_master.equals("[]")) {
-                        TGSClass.AlterMessage(getApplicationContext(), "입력하신 입고 적치장의 정보가 없습니다.\n다시 확인해 주시기 바랍니다.");
-                        return;
-                    } else {
-                        String str_INSP_DT = INSP_DT.getText().toString();
-                        int INSP_YYYY = Integer.parseInt(str_INSP_DT.substring(0, 4));
-                        int INSP_MM = Integer.parseInt(str_INSP_DT.substring(5, 7));
-                        int INSP_DD = Integer.parseInt(str_INSP_DT.substring(8, 10));
+                dbQuery_SELECT_LOCATION_MASTER();
 
-                        if (INSP_YYYY > cal.get(Calendar.YEAR)) {
-                            if (INSP_MM > cal.get(Calendar.MONTH)) {
-                                if (INSP_DD > cal.get(Calendar.DAY_OF_MONTH)) {
-                                    TGSClass.AlterMessage(getApplicationContext(), "입고등록일은 검사결과등록일 보다 이전일 수 없습니다.");
+                //2023-02-09 박준하 로직 개선,IF 삭제
+               if (sJson_select_location_master.equals("[]")) {
+                    TGSClass.AlterMessage(getApplicationContext(), "입력하신 입고 적치장의 정보가 없습니다.\n다시 확인해 주시기 바랍니다.");
+                    return;
+                }
+
+                String str_INSP_DT = INSP_DT.getText().toString();
+                int INSP_YYYY = Integer.parseInt(str_INSP_DT.substring(0, 4));
+                int INSP_MM = Integer.parseInt(str_INSP_DT.substring(5, 7));
+                int INSP_DD = Integer.parseInt(str_INSP_DT.substring(8, 10));
+
+                if (INSP_YYYY > cal.get(Calendar.YEAR)) {
+                    if (INSP_MM > cal.get(Calendar.MONTH)) {
+                        if (INSP_DD > cal.get(Calendar.DAY_OF_MONTH)) {
+                            TGSClass.AlterMessage(getApplicationContext(), "입고등록일은 검사결과등록일 보다 이전일 수 없습니다.");
+                            return;
+                        }
+                    }
+                }
+
+                String cud_flag = "C";
+                String flag = "CONFIRM";
+                String plant_cd = vPLANT_CD;
+                String ref_no = PRODT_ORDER_NO.getText().toString();
+                String ref_seq = OPR_NO.getText().toString();
+                String insp_req_no = INSPECT_REQ_NO.getText().toString();
+                String decision = DECISION.getText().toString();
+                String in_dt_st = df.format(cal.getTime());
+                String wk_id = "";
+                String qty = QTY.getText().toString();
+                String b_qty = B_QTY.getText().toString();
+
+                fncSet_list_bl(cud_flag, flag, plant_cd, ref_no, ref_seq, insp_req_no, decision, in_dt_st, wk_id, qty, b_qty);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(M21_DTL_Activity.this);
+                builder.setTitle("생산입고등록\n(최종검사 입고등록)")
+                        .setMessage(result_msg)
+                        .setCancelable(false) // Dialog 밖이나 뒤로가기 막기위한 소스 true : 풀기, false : 막기
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (result_msg.contains("입고완료")) {
+                                    if (dbSave_HDR()) {
+                                        try {
+                                            JSONArray ja_hdr = new JSONArray(sJson_hdr);
+                                            JSONObject jObject_hdr = ja_hdr.getJSONObject(0);
+
+                                            String RTN_ITEM_DOCUMENT_NO = jObject_hdr.getString("RTN_ITEM_DOCUMENT_NO");
+
+                                            /* ZZ_WMS_I_GOODS_MOVEMENT_DTL INSERT 구문 */
+
+                                            JSONArray ja = new JSONArray(sJson);
+
+                                            JSONObject jObject = ja.getJSONObject(0);
+
+                                            String sl_cd = jObject.getString("SL_CD");           //창고코드
+                                            String item_cd = jObject.getString("ITEM_CD");         //품목코드
+                                            String tracking_no = jObject.getString("TRACKING_NO");     //트래킹번호
+                                            String lot_no = jObject.getString("LOT_NO");          //롯트번호
+                                            String lot_sub_no = jObject.getString("LOT_SUB_NO");      //롯트순번
+                                            String qty = jObject.getString("QTY");             //검사수량 = 검사 후 입고수량
+                                            String basic_unit = jObject.getString("BASIC_UNIT");      //재고단위
+                                            String save_location_st = save_location.getText().toString();          //적치장
+                                            String bad_on_hand_qty = jObject.getString("B_QTY");           //불량수량
+
+                                            dbSave_DTL(RTN_ITEM_DOCUMENT_NO, sl_cd, item_cd, tracking_no, lot_no, lot_sub_no, qty, basic_unit, save_location_st, bad_on_hand_qty);
+                                        } catch (JSONException ex) {
+                                            TGSClass.AlterMessage(getApplicationContext(), "catch : ex");
+                                        } catch (Exception e1) {
+                                            TGSClass.AlterMessage(getApplicationContext(), "catch : e1");
+                                        }
+
+                                        // 저장 후 결과 값 돌려주기
+                                        Intent resultIntent = new Intent();
+                                        // 결과처리 후 부른 Activity에 보낼 값
+                                        resultIntent.putExtra("SIGN", "EXIT");
+                                        // 부른 Activity에게 결과 값 반환
+                                        setResult(RESULT_OK, resultIntent);
+                                        // 현재 Activity 종료
+                                        finish();
+                                    }
+                                } else {
                                     return;
                                 }
                             }
-                        }
-
-                        String cud_flag     = "C";
-                        String flag         = "CONFIRM";
-                        String plant_cd     = vPLANT_CD;
-                        String ref_no       = PRODT_ORDER_NO.getText().toString();
-                        String ref_seq      = OPR_NO.getText().toString();
-                        String insp_req_no  = INSPECT_REQ_NO.getText().toString();
-                        String decision     = DECISION.getText().toString();
-                        String in_dt_st     = df.format(cal.getTime());
-                        String wk_id        = "";
-                        String qty          = QTY.getText().toString();
-                        String b_qty        = B_QTY.getText().toString();
-
-                        fncSet_list_bl(cud_flag, flag, plant_cd, ref_no, ref_seq, insp_req_no, decision, in_dt_st, wk_id, qty, b_qty);
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(M21_DTL_Activity.this);
-                        builder.setTitle("생산입고등록\n(최종검사 입고등록)")
-                                .setMessage(result_msg)
-                                .setCancelable(false) // Dialog 밖이나 뒤로가기 막기위한 소스 true : 풀기, false : 막기
-                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (result_msg.contains("입고완료")) {
-                                            if (dbSave_HDR() == true) {
-                                                try {
-                                                    JSONArray ja_hdr = new JSONArray(sJson_hdr);
-                                                    JSONObject jObject_hdr = ja_hdr.getJSONObject(0);
-
-                                                    String RTN_ITEM_DOCUMENT_NO = jObject_hdr.getString("RTN_ITEM_DOCUMENT_NO");
-
-                                                    /* ZZ_WMS_I_GOODS_MOVEMENT_DTL INSERT 구문 */
-
-                                                    JSONArray ja = new JSONArray(sJson);
-
-                                                    JSONObject jObject = ja.getJSONObject(0);
-
-                                                    String sl_cd                = jObject.getString("SL_CD");           //창고코드
-                                                    String item_cd              = jObject.getString("ITEM_CD");         //품목코드
-                                                    String tracking_no          = jObject.getString("TRACKING_NO");     //트래킹번호
-                                                    String lot_no               = jObject.getString("LOT_NO");          //롯트번호
-                                                    String lot_sub_no           = jObject.getString("LOT_SUB_NO");      //롯트순번
-                                                    String qty                  = jObject.getString("QTY");             //검사수량 = 검사 후 입고수량
-                                                    String basic_unit           = jObject.getString("BASIC_UNIT");      //재고단위
-                                                    String save_location_st     = save_location.getText().toString();          //적치장
-                                                    String bad_on_hand_qty      = jObject.getString("B_QTY");           //불량수량
-
-                                                    dbSave_DTL(RTN_ITEM_DOCUMENT_NO, sl_cd, item_cd, tracking_no, lot_no, lot_sub_no, qty, basic_unit, save_location_st, bad_on_hand_qty);
-                                                } catch (JSONException ex) {
-                                                    TGSClass.AlterMessage(getApplicationContext(), "catch : ex");
-                                                } catch (Exception e1) {
-                                                    TGSClass.AlterMessage(getApplicationContext(), "catch : e1");
-                                                }
-
-                                                // 저장 후 결과 값 돌려주기
-                                                Intent resultIntent = new Intent();
-                                                // 결과처리 후 부른 Activity에 보낼 값
-                                                resultIntent.putExtra("SIGN", "EXIT");
-                                                // 부른 Activity에게 결과 값 반환
-                                                setResult(RESULT_OK, resultIntent);
-                                                // 현재 Activity 종료
-                                                finish();
-                                            }
-                                        } else {
-                                            return;
-                                        }
-                                    }
-                                })
-                                .create().show();
-                    }
-                }
+                        })
+                        .create().show();
             }
         });
     }
