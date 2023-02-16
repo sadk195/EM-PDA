@@ -79,6 +79,8 @@ public class I27_DTL_Activity extends BaseActivity {
 
     private I27_DTL current_dtl;
 
+    private boolean isrun=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,7 +209,7 @@ public class I27_DTL_Activity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // 기존 소스 dbSave()로 옮김
-                dbSave("EXIT");
+                dbSave();
             }
         });
 
@@ -215,35 +217,42 @@ public class I27_DTL_Activity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if(current_dtl == null){
-                    return;
+                try{
+                    if(current_dtl == null){
+                        return;
+                    }
+
+                    if(Integer.parseInt(current_dtl.getGOOD_ON_HAND_QTY()) < Integer.parseInt(txt_out_qty.getText().toString())){
+                        TGSClass.AlterMessage(getApplicationContext(), "출고수량이 재고수량보다 많습니다.",5000);
+                        return;
+                    }
+
+                    //직접입력일때만
+                    if(chk_direct.isChecked()){
+                        current_dtl.setMOVE_QTY(txt_out_qty.getText().toString());
+
+                        //이동 수량
+                        listViewAdapter.addDTLItem(current_dtl);
+                        listview.setAdapter(listViewAdapter);
+                        listViewAdapter.notifyDataSetChanged();
+
+
+                        txt_item_nm.setText("");
+                        txt_spec.setText("");
+                        txt_good_on_hand_qty.setText("");
+                        txt_division_nm.setText("");
+                        txt_procur_type.setText("");
+                        txt_location.setText("");
+                        txt_out_qty.setText("");
+                        txt_item_cd.setText("");
+                        txt_item_cd_t.setText("");
+                    }
+                }
+                catch (Exception e){
+                    TGSClass.AlterMessage(getApplicationContext(), e.getMessage());
+
                 }
 
-                if(Integer.parseInt(current_dtl.getGOOD_ON_HAND_QTY()) < Integer.parseInt(txt_out_qty.getText().toString())){
-                    TGSClass.AlterMessage(getApplicationContext(), "출고수량이 재고수량보다 많습니다.",5000);
-                    return;
-                }
-
-                //직접입력일때만
-                if(chk_direct.isChecked()){
-                    current_dtl.setMOVE_QTY(txt_out_qty.getText().toString());
-
-                    //이동 수량
-                    listViewAdapter.addDTLItem(current_dtl);
-                    listview.setAdapter(listViewAdapter);
-                    listViewAdapter.notifyDataSetChanged();
-
-
-                    txt_item_nm.setText("");
-                    txt_spec.setText("");
-                    txt_good_on_hand_qty.setText("");
-                    txt_division_nm.setText("");
-                    txt_procur_type.setText("");
-                    txt_location.setText("");
-                    txt_out_qty.setText("");
-                    txt_item_cd.setText("");
-                    txt_item_cd_t.setText("");
-                }
 
             }
         });
@@ -251,16 +260,22 @@ public class I27_DTL_Activity extends BaseActivity {
         btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listViewAdapter.delDTLItem(sel_item_idx);
-                listViewAdapter.notifyDataSetChanged();
+                try{
+                    listViewAdapter.delDTLItem(sel_item_idx);
+                    listViewAdapter.notifyDataSetChanged();
 
-                txt_item_nm.setText("");
-                txt_spec.setText("");
-                txt_good_on_hand_qty.setText("");
-                txt_division_nm.setText("");
-                txt_procur_type.setText("");
-                txt_location.setText("");
-                txt_item_cd_t.setText("");
+                    txt_item_nm.setText("");
+                    txt_spec.setText("");
+                    txt_good_on_hand_qty.setText("");
+                    txt_division_nm.setText("");
+                    txt_procur_type.setText("");
+                    txt_location.setText("");
+                    txt_item_cd_t.setText("");
+                }
+                catch (Exception e){
+                    TGSClass.AlterMessage(getApplicationContext(), e.getMessage());
+
+                }
 
             }
         });
@@ -314,26 +329,34 @@ public class I27_DTL_Activity extends BaseActivity {
     }
 
     public void dbQueryList() {
+        try {
+
+
       /*  progressStart(this);
 
         dbQueryList = new DBQueryList();
         dbQueryList.start();*/
 
-        GetComboNUM spinner_origin = (GetComboNUM) cmb_origin.getSelectedItem();
-        if(spinner_origin == null){
-            TGSClass.AlterMessage(getApplicationContext(), "현재 창고를 입력하여 주시기 바랍니다.",5000);
-            return;
-        }
+            GetComboNUM spinner_origin = (GetComboNUM) cmb_origin.getSelectedItem();
+            if (spinner_origin == null) {
+                TGSClass.AlterMessage(getApplicationContext(), "현재 창고를 입력하여 주시기 바랍니다.", 5000);
+                return;
+            }
 
-        if (spinner_origin.getMINOR_CD().equals("")) {
-            TGSClass.AlterMessage(getApplicationContext(), "현재 창고를 입력하여 주시기 바랍니다.",5000);
-            return;
-        }
+            if (spinner_origin.getMINOR_CD().equals("")) {
+                TGSClass.AlterMessage(getApplicationContext(), "현재 창고를 입력하여 주시기 바랍니다.", 5000);
+                return;
+            }
 
-        String origin=  spinner_origin.getMINOR_CD();
-        dbquery(origin);
-        cmb_move.setEnabled(false);
-        cmb_origin.setEnabled(false);
+            String origin = spinner_origin.getMINOR_CD();
+            dbquery(origin);
+            cmb_move.setEnabled(false);
+            cmb_origin.setEnabled(false);
+        }
+        catch (Exception e){
+            TGSClass.AlterMessage(getApplicationContext(), e.getMessage());
+
+        }
 
     }
 
@@ -426,99 +449,6 @@ public class I27_DTL_Activity extends BaseActivity {
             TGSClass.AlterMessage(getApplicationContext(), e1.getMessage());
         }
     }
-/*
-    private class DBQueryList extends Thread {
-        @Override
-        public void run() {
-            try {
-                String sql = " EXEC XUSP_APK_I27_GET_HDR_LIST ";
-                sql += " @PLANT_CD = '" + "H1" + "' ";
-                sql += ", @ITEM_CD = '" + txt_item_cd.getText().toString() + "'";
-
-                DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
-
-                ArrayList<PropertyInfo> pParms = new ArrayList<>();
-
-                PropertyInfo parm = new PropertyInfo();
-                parm.setName("pSQL_Command");
-                parm.setValue(sql);
-                parm.setType(String.class);
-                pParms.add(parm);
-
-                sJson = dba.SendHttpMessage("GetSQLData", pParms);
-                handler.sendMessage(handler.obtainMessage());
-            }
-            catch (Exception ex) {
-                TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
-                progressEnd();
-            }
-        }
-    }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-
-            boolean retry = true;
-            while (retry) {
-                try {
-                    dbQueryList.join();
-
-                    JSONArray ja = new JSONArray(sJson);
-
-                    // 빈 데이터 리스트 생성.
-                    //final ArrayList<String> items = new ArrayList<String>();
-                    listViewAdapter = new I27_DTL_ListViewAdapter();
-                    for (int idx = 0; idx < 1; idx++) {
-                        JSONObject jObject = ja.getJSONObject(idx);//
-
-                        I27_DTL item = new I27_DTL();
-
-                        item.setITEM_CD           (jObject.getString("ITEM_CD"));                             // 품번
-                        item.setITEM_NM           (jObject.getString("ITEM_NM"));                             // 품명
-                        item.setSL_CD             (jObject.getString("SL_CD"));                               // 창고코드
-                        item.setSL_NM             (jObject.getString("SL_NM"));                               // 창고명
-                        item.setGOOD_ON_HAND_QTY  (decimalForm.format(jObject.getInt("GOOD_ON_HAND_QTY")));   // 양품수량
-                        item.setBAD_ON_HAND_QTY   (decimalForm.format(jObject.getInt("BAD_ON_HAND_QTY")));    // 불량품수량
-                        item.setTRACKING_NO       (jObject.getString("TRACKING_NO"));                         // T/K
-                        item.setLOT_NO            (jObject.getString("LOT_NO"));                              // LOT번호
-                        item.setLOT_SUB_NO        (jObject.getString("LOT_SUB_NO"));                          // LOT순번
-                        item.setBASIC_UNIT        (jObject.getString("BASIC_UNIT"));                          // 재고단위
-                        item.setLOCATION          (jObject.getString("LOCATION"));                            // 적치장
-                        item.setMOVE_QTY          (txt_out_qty.getText().toString());                                //이동 수량
-                        listViewAdapter.addDTLItem(item);
-                    }
-                    listview.setAdapter(listViewAdapter);
-
-                    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView parent, View v, int position, long id) {
-                            vItem = (I27_DTL) parent.getItemAtPosition(position);
-                            //== 선택 된 item의 position을 전역변수에 저장(재고이동시 선택한 item의 position값이 필요함) ==//
-                            sel_item_idx = position;
-
-                            //txt_item_cd.setText(vItem.getITEM_CD());
-                            txt_item_nm.setText(vItem.getITEM_NM());
-                            txt_spec.setText(vItem.getSPEC());
-                            txt_division_nm.setText(vItem.getDIVISION_NM());
-                            txt_procur_type.setText(vItem.getPROCUR_TYPE());
-                            txt_location.setText(vItem.getLOCATION());
-
-
-
-                        }
-                    });
-                } catch (JSONException ex) {
-                    TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
-                } catch (Exception e1) {
-                    TGSClass.AlterMessage(getApplicationContext(), e1.getMessage());
-                }
-                progressEnd();
-
-                retry = false;
-            }
-        }
-    };*/
 
     //이동창고 스피너 세팅
     private void setCmb_move(){
@@ -643,9 +573,15 @@ public class I27_DTL_Activity extends BaseActivity {
 
     }
 
-    private void dbSave(String val) {
+    private void dbSave() {
         try {
 
+            this.init();
+            if(isrun){
+                return;
+            }
+
+            isrun =true;
             GetComboNUM spinner_move = (GetComboNUM) cmb_move.getSelectedItem();
             GetComboNUM spinner_origin = (GetComboNUM) cmb_origin.getSelectedItem();
 
@@ -717,7 +653,7 @@ public class I27_DTL_Activity extends BaseActivity {
 
                         dbSave_DTL(RTN_ITEM_DOCUMENT_NO, dtl_sl_cd, dtl_item_cd, dtl_tracking_no, dtl_lot_no, dtl_lot_sub_no,
                                 dtl_qty, dtl_basic_unit, dtl_location, dtl_bad_on_hand_qty,move_qty);
-                        System.out.println("dtl");
+                        System.out.println("dtl:"+sJsonDTL);
 
                     } catch (JSONException exJson) {
                         TGSClass.AlterMessage(getApplicationContext(), exJson.getMessage());
@@ -774,6 +710,9 @@ public class I27_DTL_Activity extends BaseActivity {
         } catch (Exception e1) {
             TGSClass.AlterMessage(getApplicationContext(), e1.getMessage());
             System.out.println("err:"+e1);
+        }
+        finally {
+            isrun = false;
         }
 
     }

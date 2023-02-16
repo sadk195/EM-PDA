@@ -98,11 +98,11 @@ public class TGSClass {
 
     //메세지 박스
     public static void AlterMessage(Context pContext, String pMessage) {
-        AlterMessage(pContext, pMessage, 500);
+        AlterMessage(pContext, pMessage, 4000);
     }
 
     public static void AlterMessage(Context pContext, String pMessage, int pTime) {
-        final Toast toast = Toast.makeText(pContext, pMessage, Toast.LENGTH_SHORT);
+        final Toast toast = Toast.makeText(pContext, pMessage, Toast.LENGTH_LONG);
         showMyToast(toast, pTime);
     }
 

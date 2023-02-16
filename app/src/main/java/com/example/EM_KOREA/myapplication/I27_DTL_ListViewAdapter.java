@@ -86,6 +86,8 @@ public class I27_DTL_ListViewAdapter extends BaseAdapter {
     }
 
     protected void delDTLItem(int idx) {
-        listViewItem.remove(idx);
+        if(listViewItem.size() >= idx){
+            listViewItem.remove(idx);
+        }
     }
 }

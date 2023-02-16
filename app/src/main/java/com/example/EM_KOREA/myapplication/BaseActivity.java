@@ -2,8 +2,12 @@ package com.example.EM_KOREA.myapplication;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.DatePicker;
@@ -57,6 +61,7 @@ public class BaseActivity extends AppCompatActivity {
     protected BaseActivity() { /* compiled code */ }
 
     protected void init() {
+
         //== SESSION 정의 ==//
         global = (MySession) getApplication();
 
@@ -65,6 +70,12 @@ public class BaseActivity extends AppCompatActivity {
         vPLANT_CD = global.getPlantCDString();
         vUNIT_CD = global.getmUnitCDString();
 
+        //사용자 정보 오류시 앱 다시시작
+        if(global == null || vUSER_ID ==null || vUSER_ID.equals("")){
+            ErrorList_Popup Error_Popup = new ErrorList_Popup(this,"사용자 정보 오류",
+                    " 사용자 정보가 유효하지 않아 앱을 재시작 합니다. \n 동일한 오류가 지속될 경우 관리자에게 문의하시기 바랍니다");
+            Error_Popup.show();
+        }
         //== QR코드 ==//
         qrScan = new IntentIntegrator(this);
 
