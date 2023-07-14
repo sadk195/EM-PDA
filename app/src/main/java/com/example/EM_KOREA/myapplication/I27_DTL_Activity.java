@@ -222,7 +222,7 @@ public class I27_DTL_Activity extends BaseActivity {
                         return;
                     }
 
-                    if(Integer.parseInt(current_dtl.getGOOD_ON_HAND_QTY()) < Integer.parseInt(txt_out_qty.getText().toString())){
+                    if(Double.parseDouble(current_dtl.getGOOD_ON_HAND_QTY()) < Integer.parseInt(txt_out_qty.getText().toString())){
                         TGSClass.AlterMessage(getApplicationContext(), "출고수량이 재고수량보다 많습니다.",5000);
                         return;
                     }
@@ -243,7 +243,7 @@ public class I27_DTL_Activity extends BaseActivity {
                         txt_division_nm.setText("");
                         txt_procur_type.setText("");
                         txt_location.setText("");
-                        txt_out_qty.setText("");
+                        //txt_out_qty.setText("");
                         txt_item_cd.setText("");
                         txt_item_cd_t.setText("");
                     }
@@ -252,8 +252,6 @@ public class I27_DTL_Activity extends BaseActivity {
                     TGSClass.AlterMessage(getApplicationContext(), e.getMessage());
 
                 }
-
-
             }
         });
 
@@ -396,6 +394,7 @@ public class I27_DTL_Activity extends BaseActivity {
 
             JSONArray ja = new JSONArray(sJson);
 
+            System.out.println("sJson:"+sJson);
             // 빈 데이터 리스트 생성.
             //final ArrayList<String> items = new ArrayList<String>();
 
@@ -408,14 +407,14 @@ public class I27_DTL_Activity extends BaseActivity {
                 item.setITEM_NM           (jObject.getString("ITEM_NM"));                             // 품명
                 item.setSL_CD             (jObject.getString("SL_CD"));                               // 창고코드
                 item.setSL_NM             (jObject.getString("SL_NM"));                               // 창고명
-                item.setGOOD_ON_HAND_QTY  (decimalForm.format(jObject.getInt("GOOD_ON_HAND_QTY")));   // 양품수량
-                item.setBAD_ON_HAND_QTY   (decimalForm.format(jObject.getInt("BAD_ON_HAND_QTY")));    // 불량품수량
+                item.setGOOD_ON_HAND_QTY  (jObject.getString("GOOD_ON_HAND_QTY"));   // 양품수량
+                item.setBAD_ON_HAND_QTY   (jObject.getString("BAD_ON_HAND_QTY"));    // 불량품수량
                 item.setTRACKING_NO       (jObject.getString("TRACKING_NO"));                         // T/K
                 item.setLOT_NO            (jObject.getString("LOT_NO"));                              // LOT번호
                 item.setLOT_SUB_NO        (jObject.getString("LOT_SUB_NO"));                          // LOT순번
                 item.setBASIC_UNIT        (jObject.getString("BASIC_UNIT"));                          // 재고단위
                 item.setLOCATION          (jObject.getString("LOCATION"));                            // 적치장
-                item.setMOVE_QTY          (txt_out_qty.getText().toString());
+                item.setMOVE_QTY          (txt_out_qty.getText().toString().replace(",",""));
 
 
                 txt_item_cd_t.setText(item.getITEM_CD());
@@ -431,7 +430,7 @@ public class I27_DTL_Activity extends BaseActivity {
             //직접입력 아닐때만
             if(!chk_direct.isChecked()){
                 current_dtl.setMOVE_QTY("1");
-                txt_out_qty.setText("1");
+                //txt_out_qty.setText("1");
                 //이동 수량
                 listViewAdapter.addDTLItem(current_dtl);
                 listview.setAdapter(listViewAdapter);
@@ -617,7 +616,7 @@ public class I27_DTL_Activity extends BaseActivity {
                 String tracking_no = item.getTRACKING_NO();
                 String lot_no = item.getLOT_NO();
                 String lot_sub_no = item.getLOT_SUB_NO();
-                String move_qty = item.getMOVE_QTY();
+                String move_qty = item.getMOVE_QTY().replace(",","");
 
                 //== STEP 1. BL 실행 ==//
                 BL_DATASET_SELECT(sl_cd, item_cd, tracking_no, lot_no, lot_sub_no,move_qty);

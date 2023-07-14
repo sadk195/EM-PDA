@@ -535,7 +535,7 @@
                     android:layout_weight="18"
                     android:text=" 품번     |     품명     |      수량     "
                     android:textColor="@color/design_default_color_primary"
-                    android:textSize="12dp" />
+                    android:textSize="15dp" />
 
             </LinearLayout>
         </LinearLayout>

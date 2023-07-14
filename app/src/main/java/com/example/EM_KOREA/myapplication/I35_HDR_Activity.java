@@ -160,6 +160,10 @@ public class I35_HDR_Activity extends BaseActivity {
             txt_Scan_sl_cd.setText("창원 자재 창고");
             txt_Scan_sl_cd.setFocusable(false);
         }
+        else if(vPLANT_CD.equals("H1")) {
+            txt_Scan_sl_cd.setText(getUserSl_cd(vUSER_ID));
+            txt_Scan_sl_cd.setFocusable(false);
+        }
     }
 
     private void start() {
@@ -254,6 +258,42 @@ public class I35_HDR_Activity extends BaseActivity {
         } catch (InterruptedException ex) {
 
         }
+    }
+
+    private String getUserSl_cd(final String user_id) {
+        String sl_cd ="";
+        Thread workThd_dbQuery = new Thread() {
+            public void run() {
+                String sql = "SELECT ISNULL(SL_CD,'') FROM CA_USER_MASTER WHERE USER_ID = '"+user_id+"'";
+
+                DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
+                ArrayList<PropertyInfo> pParms = new ArrayList<>();
+
+                PropertyInfo parm = new PropertyInfo();
+                parm.setName("pSQL_Command");
+                parm.setValue(sql);
+                parm.setType(String.class);
+
+                pParms.add(parm);
+
+                sJson = dba.SendHttpMessage("GetSQLData", pParms);
+            }
+        };
+        workThd_dbQuery.start();   //스레드 시작
+        try {
+            workThd_dbQuery.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+            JSONArray ja = new JSONArray(sJson);
+
+            for (int idx = 0; idx < ja.length(); idx++) {
+                JSONObject jObject = ja.getJSONObject(idx);
+
+                sl_cd          = jObject.getString("SL_CD");             //품번
+            }
+
+        } catch (Exception ex) {
+
+        }
+        return sl_cd;
     }
 
     @Override
