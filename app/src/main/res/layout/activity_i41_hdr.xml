@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackGround">
+    <!-- 타이틀-->
+
+    <RelativeLayout
+        android:id="@+id/layout_menu_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/app_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/step1"
+            android:gravity="center"
+            android:text="작업장반입 > 작업장 반입/반출"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/layout_btn"
+        android:layout_below="@id/layout_menu_title">
+
+        <LinearLayout
+            android:id="@+id/box_view1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/app_view1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.5"
+                    android:gravity="right|center"
+                    android:text="요청번호"
+                    android:textColor="@color/colorBodyTitle"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/app_view1_1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7.5"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:weightSum="10">
+
+                    <ImageView
+                        android:id="@+id/img_barcode"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:src="@drawable/barcode" />
+
+                    <EditText
+                        android:id="@+id/Order_No"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="8.5"
+                        android:background="@drawable/bg_text_ess"
+                        android:gravity="center"
+                        android:hint="바코드 및 RFID 태그 스캔"
+                        android:inputType="text"
+                        android:textColor="@color/colorBodyContent"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:id="@+id/lbl_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/box_view1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="제조오더번호 | Tracking No | 품목 | 품명 | 유형 | 수량 | 처리상태"
+                android:textColor="@color/design_default_color_primary"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listOrder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/lbl_information"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_box"
+            android:padding="10dp" />
+        <LinearLayout
+            android:id="@+id/layout_query"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listOrder"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_query"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_btn"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="조회"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp">
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/bg_btn"
+            android:focusable="false"
+            android:gravity="center"
+            android:text="입출고처리"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
+

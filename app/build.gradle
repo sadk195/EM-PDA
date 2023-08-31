@@ -5,7 +5,7 @@ android {
         applicationId "com.example.EM_KOREA.myapplication"
         minSdkVersion 23
         targetSdkVersion 23
-        versionCode 102
+        versionCode 105
         versionName "1.1.1"
         // 컨셉이나 디자인 등 큰틀이 변한경우 / 기능추가, 기능 삭제 및 사양 등이 변경된 경우 / 버그수정, 디자인수정 등
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -19,6 +19,7 @@ android {
     repositories {
         maven { url 'https://oss.sonatype.org/content/repositories/ksoap2-android-releases/' }
     }
+    namespace 'com.example.EM_KOREA.myapplication'
 }
 
 dependencies {

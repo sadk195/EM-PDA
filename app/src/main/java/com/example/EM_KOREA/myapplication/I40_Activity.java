@@ -6,13 +6,17 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class I40_Activity extends BaseActivity {
 
     //== Intent에서 받을 값 선언 ==//
     private String vMenuID, vMenuNm, vMenuRemark, vStartCommand;
 
     //== View 선언(Button) ==//
-    private Button btn_workplace_good, btn_workplace_bad, btn_workplace_ect, btn_workplace_status;
+    private Button btn_workplace_good, btn_workplace_bad, btn_workplace_ect, btn_workplace_status,btn_InOut;
     private Button btn_menu;
 
     //== Grant 관련 변수 ==//
@@ -48,6 +52,7 @@ public class I40_Activity extends BaseActivity {
         btn_workplace_bad       = (Button) findViewById(R.id.btn_workplace_bad);            // 2. 작업장 반입(불량품)
         btn_workplace_ect       = (Button) findViewById(R.id.btn_workplace_ect);            // 3. 작업장 반입(기타)
         btn_workplace_status    = (Button) findViewById(R.id.btn_workplace_status);         // 4. 작업장 반입현황
+        btn_InOut               = (Button) findViewById(R.id.btn_InOut);
         btn_menu                = (Button) findViewById(R.id.btn_menu);                     // 메뉴
     }
 
@@ -64,8 +69,7 @@ public class I40_Activity extends BaseActivity {
                         // 현재 Activity 종료
                         finish();
                         break;
-                    case R.id.btn_workplace_good:
-                        /*
+                    case R.id.btn_InOut:
                         if (start_grant("I41")) {
                             String sMenuName = "";
 
@@ -76,7 +80,19 @@ public class I40_Activity extends BaseActivity {
                             intent.putExtra("START_COMMAND", vStartCommand);
                             startActivityForResult(intent, I41_HDR_REQUEST_CODE);
                         }
-                         */
+                    case R.id.btn_workplace_good:
+
+                       /* if (start_grant("I41")) {
+                            String sMenuName = "";
+
+                            Intent intent = TGSClass.ChangeView(getPackageName(), I41_HDR_Activity.class.getSimpleName());
+                            intent.putExtra("MENU_ID", "I41");
+                            intent.putExtra("MENU_NM", sMenuName);
+                            intent.putExtra("MENU_REMARK", vMenuRemark);
+                            intent.putExtra("START_COMMAND", vStartCommand);
+                            startActivityForResult(intent, I41_HDR_REQUEST_CODE);
+                        }*/
+
                         break;
                     case R.id.btn_workplace_bad:
                         /*
@@ -129,11 +145,44 @@ public class I40_Activity extends BaseActivity {
         btn_workplace_bad.setOnClickListener(clickListener);        // 2. 작업장 반입(불량품)
         btn_workplace_ect.setOnClickListener(clickListener);        // 3. 작업장 반입(기타)
         btn_workplace_status.setOnClickListener(clickListener);     // 4. 작업장 반입현황
+        btn_InOut.setOnClickListener(clickListener);
         btn_menu.setOnClickListener(clickListener);                 // 메뉴
     }
 
     private void initializeData() {
+        getGrant(vUSER_ID);
+    }
 
+
+    private boolean start_grant(final String MenuID) {
+        try {
+            JSONArray ja = new JSONArray(sJson_grant);
+
+            for (int idx = 0; idx < ja.length(); idx++) {
+                JSONObject jObject = ja.getJSONObject(idx);
+
+                final String LEVEL_CD = jObject.getString("LEVEL_CD");
+
+                ADMIN_CHK = LEVEL_CD.equals("ADMIN") || ADMIN_CHK.equals("Y") ? "Y" : "N";
+                W_OUT = LEVEL_CD.equals("W_OUT") || W_OUT.equals("Y") ? "Y" : "N";
+                I41 = LEVEL_CD.equals("I41") || I41.equals("Y") ? "Y" : "N";
+
+            }
+
+            if (ADMIN_CHK.equals("N") && W_OUT.equals("N")) {
+                if (MenuID.equals("I41") && I41.equals("N")) {
+                    TGSClass.AlterMessage(getApplicationContext(), "작업장 반입/반출 메뉴에 대한 접속 권한이 없습니다.");
+                    return false;
+                }
+            }
+            return true;
+        } catch (JSONException exJson) {
+            TGSClass.AlterMessage(getApplicationContext(), "catch : exJson");
+            return false;
+        } catch (Exception ex) {
+            TGSClass.AlterMessage(getApplicationContext(), "catch : ex");
+            return false;
+        }
     }
 
     @Override

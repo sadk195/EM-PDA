@@ -118,6 +118,9 @@
             android:name=".I40_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
+            android:name=".I41_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
             android:name=".I50_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity

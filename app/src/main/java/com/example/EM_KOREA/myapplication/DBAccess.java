@@ -43,7 +43,7 @@ public class DBAccess {
         envelope.bodyOut = request;
 
 
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(URL,3000);
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(URL,10000);
 
         Object response= null;
         try

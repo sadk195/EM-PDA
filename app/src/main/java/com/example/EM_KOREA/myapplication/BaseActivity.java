@@ -70,6 +70,9 @@ public class BaseActivity extends AppCompatActivity {
         vPLANT_CD = global.getPlantCDString();
         vUNIT_CD = global.getmUnitCDString();
 
+        //테스트용
+        vPLANT_CD = "H1";
+
         //사용자 정보 오류시 앱 다시시작
         if(global == null || vUSER_ID ==null || vUSER_ID.equals("")){
             ErrorList_Popup Error_Popup = new ErrorList_Popup(this,"사용자 정보 오류",

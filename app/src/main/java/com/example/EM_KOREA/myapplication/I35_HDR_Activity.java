@@ -250,6 +250,7 @@ public class I35_HDR_Activity extends BaseActivity {
                 pParms.add(parm);
 
                 sJson = dba.SendHttpMessage("GetSQLData", pParms);
+                System.out.println("sjson : "+sJson);
             }
         };
         workThd_dbQuery.start();   //스레드 시작

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+
+        android:weightSum="20">
+
+        <!-- 제조오더번호 -->
+        <TextView
+            android:id="@+id/prodt_order_no"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center|left"
+            android:text="pd098989"
+            android:textColor="@color/colorHeadTitle"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+        <!-- tracking_no -->
+        <TextView
+            android:id="@+id/tracking_no"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center|left"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:paddingLeft="10dp"
+            android:text="tracking_no"
+            android:textColor="@color/colorHeadTitle"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+        <!-- 품목 -->
+        <TextView
+            android:id="@+id/item_cd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3.5"
+            android:gravity="center|left"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:paddingLeft="10dp"
+            android:text="000-000-0000"
+            android:textColor="@color/colorHeadTitle"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+        <!-- 품목명 -->
+        <TextView
+            android:id="@+id/item_nm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4.5"
+            android:gravity="center|left"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:paddingLeft="10dp"
+            android:text="품명"
+            android:textColor="@color/colorHeadTitle"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+        <!-- 출고유형 -->
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center|right"
+            android:paddingLeft="10dp"
+            android:text="유형"
+            android:textColor="@color/colorHeadTitle"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+        <!-- 출고수량-->
+        <TextView
+            android:id="@+id/req_qty"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center|right"
+            android:paddingLeft="10dp"
+            android:text="수량"
+            android:textColor="@color/colorHeadTitle"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+        <!-- 처리상태 -->
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="처리상태"
+            android:textColor="@color/colorHeadTitle"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+
+
+    </LinearLayout>
+</LinearLayout>
+
