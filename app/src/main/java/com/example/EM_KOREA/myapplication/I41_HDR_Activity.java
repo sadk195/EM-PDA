@@ -51,6 +51,8 @@ public class I41_HDR_Activity extends BaseActivity {
 
     I41_HDR_ListViewAdapter listViewAdapter;
 
+    private boolean Runed = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +100,7 @@ public class I41_HDR_Activity extends BaseActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
                     Str_Order_No = Order_No.getText().toString();
                     start();
+                    Runed = false;
                     return true;
                 }
                 return false;
@@ -129,6 +132,9 @@ public class I41_HDR_Activity extends BaseActivity {
                     TGSClass.AlterMessage(getApplicationContext(), "반입/반출할 데이터가 없습니다 먼저 요청번호를 스캔하세요");
                     return;
                 }
+                if(Runed){
+                    TGSClass.AlterMessage(getApplicationContext(), "먼저 요청번호를 스캔하세요");
+                }
                 I41_HDR_ListViewAdapter Adap = (I41_HDR_ListViewAdapter) listview.getAdapter();
 
                 int ct = listview.getCount();
@@ -154,25 +160,28 @@ public class I41_HDR_Activity extends BaseActivity {
                         case "I99" : document_text = "-- PDA 작업장 반입";
                             break;
                     }
-
+                    if(vItem.getMOV_STATUS().trim().equals("S")){
+                        continue;
+                    }
                     String unit_cd = vUNIT_CD;
                     BL_DATASET_SELECT(prodt_order_no, plant_cd, item_cd, tracking_no, lot_no, sl_cd, qty, document_text, mov_type,unit_cd);
                     System.out.println("result_msg:"+result_msg);
-                    if(result_msg.equals("anyType{}")){
+                    if(result_msg.equals("OK")){
                         listViewAdapter.setHDRStatus("S",i);//성공
                         dbSave(vItem,"S");
                     }
                     else {
-                        TGSClass.AlterMessage(getApplicationContext(), "오류 발생. 담당자에게 문의");
+                        //TGSClass.AlterMessage(getApplicationContext(), "오류 발생. "+result_msg);
                         listViewAdapter.setHDRStatus("E",i);//에러
                         dbSave(vItem,"E");
-                        break;
+                        //listViewAdapter.notifyDataSetChanged();//변경데이터 저장(adapter의 getview실행)
+                        //return;
                     }
-                    TGSClass.AlterMessage(getApplicationContext(), "반입/반출 처리가 완료되었습니다.");
 
                 }//for문
+                TGSClass.AlterMessage(getApplicationContext(), "반입/반출 처리가 완료되었습니다.");
                 listViewAdapter.notifyDataSetChanged();//변경데이터 저장(adapter의 getview실행)
-
+                Runed = true;
             }
         });
     }

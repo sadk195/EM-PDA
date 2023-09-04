@@ -20,7 +20,7 @@
             android:layout_weight="3"
             android:gravity="center|left"
             android:text="pd098989"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
             android:ellipsize="end"
             android:paddingLeft="10dp"
             android:text="tracking_no"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
             android:ellipsize="end"
             android:paddingLeft="10dp"
             android:text="000-000-0000"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -65,7 +65,7 @@
             android:ellipsize="end"
             android:paddingLeft="10dp"
             android:text="품명"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -78,7 +78,7 @@
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="유형"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -91,7 +91,7 @@
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="수량"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -103,7 +103,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="처리상태"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
