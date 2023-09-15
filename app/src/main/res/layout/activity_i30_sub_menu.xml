@@ -33,7 +33,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:orientation="vertical"
-            android:weightSum="4">
+            android:weightSum="5">
 
             <LinearLayout
                 android:id="@+id/box_view1"
@@ -171,6 +171,43 @@
                     android:text="생산출고대기장\n재고현황조회"
                     android:textColor="@color/cardview_dark_background"
                     android:textSize="25dp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/box_view5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btn_prod_multi_order"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_btn_user"
+                    android:text="생산출고 등록\n(Multi 오더)"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="25dp" />
+                <Button
+                    android:id="@+id/btn_prod_multi_order2"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_btn_user"
+                    android:text="적치장 재고\n생산출고등록\n(생산출고등록)"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="25dp"
+                    android:visibility="invisible"/>
+
 
             </LinearLayout>
 
