@@ -44,7 +44,17 @@ public class TGSClass {
      */
     public static Intent ChangeView(String pPackageName, String pClassName) {
         String vComponentName = pPackageName + "." + pClassName;
+
         //Intent intent = new Intent(getApplicationContext(),SubActivity.class);
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName(pPackageName, vComponentName));
+
+        return intent;
+    }
+    public static Intent ChangeView(String pPackageName, Class pClassName) {
+
+        String vComponentName = pClassName.getName();
+        //Intent intent = new Intent(getApplicationContext(), SubActivity.class);
         Intent intent = new Intent();
         intent.setComponent(new ComponentName(pPackageName, vComponentName));
 
@@ -167,7 +177,7 @@ public class TGSClass {
     public static boolean isIntentAvailable(Context pContext, String pPackageName, String pClassName) {
 
         String vComponentName = pPackageName + "." + pClassName;
-
+        System.out.println("vComponentName:"+vComponentName);
         final PackageManager packageManager = pContext.getPackageManager();
 
         final Intent intent = new Intent();
@@ -205,7 +215,7 @@ public class TGSClass {
         return "";
     }
 
-    protected static String transSemicolon(String txt) {
+    public static String transSemicolon(String txt) {
         String transStr = "";
         if (txt.contains(";")) {
             int semicolon_idx = txt.indexOf(";");
@@ -216,7 +226,7 @@ public class TGSClass {
         return transStr;
     }
 
-    protected static String[] transHyphen(String txt) {
+    public static String[] transHyphen(String txt) {
         String[] transStr = null;
         if (txt.contains("-")) {
             transStr = txt.split("-");
@@ -225,7 +235,7 @@ public class TGSClass {
         return transStr;
     }
 
-    protected static String transHyphen(String txt, int idx) {
+    public static String transHyphen(String txt, int idx) {
         String[] transStr = null;
         transStr = transHyphen(txt);
 

@@ -78,7 +78,7 @@ public class MenuActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //TGSClass.AlterMessage(getApplicationContext(),"환경설정");
-                Intent intent = TGSClass.ChangeView(getPackageName(), ConfigActivity.class.getSimpleName());
+                Intent intent = TGSClass.ChangeView(getPackageName(), ConfigActivity.class);
                 startActivity(intent);
             }
         });
@@ -186,7 +186,8 @@ public class MenuActivity extends BaseActivity {
                         public void onClick(View v) {
 
                             //TGSClass.AlterMessage(getApplicationContext(),vMenuID);
-                            String vActivityName = vMenuID + "_Activity";
+                            //String vActivityName = vMenuID + "_Activity";
+                            String vActivityName = vMenuID + "." + vMenuID + "_Activity";
 
                             if (start_grant(vMenuID, vMenuName) == true) { //== 권한 적용 ==//
                                 //ACTIVITY 존재여부 확인.

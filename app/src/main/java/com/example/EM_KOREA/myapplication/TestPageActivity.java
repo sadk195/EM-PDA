@@ -52,19 +52,19 @@ public class TestPageActivity extends BaseActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.btn_popup_test:
-                        Intent intent = TGSClass.ChangeView(getPackageName(), TestPopupActivity.class.getSimpleName());
+                        Intent intent = TGSClass.ChangeView(getPackageName(), TestPopupActivity.class);
                         startActivityForResult(intent, POPUP_REQUEST_CODE);
                         break;
                     case R.id.btn_progressBar_test:
-                        Intent intent1 = TGSClass.ChangeView(getPackageName(), TestProgressBarActivity.class.getSimpleName());
+                        Intent intent1 = TGSClass.ChangeView(getPackageName(), TestProgressBarActivity.class);
                         startActivityForResult(intent1, PROGRESSBAR_REQUEST_CODE);
                         break;
                     case R.id.btn_progress_test:
-                        Intent intent3 = TGSClass.ChangeView(getPackageName(), TestProgressActivity.class.getSimpleName());
+                        Intent intent3 = TGSClass.ChangeView(getPackageName(), TestProgressActivity.class);
                         startActivityForResult(intent3, TEST_PROGRESSBAR_REQUEST_CODE);
                         break;
                     case R.id.btn_test:
-                        Intent intent2 = TGSClass.ChangeView(getPackageName(), TestXmlPage.class.getSimpleName());
+                        Intent intent2 = TGSClass.ChangeView(getPackageName(), TestXmlPage.class);
                         startActivityForResult(intent2, TEST_REQUEST_CODE);
                         break;
                 }

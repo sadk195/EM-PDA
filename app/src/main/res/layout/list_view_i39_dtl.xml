@@ -14,7 +14,7 @@
 
         <!-- Tracking No -->
         <TextView
-            android:id="@+id/tracking_no"
+            android:id="@+id/item_cd"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -26,7 +26,7 @@
 
         <!-- Lot No -->
         <TextView
-            android:id="@+id/lot_no"
+            android:id="@+id/item_nm"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -39,7 +39,7 @@
 
         <!-- 양품수량 -->
         <TextView
-            android:id="@+id/good_on_hand_qty"
+            android:id="@+id/location"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -52,7 +52,7 @@
 
         <!-- 불량품수량 -->
         <TextView
-            android:id="@+id/bad_on_hand_qty"
+            android:id="@+id/qty"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"

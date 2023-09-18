@@ -170,7 +170,7 @@ public class DownloadActivity extends AppCompatActivity {
 
         if (sPlantCD.equals("")) {
             //등록되지 않은 단말기 이면 단말기 등록 요청 페이지로 이동한다.
-            Intent res_intent = TGSClass.ChangeView(getPackageName(), RegisterActivity.class.getSimpleName());
+            Intent res_intent = TGSClass.ChangeView(getPackageName(), RegisterActivity.class);
             startActivity(res_intent);
         } else {
             /*

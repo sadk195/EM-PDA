@@ -39,209 +39,225 @@
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity android:name=".DownloadActivity" />
         <activity
-            android:name=".I10_Activity"
+            android:name=".I10.I10_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I11_HDR_Activity"
+            android:name=".I10.I11_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I11_DTL_Activity"
+            android:name=".I10.I11_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I13_QUERY_Activity"
+            android:name=".I10.I13_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I20_Activity"
+            android:name=".I20.I20_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I21_HDR_Activity"
+            android:name=".I20.I21_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I21_DTL_Activity"
+            android:name=".I20.I21_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I22_HDR_Activity"
+            android:name=".I20.I22_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I22_DTL_Activity"
+            android:name=".I20.I22_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I25_QUERY_Activity"
+            android:name=".I20.I25_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I26_HDR_Activity"
+            android:name=".I20.I26_HDR_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing" /> <!-- 세로고정 -->
         <activity
-            android:name=".I27_HDR_Activity"
+            android:name=".I20.I27_HDR_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing" />
         <activity
-            android:name=".I27_DTL_Activity"
+            android:name=".I20.I27_DTL_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".I30_Activity"
+            android:name=".I30.I30_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I31_HDR_Activity"
+            android:name=".I30.I31_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I31_DTL_Activity"
+            android:name=".I30.I31_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I34_QUERY_Activity"
+            android:name=".I30.I34_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I35_HDR_Activity"
+            android:name=".I30.I35_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I35_DTL_Activity"
+            android:name=".I30.I35_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I36_QUERY_Activity"
+            android:name=".I30.I36_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I37_HDR_Activity"
+            android:name=".I30.I37_HDR_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing" />
         <activity
-            android:name=".I37_DTL_Activity"
+            android:name=".I30.I37_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I38_HDR_Activity"
+            android:name=".I30.I38_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I38_DTL_Activity"
+            android:name=".I30.I38_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I40_Activity"
+            android:name=".I30.I39_HDR_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/> <!-- 세로고정 -->
+        <activity
+            android:name=".I30.I39_DTL_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/> <!-- 세로고정 -->
+        <activity
+            android:name=".I30.I39_DEL_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/> <!-- 세로고정 -->
+        <activity
+            android:name=".I30.I39_SET_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/> <!-- 세로고정 -->
+        <activity
+            android:name=".I40.I40_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I41_HDR_Activity"
+            android:name=".I40.I41_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I50_Activity"
+            android:name=".I50.I50_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I60_Activity"
+            android:name=".I60.I60_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I62_HDR_Activity"
+            android:name=".I60.I62_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I70_Activity"
+            android:name=".I70.I70_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I71_Activity"
+            android:name=".I70.I71_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I72_Activity"
+            android:name=".I70.I72_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I73_Activity"
+            android:name=".I70.I73_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I74_Activity"
+            android:name=".I70.I74_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I75_Activity"
+            android:name=".I70.I75_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I76_Activity"
+            android:name=".I70.I76_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I77_Activity"
+            android:name=".I70.I77_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I78_Activity"
+            android:name=".I70.I78_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".I79_Activity"
+            android:name=".I70.I79_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M10_Activity"
+            android:name=".M10.M10_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M11_HDR_Activity"
+            android:name=".M10.M11_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M11_DTL_Activity"
+            android:name=".M10.M11_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M12_QUERY_Activity"
+            android:name=".M10.M12_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M20_Activity"
+            android:name=".M20.M20_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M21_Activity"
+            android:name=".M20.M21_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M21_HDR_Activity"
+            android:name=".M20.M21_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M21_DTL_Activity"
+            android:name=".M20.M21_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M22_Activity"
+            android:name=".M20.M22_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M22_QUERY_Activity"
+            android:name=".M20.M22_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M30_Activity"
+            android:name=".M30.M30_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".M31_HDR_Activity"
+            android:name=".M30.M31_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S10_Activity"
+            android:name=".S10.S10_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S11_QUERY_Activity"
+            android:name=".S10.S11_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S12_HDR_Activity"
+            android:name=".S10.S12_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S12_DTL_Activity"
+            android:name=".S10.S12_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S14_HDR_Activity"
+            android:name=".S10.S14_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S14_DTL_Activity"
+            android:name=".S10.S14_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S15_QUERY_Activity"
+            android:name=".S10.S15_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S16_HDR_Activity"
+            android:name=".S10.S16_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S16_DTL_Activity"
+            android:name=".S10.S16_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".S17_HDR_Activity"
+            android:name=".S10.S17_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".P10_Activity"
+            android:name=".P10.P10_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".P14_QUERY_ELSE_Activity"
+            android:name=".P10.P14_QUERY_ELSE_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".P14_QUERY_Activity"
+            android:name=".P10.P14_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".P14_PROD_ORDER_Activity"
+            android:name=".P10.P14_PROD_ORDER_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".P14_SAVE2_Activity"
+            android:name=".P10.P14_SAVE2_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
-            android:name=".P14_SAVE_Activity"
+            android:name=".P10.P14_SAVE_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <!-- 안드로이드 7.0 버전 이상 부터는. 파일 경로 보안처리를해주어야 합니다. -->
         <provider

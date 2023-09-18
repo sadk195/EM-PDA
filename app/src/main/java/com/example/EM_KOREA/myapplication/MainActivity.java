@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (v.getId()) {
                     case R.id.btn_End:
                         // finishAffinity();
-                        Intent intent = TGSClass.ChangeView(getPackageName(), DownloadActivity.class.getSimpleName());
+                        Intent intent = TGSClass.ChangeView(getPackageName(), DownloadActivity.class);
                         startActivityForResult(intent, DOWNLOAD_ACTIVITY_REQUEST_CODE);
                         break;
                     case R.id.lbl_device_name:
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                                         TGSClass.AlterMessage(getApplicationContext(), "잠금해제1");
                                     }
                                 } else if (blnUser && blnLogo) {
-                                    Intent intent = TGSClass.ChangeView(getPackageName(), TestPageActivity.class.getSimpleName());
+                                    Intent intent = TGSClass.ChangeView(getPackageName(), TestPageActivity.class);
                                     startActivity(intent);
                                     cntUserTouch = 0;
                                     cntLogoCnt = 0;
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // finishAffinity();
-                Intent intent = TGSClass.ChangeView(getPackageName(), DownloadActivity.class.getSimpleName());
+                Intent intent = TGSClass.ChangeView(getPackageName(), DownloadActivity.class);
                 startActivityForResult(intent, DOWNLOAD_ACTIVITY_REQUEST_CODE);
             }
         });
@@ -377,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* 현재 설치된 APP 의 버전 정보와 다운로드 받을 경로 정보를 데이터 베이스에서 받아옵니다. */
         if (!getVersionFromServer()) {
-            Intent error_intent = TGSClass.ChangeView(getPackageName(), ErrorPopupActivity.class.getSimpleName());
+            Intent error_intent = TGSClass.ChangeView(getPackageName(), ErrorPopupActivity.class);
             error_intent.putExtra("MSG", strErrorMsg);
             startActivity(error_intent);
             finish();
@@ -581,7 +581,7 @@ public class MainActivity extends AppCompatActivity {
                     if (vResponse.equals("OK")) {
                         TGSClass.AlterMessage(MainActivity.this, "인증완료", 500);
 
-                        Intent intent = TGSClass.ChangeView(getPackageName(), MenuActivity.class.getSimpleName());
+                        Intent intent = TGSClass.ChangeView(getPackageName(), MenuActivity.class);
                         //== SESSION에 값 추가 ==//
                         global.setLoginString(vID);
                         global.setUnitCDString(strClientHostNm);
@@ -797,7 +797,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (strPlantCD.equals("")) {
             //등록되지 않은 단말기 이면 단말기 등록 요청 페이지로 이동한다.
-            Intent res_intent = TGSClass.ChangeView(getPackageName(), RegisterActivity.class.getSimpleName());
+            Intent res_intent = TGSClass.ChangeView(getPackageName(), RegisterActivity.class);
             startActivity(res_intent);
             finish();
         }
@@ -944,7 +944,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (jSonType) {
                     if (!strJson_Auto_LogIn.equals("[]")) {
-                        Intent intent = TGSClass.ChangeView(getPackageName(), MenuActivity.class.getSimpleName());
+                        Intent intent = TGSClass.ChangeView(getPackageName(), MenuActivity.class);
                         //== SESSION에도 값 추가 ==//
                         global.setLoginString(strClientHostNm);
                         global.setUnitCDString(strClientHostNm);

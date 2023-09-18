@@ -220,7 +220,7 @@ public class BaseActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    View.OnClickListener qrClickListener = new View.OnClickListener() {
+    public View.OnClickListener qrClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             qrScan.setPrompt("VISS 바코드를 스캔하세요");
