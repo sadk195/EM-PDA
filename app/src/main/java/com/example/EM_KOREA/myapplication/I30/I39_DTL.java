@@ -11,12 +11,11 @@ public class I39_DTL implements Serializable {   //Serializable 객체를 파라
     private String SPEC;
     private String TRACKING_NO;
     private String LOCATION;
-    private String JOB_NM;
-
     private String QTY;
 
     private String SEQ;
-
+    private String SL_CD;
+    private String JOB_NM;
 
     public String getPRODT_ORDER_NO() {
         return PRODT_ORDER_NO;
@@ -72,11 +71,6 @@ public class I39_DTL implements Serializable {   //Serializable 객체를 파라
     public void setLOCATION(String location) {
         LOCATION = location;
     }
-    public String getJOB_NM() {
-        return JOB_NM;
-    }
-
-    public void setJOB_NM(String job_nm) {JOB_NM = job_nm;}
     public String getQTY() {
         return QTY;
     }
@@ -87,6 +81,18 @@ public class I39_DTL implements Serializable {   //Serializable 객체를 파라
     }
 
     public void setSEQ(String seq) {SEQ = seq;}
+
+    public String getSL_CD() {
+        return SL_CD;
+    }
+
+    public void setSL_CD(String sl_cd) {SL_CD = sl_cd;}
+
+    public String getJOB_NM() {
+        return JOB_NM;
+    }
+
+    public void setJOB_NM(String job_nm) {JOB_NM= job_nm;}
 }
 //PRODT_ORDER_NO
 //ITEM_CD

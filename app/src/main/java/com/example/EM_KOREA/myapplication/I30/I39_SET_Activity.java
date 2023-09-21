@@ -172,10 +172,15 @@ public class I39_SET_Activity extends BaseActivity {
 
                 item.setITEM_CD                (jObject.getString("ITEM_CD"));                      //품번
                 item.setITEM_NM                (jObject.getString("ITEM_NM"));                      //품명
-                item.setGOOD_QTY               (jObject.getString("GOOD_QTY"));                      //요청량(필요량)
-                item.setLOCATION               (jObject.getString("LOCATION"));                    //적치장
+                item.setTRACKING_NO            (jObject.getString("TRACKING_NO"));                      //품명
+                item.setLOT_NO                 (jObject.getString("LOT_NO"));                      //품명
+                item.setLOT_SUB_NO             (jObject.getString("LOT_SUB_NO"));                      //품명
                 item.setSL_CD                  (jObject.getString("SL_CD"));                          //창고 (intent)
                 item.setSL_NM                  (jObject.getString("SL_NM"));                          //창고 (intent)
+                item.setLOCATION               (jObject.getString("LOCATION"));                    //적치장
+                item.setGOOD_QTY               (jObject.getString("GOOD_QTY"));                      //요청량(필요량)
+                item.setBAD_QTY                (jObject.getString("BAD_QTY"));                      //요청량(필요량)
+                item.setBASIC_UNIT             (jObject.getString("BASIC_UNIT"));                      //요청량(필요량)
 
                 listViewAdapter_dtl.addHDRItem(item);
             }
@@ -248,7 +253,6 @@ public class I39_SET_Activity extends BaseActivity {
 
              out_qty =0; //출고수량 체크를 위해 초기화
              String out_no ="";
-             String CUD_FLAG = "U";
 
              long now = System.currentTimeMillis();
              Date date = new Date(now);
@@ -265,23 +269,48 @@ public class I39_SET_Activity extends BaseActivity {
                      break;
                  }
 
-                 String PRODT_ORDER_NO = set.getPRODT_ORDER_NO();
-                 String OPR_NO = set.getOPR_NO();
-                 String ITEM_CD = txt_item_cd.getText().toString();
-                 String SEQ_NO = set.getSEQ();
-                 String OUT_QTY = set.getREQ_QTY();
+                 if (dbSave_HDR(REPORT_DT,set.getPRODT_ORDER_NO()) == true) {
+                     try {
+                         JSONArray ja = new JSONArray(sJson);
+                         int idx = 0;
+                         JSONObject jObject = ja.getJSONObject(idx);
 
-                 BL_DATASET_SELECT(CUD_FLAG, vPLANT_CD, PRODT_ORDER_NO, OPR_NO, ITEM_CD, SEQ_NO, OUT_QTY, REPORT_DT, vUNIT_CD);
-                if(!result_msg.equals("생산출고 완료")){
-                    TGSClass.AlterMessage(getApplicationContext(),result_msg);
-                    break;
-                }
+                         String RTN_ITEM_DOCUMENT_NO = jObject.getString("RTN_ITEM_DOCUMENT_NO");
+
+                         I39_SET2 item = vItem;
+
+                         String sl_cd            = item.getSL_CD();
+                         String item_cd          = item.getITEM_CD();
+                         String tracking_no      = set.getTRACKING_NO();
+                         String lot_no           = item.getLOT_NO();
+                         String lot_sub_no       = item.getLOT_SUB_NO();
+                         String qty              = set.getREQ_QTY();
+                         String basic_unit       = item.getBASIC_UNIT();
+                         String location         = item.getLOCATION();
+                         String bad_on_hand_qty  = item.getBAD_QTY();
+                         String chk_qty          = set.getREQ_QTY();//item.getCHK_QTY();
+
+                         dbSave_DTL(RTN_ITEM_DOCUMENT_NO, sl_cd, item_cd, tracking_no, lot_no, lot_sub_no, qty,
+                                 basic_unit, location, bad_on_hand_qty, chk_qty,REPORT_DT,set.getPRODT_ORDER_NO());
+
+
+                     } catch (JSONException ex) {
+                         TGSClass.AlterMessage(getApplicationContext(), "catch : ex");
+                     } catch (Exception e1) {
+                         TGSClass.AlterMessage(getApplicationContext(), "catch : e1");
+                     }
+
+                     if(!out_no.equals("")){
+                         out_no = out_no + " / ";
+                     }
+                     out_no = out_no + set.getPRODT_ORDER_NO();
+
+                 } else {
+                     //TGSClass.AlterMessage(getApplicationContext(), "저장 되지 않았습니다. 데이터를 정확히 입력하였는지 확인해주시기 바랍니다!");
+                     continue;
+                 }
                  out_qty++;
 
-                if(!out_no.equals("")){
-                    out_no = out_no + " / ";
-                }
-                out_no = out_no + PRODT_ORDER_NO;
              }
 
              TGSClass.AlterMessage(getApplicationContext(),"생산출고 완료 \n"+out_no);
@@ -301,98 +330,126 @@ public class I39_SET_Activity extends BaseActivity {
         }
     }
 
-    private boolean BL_DATASET_SELECT(final String CUD_FLAG, final String vPlant_CD, final String PRODT_ORDER_NO, final String OPR_NO, final String ITEM_CD, final String SEQ_NO, final String OUT_QTY, final String REPORT_DT, final String vUnit_CD) {
-        Thread workThd_BL_DATASET_SELECT = new Thread() {
+
+
+    private boolean dbSave_HDR(String move_date_st,String vPRODT_ORDER_NO_st) {
+        Thread workThd_dbSave_HDR = new Thread() {
             public void run() {
 
 
-                String cud_flag         = CUD_FLAG;
-                String plant_cd         = vPlant_CD;
-                String prodt_order_no   = PRODT_ORDER_NO;
-                String opr_no           = OPR_NO;
-                String item_cd          = ITEM_CD;
-                String seq_no           = SEQ_NO;
-                String out_qty          = OUT_QTY;
-                String report_dt        = REPORT_DT;
-                String unit_cd          = vUnit_CD;
+
+                String sql = " EXEC XUSP_WMS_LOCATION_I_GOODS_MOVEMENT_HDR_SET ";
+                sql += "@TRNS_TYPE = 'AN'";
+                sql += ",@MOV_TYPE = 'I39'";
+                sql += ",@DOCUMENT_DT = '" + move_date_st + "'";
+                sql += ",@PLANT_CD = '" + vPLANT_CD + "'";
+                sql += ",@USER_ID = '" + vUSER_ID + "'";
+                sql += ",@RECORD_NO = '" + vPRODT_ORDER_NO_st + "'"; //정영진
+                sql += ",@MSG_CD = ''";
+                sql += ",@MSG_TEXT = ''";
+                sql += ",@RTN_ITEM_DOCUMENT_NO = ''";
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
                 PropertyInfo parm = new PropertyInfo();
-                parm.setName("cud_flag");
-                parm.setValue(cud_flag);
+                parm.setName("pSQL_Command");
+                parm.setValue(sql);
                 parm.setType(String.class);
 
-                PropertyInfo parm2 = new PropertyInfo();
-                parm2.setName("plant_cd");
-                parm2.setValue(plant_cd);
-                parm2.setType(String.class);
-
-                PropertyInfo parm3 = new PropertyInfo();
-                parm3.setName("prodt_order_no");
-                parm3.setValue(prodt_order_no);
-                parm3.setType(String.class);
-
-                PropertyInfo parm4 = new PropertyInfo();
-                parm4.setName("opr_no");
-                parm4.setValue(opr_no);
-                parm4.setType(String.class);
-
-                PropertyInfo parm5 = new PropertyInfo();
-                parm5.setName("item_cd");
-                parm5.setValue(item_cd);
-                parm5.setType(String.class);
-
-                PropertyInfo parm6 = new PropertyInfo();
-                parm6.setName("seq_no");
-                parm6.setValue(seq_no);
-                parm6.setType(String.class);
-
-                PropertyInfo parm7 = new PropertyInfo();
-                parm7.setName("out_qty");
-                parm7.setValue(out_qty);
-                parm7.setType(String.class);
-
-                PropertyInfo parm8 = new PropertyInfo();
-                parm8.setName("report_dt");
-                parm8.setValue(report_dt);
-                parm8.setType(String.class);
-
-                PropertyInfo parm9 = new PropertyInfo();
-                parm9.setName("unit_cd");
-                parm9.setValue(unit_cd);
-                parm9.setType(String.class);
-
-                PropertyInfo parm10 = new PropertyInfo();
-                parm10.setName("user_id");
-                parm10.setValue(vUSER_ID);
-                parm10.setType(String.class);
-
                 pParms.add(parm);
-                pParms.add(parm2);
-                pParms.add(parm3);
-                pParms.add(parm4);
-                pParms.add(parm5);
-                pParms.add(parm6);
-                pParms.add(parm7);
-                pParms.add(parm8);
-                pParms.add(parm9);
-                pParms.add(parm10);
 
-                result_msg = dba.SendHttpMessage("BL_SetPartListOut_ANDROID", pParms);
+                sJson = dba.SendHttpMessage("GetSQLData", pParms);
 
             }
+
         };
-        workThd_BL_DATASET_SELECT.start();   //스레드 시작
+        workThd_dbSave_HDR.start();   //스레드 시작
         try {
-            workThd_BL_DATASET_SELECT.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+            workThd_dbSave_HDR.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
 
         } catch (InterruptedException ex) {
+            TGSClass.AlterMessage(getApplicationContext(), "catch : ex");
+        }
 
+        if (sJson.equals("[]")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean dbSave_DTL(final String ITEM_DOCUMENT_NO, final String SL_CD, final String ITEM_CD, final String TRACKING_NO, final String LOT_NO,
+                               final String LOT_SUB_NO, final String QTY, final String BASIC_UNIT, final String LOCATION, final String BAD_ON_HAND_QTY,
+                               final String CHK_QTY,String move_date_data, String vPRODT_ORDER_NO_st) {
+        Thread workThd_dbSave_DTL = new Thread() {
+            public void run() {
+
+
+                String sql = " EXEC XUSP_WMS_LOCATION_I_GOODS_MOVEMENT_DTL_SET ";
+                sql += "@ITEM_DOCUMENT_NO = '" + ITEM_DOCUMENT_NO + "'";        //채번
+                // += ",@DOCUMENT_YEAR =";                                      //프로시저 안에서 적용
+                sql += ",@TRNS_TYPE = 'AN'";                                  //변경유형
+                sql += ",@MOV_TYPE = 'I39'";                                    //아동유형
+                sql += ",@PLANT_CD = '" + vPLANT_CD + "'";                      //공장코드
+                sql += ",@DOCUMENT_DT = '" + move_date_data + "'";              //이동일자
+
+                /* I_ONHAND_STOCK_DETAIL 에서 바인딩 받아야 하므로 ListView에 조회되도록 SELECT 프로시저에 DTL항목 추가하고 바인딩 한 후 가져와야됨*/
+                sql += ",@SL_CD = '" + SL_CD + "'";                             //창고코드
+                sql += ",@ITEM_CD = '" + ITEM_CD + "'";                         //품목코드
+                sql += ",@TRACKING_NO = '" + TRACKING_NO + "'";                 //TRACKING_NO
+                sql += ",@LOT_NO = '" + LOT_NO + "'";                           //LOT_NO
+                sql += ",@LOT_SUB_NO = " + LOT_SUB_NO;                          //LOT_SUB_NO
+                sql += ",@QTY = " + QTY;                                        //양품수량
+                sql += ",@BASE_UNIT = '" + BASIC_UNIT + "'";                    //재고단위
+                sql += ",@LOC_CD = '" + LOCATION + "'";                         //기존의 적치장
+                sql += ",@TRNS_TRACKING_NO = '" + TRACKING_NO + "'";            /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
+                sql += ",@TRNS_LOT_NO = '" + LOT_NO + "'";                      /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
+                sql += ",@TRNS_LOT_SUB_NO = " + LOT_SUB_NO;                     /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
+                sql += ",@TRNS_PLANT_CD = '" + vPLANT_CD + "'";                 /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
+                sql += ",@TRNS_SL_CD = '" + SL_CD + "'";                        /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
+                sql += ",@TRNS_ITEM_CD = '" + ITEM_CD + "'";                    /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
+                sql += ",@TRNS_LOC_CD = '출고대기장'";                   //이동할 적치장
+                sql += ",@RECORD_NO = '" + vPRODT_ORDER_NO_st + "'";       //제조오더(비고)
+
+                sql += ",@BAD_ON_HAND_QTY = " + BAD_ON_HAND_QTY;                //불량 수량
+                sql += ",@MOVE_QTY = " + CHK_QTY;                        //이동 수량   //현재 이동 수량을 막아놨기 때문에 혹시 풀 경우 move_date_data로 다시 선언 하면 됨
+
+                sql += ",@DOCUMENT_TEXT = ''";
+                sql += ",@USER_ID = '" + vUSER_ID + "'";
+                sql += ",@MSG_CD = ''";
+                sql += ",@MSG_TEXT = ''";
+                sql += ",@EXTRA_FIELD1 = 'ANDROID'";
+                sql += ",@EXTRA_FIELD2 = 'I35_DTL_Activity'";
+
+
+                System.out.println("sqls:"+sql);
+                DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
+                ArrayList<PropertyInfo> pParms = new ArrayList<>();
+
+                PropertyInfo parm = new PropertyInfo();
+                parm.setName("pSQL_Command");
+                parm.setValue(sql);
+                parm.setType(String.class);
+
+                pParms.add(parm);
+
+                sJson = dba.SendHttpMessage("GetSQLData", pParms);
+            }
+
+
+        };
+        workThd_dbSave_DTL.start();   //스레드 시작
+        try {
+            workThd_dbSave_DTL.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+
+        } catch (InterruptedException ex) {
+            TGSClass.AlterMessage(getApplicationContext(), "catch : ex");
         }
         return true;
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

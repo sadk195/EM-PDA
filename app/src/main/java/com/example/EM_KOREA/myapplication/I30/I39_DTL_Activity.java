@@ -207,6 +207,7 @@ public class I39_DTL_Activity extends BaseActivity {
                 sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "'";
                 sql += " ,@OPR_NO = '" + opr_no + "'";
 
+                System.out.println("sqls:"+sql);
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
@@ -230,6 +231,7 @@ public class I39_DTL_Activity extends BaseActivity {
                 // 빈 데이터 리스트 생성.
                 //final ArrayList<String> items = new ArrayList<String>();
                 I39_DTL_ITEMS.clear();
+
                 for (int idx = 0; idx < ja.length(); idx++) {
                     JSONObject jObject = ja.getJSONObject(idx);
 
@@ -242,11 +244,14 @@ public class I39_DTL_Activity extends BaseActivity {
                     item.setSPEC(jObject.getString("SPEC"));
                     item.setTRACKING_NO(jObject.getString("TRACKING_NO"));
                     item.setLOCATION(jObject.getString("LOCATION"));
-                    item.setJOB_NM(jObject.getString("JOB_NM"));
                     item.setQTY(jObject.getString("QTY"));
                     item.setSEQ(jObject.getString("SEQ"));
+                    item.setSL_CD(jObject.getString("SL_CD"));
+                    item.setJOB_NM(jObject.getString("JOB_NM"));
 
                     I39_DTL_ITEMS.add(item);
+                    System.out.println("i39 count2:"+I39_DTL_ITEMS.size());
+
                 }
 
             } catch (JSONException ex) {
@@ -265,6 +270,7 @@ public class I39_DTL_Activity extends BaseActivity {
         ArrayList<String>  Items = new ArrayList<>();
 
         for(I39_DTL dtl : I39_DTL_ITEMS){
+
             if(Items.contains(dtl.getITEM_CD())) { // 처리완료된 품목이면 다음 리스트로
                 continue;
             }
@@ -275,6 +281,7 @@ public class I39_DTL_Activity extends BaseActivity {
             double temp_qty =  0;//.parseInt(temp_dtl.getQTY());
 
             for(I39_DTL dtl2 : I39_DTL_ITEMS) {
+
                 if(dtl2.getITEM_CD().equals(item_cd) ){//현재 찾고있는 품목과 같은 품목의 수량 더하기
                     temp_qty = temp_qty +  Double.parseDouble(dtl2.getQTY());
                 }

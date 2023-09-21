@@ -75,7 +75,7 @@ public class I39_DTL_ListViewAdapter2 extends BaseAdapter {
     }
 
     public void add_Item(String PRODT_ORDER_NO,String OPR_NO,String ITEM_CD,String ITEM_NM,String SPEC,
-                         String TRACKING_NO,String LOCATION,String JOB_NM,String QTY,String SEQ) {
+                         String TRACKING_NO,String LOCATION,String QTY,String SEQ,String SL_CD,String JOB_NM) {
         I39_DTL item = new I39_DTL();
 
         item.setPRODT_ORDER_NO(PRODT_ORDER_NO);
@@ -85,9 +85,10 @@ public class I39_DTL_ListViewAdapter2 extends BaseAdapter {
         item.setSPEC(SPEC);
         item.setTRACKING_NO(TRACKING_NO);
         item.setLOCATION(LOCATION);
-        item.setJOB_NM(JOB_NM);
         item.setQTY(QTY);
         item.setSEQ(SEQ);
+        item.setSL_CD(SL_CD);
+        item.setJOB_NM(JOB_NM);
 
         listViewItem.add(item);
     }
