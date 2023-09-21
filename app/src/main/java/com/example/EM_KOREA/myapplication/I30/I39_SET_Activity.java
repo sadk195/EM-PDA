@@ -20,11 +20,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ksoap2.serialization.PropertyInfo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class I39_SET_Activity extends BaseActivity {
-
+    public String PRODT_ORDER_NO_DataSET = "";
+    public String OPR_NO_DataSET = "";
+    public String SL_CD_DataSET = "";
+    public String ITEM_CD_DataSET = "";
+    public String TRACKING_NO_DataSET = "";
+    public String LOT_NO_DataSET = "";
+    public String LOT_SUB_NO_DataSET = "";
+    public String ENTRY_QTY_DataSET = "";
+    public String ENTRY_UNIT_DataSET = "";
     //== JSON 선언 ==//
     private String sJson = "";
 
@@ -47,6 +57,10 @@ public class I39_SET_Activity extends BaseActivity {
     I39_SET_ListViewAdapter listViewAdapter;
     I39_SET_ListViewAdapter2 listViewAdapter_dtl;
 
+    ArrayList<I39_DTL>i39_dtls;
+    I39_DTL i39_Item;
+
+    I39_SET2 vItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +83,10 @@ public class I39_SET_Activity extends BaseActivity {
         vMenuRemark     = getIntent().getStringExtra("MENU_REMARK");
         vStartCommand   = getIntent().getStringExtra("START_COMMAND"); //다음 페이지에 가지고 넘어갈 코드
 
+        i39_dtls   = (ArrayList<I39_DTL>)getIntent().getSerializableExtra("DTL");
+        i39_Item    = (I39_DTL) getIntent().getSerializableExtra("ITEMS");
+
+
         txt_item_cd         = (TextView) findViewById(R.id.item_cd);
         txt_item_nm         = (TextView) findViewById(R.id.item_nm);
         txt_spec            = (TextView) findViewById(R.id.spec);
@@ -90,33 +108,29 @@ public class I39_SET_Activity extends BaseActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("i39 set btn_add click");
-
-                //start();
+                dbSave("ADD");
             }
         });
 
         btn_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("i39 set btn_end click");
-                //finish();
+                dbSave("EXIT");
             }
         });
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-              dbQuery2("1");
             }
         });
 
         listview_dtl.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-               /* I39_SET vItem = (I39_SET) parent.getItemAtPosition(position);
+                vItem = (I39_SET2) parent.getItemAtPosition(position);
 
-                Intent intent = TGSClass.ChangeView(getPackageName(), I39_SET_Activity.class.getSimpleName());
+                /* Intent intent = TGSClass.ChangeView(getPackageName(), I39_SET_Activity.class.getSimpleName());
 
                 intent.putExtra("HDR", vItem);  // 선택한 리스트를 파라메터로 다음페이지에 넘김.
 
@@ -127,7 +141,17 @@ public class I39_SET_Activity extends BaseActivity {
     }
 
     private void initializeData() {
-        //Start(); //처음 조회할 시 데이터가 많아서 선태사항이 느린 경우를 대비해 조회조건을 사용자가 원할히 선택한 다음 조회할 수 있도록 조정 (조회 버튼 별도 사용)
+        txt_item_cd.setText(i39_Item.getITEM_CD());
+        txt_item_nm.setText(i39_Item.getITEM_NM());
+        txt_spec.setText(i39_Item.getSPEC());
+        txt_qty.setText(i39_Item.getQTY());
+
+        for(I39_DTL dtl : i39_dtls){
+            listViewAdapter.add_Item(dtl.getPRODT_ORDER_NO(),dtl.getOPR_NO(),dtl.getTRACKING_NO(),
+                    dtl.getJOB_NM(),dtl.getQTY(),dtl.getSEQ(),true);
+
+        }
+        listview.setAdapter(listViewAdapter);
         start();
     }
 
@@ -144,24 +168,19 @@ public class I39_SET_Activity extends BaseActivity {
             for (int idx = 0; idx < ja.length(); idx++) {
                 JSONObject jObject = ja.getJSONObject(idx);
 
-                I39_SET item = new I39_SET();
+                I39_SET2 item = new I39_SET2();
 
                 item.setITEM_CD                (jObject.getString("ITEM_CD"));                      //품번
                 item.setITEM_NM                (jObject.getString("ITEM_NM"));                      //품명
-                item.setREQ_QTY                (jObject.getString("REQ_QTY"));                      //요청량(필요량)
-                item.setISSUED_QTY             (jObject.getString("ISSUED_QTY"));                //출고량
+                item.setGOOD_QTY               (jObject.getString("GOOD_QTY"));                      //요청량(필요량)
                 item.setLOCATION               (jObject.getString("LOCATION"));                    //적치장
                 item.setSL_CD                  (jObject.getString("SL_CD"));                          //창고 (intent)
-                item.setOUT_QTY                (jObject.getString("QTY"));                              //현재고
-                item.setTRACKING_NO            (jObject.getString("TRACKING_NO"));              //
-                item.setPRODT_ORDER_NO         (jObject.getString("PRODT_ORDER_NO"));        //
-                item.setREMAIN_QTY             (jObject.getString("REMAIN_QTY"));                //잔량
-                item.setWMS_GOOD_ON_HAND_QTY   (jObject.getString("WMS_GOOD_ON_HAND_QTY"));                //잔량
-                item.setCHK_OUT(true);
-                listViewAdapter.addHDRItem(item);
+                item.setSL_NM                  (jObject.getString("SL_NM"));                          //창고 (intent)
+
+                listViewAdapter_dtl.addHDRItem(item);
             }
 
-            listview.setAdapter(listViewAdapter);
+            listview_dtl.setAdapter(listViewAdapter_dtl);
 
 
             TGSClass.AlterMessage(getApplicationContext(), ja.length() + "건 조회되었습니다.");
@@ -172,12 +191,12 @@ public class I39_SET_Activity extends BaseActivity {
         }
     }
 
-    private void dbQuery(final String prodt_order_no) {
+    private void dbQuery(final String item_cd) {
         Thread workThd_dbQuery = new Thread() {
             public void run() {
-                String sql = " EXEC XUSP_MES_APK_PRODT_OUT_LOCATION_MOVE_I39_QUERY_ANDROID ";
+                String sql = " XUSP_MES_PRODT_ORDER_MULTI_INFO_STOCK_GET ";
                 sql += " @PLANT_CD = '" + vPLANT_CD + "'";
-                sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "'";
+                sql += " ,@ITEM_CD = '" + item_cd + "'";
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
@@ -201,70 +220,179 @@ public class I39_SET_Activity extends BaseActivity {
         }
     }
 
-    private void dbQuery2(final String prodt_order_no) {
-        Thread workThd_dbQuery = new Thread() {
-            public void run() {
-                String sql = " EXEC XUSP_MES_APK_PRODT_OUT_LOCATION_MOVE_I39_QUERY_ANDROID ";
-                sql += " @PLANT_CD = '" + vPLANT_CD + "'";
-                sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "'";
 
-                DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
-                ArrayList<PropertyInfo> pParms = new ArrayList<>();
+    private void dbSave(String val) {
+         try {
+             if(vItem == null ){
+                 TGSClass.AlterMessage(getApplicationContext(),"출고할 항목을 선택하세요.");
+                 return;
+             }
+             ArrayList<I39_SET> i39_sets = listViewAdapter.getItems();
 
-                PropertyInfo parm = new PropertyInfo();
-                parm.setName("pSQL_Command");
-                parm.setValue(sql);
-                parm.setType(String.class);
+             double out_qty = 0;
+             for (I39_SET set : i39_sets) {
+                 if (!set.getCHK_OUT()) {
+                     continue;
+                 }
+                 out_qty = out_qty + Double.valueOf(set.getREQ_QTY());
+             }
+             double good_qty = Double.valueOf(vItem.getGOOD_QTY());
 
-                pParms.add(parm);
 
-                sJson = dba.SendHttpMessage("GetSQLData", pParms);
-            }
-        };
-        workThd_dbQuery.start();   //스레드 시작
-        try {
-            workThd_dbQuery.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+             if (good_qty < out_qty) {
 
-            try {
-                JSONArray ja = new JSONArray(sJson);
+                 TGSClass.AlterMessage(getApplicationContext(),
+                         "선택한 제조오더의 출고량이 출고가능수량 보다 많습니다.");
+                 return;
+             }
 
-                // 빈 데이터 리스트 생성.
-                //final ArrayList<String> items = new ArrayList<String>();
+             out_qty =0; //출고수량 체크를 위해 초기화
+             String out_no ="";
+             String CUD_FLAG = "U";
 
-                for (int idx = 0; idx < ja.length(); idx++) {
-                    JSONObject jObject = ja.getJSONObject(idx);
+             long now = System.currentTimeMillis();
+             Date date = new Date(now);
+             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+             String REPORT_DT = sdf.format(date);
 
-                    I39_SET2 item = new I39_SET2();
 
-                    item.setITEM_CD                (jObject.getString("ITEM_CD"));                      //품번
-                    item.setITEM_NM                (jObject.getString("ITEM_NM"));                      //품명
-                    item.setREQ_QTY                (jObject.getString("REQ_QTY"));                      //요청량(필요량)
-                    item.setISSUED_QTY             (jObject.getString("ISSUED_QTY"));                //출고량
-                    item.setLOCATION               (jObject.getString("LOCATION"));                    //적치장
-                    item.setSL_CD                  (jObject.getString("SL_CD"));                          //창고 (intent)
-                    item.setOUT_QTY                (jObject.getString("QTY"));                              //현재고
-                    item.setTRACKING_NO            (jObject.getString("TRACKING_NO"));              //
-                    item.setPRODT_ORDER_NO         (jObject.getString("PRODT_ORDER_NO"));        //
-                    item.setREMAIN_QTY             (jObject.getString("REMAIN_QTY"));                //잔량
-                    item.setWMS_GOOD_ON_HAND_QTY   (jObject.getString("WMS_GOOD_ON_HAND_QTY"));                //잔량
 
-                    listViewAdapter_dtl.addHDRItem(item);
+             for (I39_SET set : i39_sets) {
+                 if (!set.getCHK_OUT()) {
+                     continue;
+                 }
+                 if(good_qty < Double.valueOf(set.getREQ_QTY()) + out_qty ){
+                     break;
+                 }
+
+                 String PRODT_ORDER_NO = set.getPRODT_ORDER_NO();
+                 String OPR_NO = set.getOPR_NO();
+                 String ITEM_CD = txt_item_cd.getText().toString();
+                 String SEQ_NO = set.getSEQ();
+                 String OUT_QTY = set.getREQ_QTY();
+
+                 BL_DATASET_SELECT(CUD_FLAG, vPLANT_CD, PRODT_ORDER_NO, OPR_NO, ITEM_CD, SEQ_NO, OUT_QTY, REPORT_DT, vUNIT_CD);
+                if(!result_msg.equals("생산출고 완료")){
+                    TGSClass.AlterMessage(getApplicationContext(),result_msg);
+                    break;
                 }
+                 out_qty++;
 
-                listview_dtl.setAdapter(listViewAdapter_dtl);
+                if(!out_no.equals("")){
+                    out_no = out_no + " / ";
+                }
+                out_no = out_no + PRODT_ORDER_NO;
+             }
+
+             TGSClass.AlterMessage(getApplicationContext(),"생산출고 완료 \n"+out_no);
+
+             // 저장 후 결과 값 돌려주기
+             Intent resultIntent = new Intent();
+             // 결과처리 후 부른 Activity에 보낼 값
+             resultIntent.putExtra("SIGN", val);
+             // 부른 Activity에게 결과 값 반환
+             setResult(RESULT_OK, resultIntent);
+             // 현재 Activity 종료
+             finish();
 
 
-                TGSClass.AlterMessage(getApplicationContext(), ja.length() + "건 조회되었습니다.");
-            } catch (JSONException ex) {
-                TGSClass.AlterMessage(this, ex.getMessage());
-            } catch (Exception e1) {
-                TGSClass.AlterMessage(this, e1.getMessage());
-            }
-        } catch (InterruptedException ex) {
-
+         } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 
+    private boolean BL_DATASET_SELECT(final String CUD_FLAG, final String vPlant_CD, final String PRODT_ORDER_NO, final String OPR_NO, final String ITEM_CD, final String SEQ_NO, final String OUT_QTY, final String REPORT_DT, final String vUnit_CD) {
+        Thread workThd_BL_DATASET_SELECT = new Thread() {
+            public void run() {
+
+
+                String cud_flag         = CUD_FLAG;
+                String plant_cd         = vPlant_CD;
+                String prodt_order_no   = PRODT_ORDER_NO;
+                String opr_no           = OPR_NO;
+                String item_cd          = ITEM_CD;
+                String seq_no           = SEQ_NO;
+                String out_qty          = OUT_QTY;
+                String report_dt        = REPORT_DT;
+                String unit_cd          = vUnit_CD;
+
+                DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
+                ArrayList<PropertyInfo> pParms = new ArrayList<>();
+
+                PropertyInfo parm = new PropertyInfo();
+                parm.setName("cud_flag");
+                parm.setValue(cud_flag);
+                parm.setType(String.class);
+
+                PropertyInfo parm2 = new PropertyInfo();
+                parm2.setName("plant_cd");
+                parm2.setValue(plant_cd);
+                parm2.setType(String.class);
+
+                PropertyInfo parm3 = new PropertyInfo();
+                parm3.setName("prodt_order_no");
+                parm3.setValue(prodt_order_no);
+                parm3.setType(String.class);
+
+                PropertyInfo parm4 = new PropertyInfo();
+                parm4.setName("opr_no");
+                parm4.setValue(opr_no);
+                parm4.setType(String.class);
+
+                PropertyInfo parm5 = new PropertyInfo();
+                parm5.setName("item_cd");
+                parm5.setValue(item_cd);
+                parm5.setType(String.class);
+
+                PropertyInfo parm6 = new PropertyInfo();
+                parm6.setName("seq_no");
+                parm6.setValue(seq_no);
+                parm6.setType(String.class);
+
+                PropertyInfo parm7 = new PropertyInfo();
+                parm7.setName("out_qty");
+                parm7.setValue(out_qty);
+                parm7.setType(String.class);
+
+                PropertyInfo parm8 = new PropertyInfo();
+                parm8.setName("report_dt");
+                parm8.setValue(report_dt);
+                parm8.setType(String.class);
+
+                PropertyInfo parm9 = new PropertyInfo();
+                parm9.setName("unit_cd");
+                parm9.setValue(unit_cd);
+                parm9.setType(String.class);
+
+                PropertyInfo parm10 = new PropertyInfo();
+                parm10.setName("user_id");
+                parm10.setValue(vUSER_ID);
+                parm10.setType(String.class);
+
+                pParms.add(parm);
+                pParms.add(parm2);
+                pParms.add(parm3);
+                pParms.add(parm4);
+                pParms.add(parm5);
+                pParms.add(parm6);
+                pParms.add(parm7);
+                pParms.add(parm8);
+                pParms.add(parm9);
+                pParms.add(parm10);
+
+                result_msg = dba.SendHttpMessage("BL_SetPartListOut_ANDROID", pParms);
+
+            }
+        };
+        workThd_BL_DATASET_SELECT.start();   //스레드 시작
+        try {
+            workThd_BL_DATASET_SELECT.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+
+        } catch (InterruptedException ex) {
+
+        }
+        return true;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

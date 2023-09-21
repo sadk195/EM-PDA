@@ -25,51 +25,51 @@
 
         <!-- Tracking No -->
         <TextView
-            android:id="@+id/tracking_no"
+            android:id="@+id/prodt_order_no"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
             android:gravity="center"
-            android:text="TrackingNo"
+            android:text="Prodt Order No."
             android:textColor="@color/colorHeadTitle"
             android:textSize="10dp"
             android:textStyle="bold" />
 
         <!-- Lot No -->
         <TextView
-            android:id="@+id/lot_no"
+            android:id="@+id/tracking_no"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="LotNo"
+            android:text="Tracking No."
             android:textColor="@color/colorHeadTitle"
             android:textSize="10dp"
             android:textStyle="bold" />
 
         <!-- 양품수량 -->
         <TextView
-            android:id="@+id/good_on_hand_qty"
+            android:id="@+id/job_nm"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="GoodOnHandQty"
+            android:text="Job Name"
             android:textColor="@color/colorHeadTitle"
             android:textSize="10dp"
             android:textStyle="bold" />
 
         <!-- 불량품수량 -->
         <TextView
-            android:id="@+id/bad_on_hand_qty"
+            android:id="@+id/req_qty"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="BadOnHandQty"
+            android:text="Req Qty"
             android:textColor="@color/colorHeadTitle"
             android:textSize="10dp"
             android:textStyle="bold" />

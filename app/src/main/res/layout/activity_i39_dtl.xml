@@ -79,7 +79,7 @@
                         android:gravity="center"
                         android:hint="바코드 및 RFID 태그 스캔"
                         android:inputType="text"
-                        android:textSize="15dp" />
+                        android:textSize="14dp" />
                     <Button
                         android:id="@+id/btn_query"
                         android:layout_width="0dp"

@@ -29,6 +29,9 @@ public class I39_SET_ListViewAdapter2 extends BaseAdapter {
     public Object getItem(int position) {
         return listViewItem.get(position);
     }
+    public ArrayList<I39_SET2> getItems() {
+        return listViewItem;
+    }
 
     @Override
     public long getItemId(int position) {
@@ -43,59 +46,41 @@ public class I39_SET_ListViewAdapter2 extends BaseAdapter {
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_view_i39_dtl2, parent, false);
+            convertView = inflater.inflate(R.layout.list_view_i39_set2, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
 
-        TextView item_cd                = (TextView) convertView.findViewById(R.id.item_cd);
-        TextView item_nm                = (TextView) convertView.findViewById(R.id.item_nm);
-        TextView remain_qty             = (TextView) convertView.findViewById(R.id.remain_qty);
-        TextView issued_qty             = (TextView) convertView.findViewById(R.id.issued_qty);
-        TextView location               = (TextView) convertView.findViewById(R.id.location);
 
+        TextView location             = (TextView) convertView.findViewById(R.id.location);
         TextView sl_cd                  = (TextView) convertView.findViewById(R.id.sl_cd);
-        TextView qty                    = (TextView) convertView.findViewById(R.id.qty);
-        TextView tracking_no            = (TextView) convertView.findViewById(R.id.tracking_no);
-        TextView wms_good_on_hand_qty   = (TextView) convertView.findViewById(R.id.wms_good_on_hand_qty);
-        TextView prodt_order_no         = (TextView) convertView.findViewById(R.id.prodt_order_no);
+        TextView sl_nm                  = (TextView) convertView.findViewById(R.id.sl_nm);
+        TextView good_qty             = (TextView) convertView.findViewById(R.id.good_qty);
+
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         I39_SET2 item = listViewItem.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        item_cd.setText(item.getITEM_CD());
-        item_nm.setText(item.getITEM_NM());
-        remain_qty.setText(item.getREQ_QTY());
-        issued_qty.setText(item.getISSUED_QTY());
-        location.setText(item.getLOCATION());
 
+        good_qty.setText(item.getGOOD_QTY());
+        location.setText(item.getLOCATION());
+        sl_nm.setText(item.getSL_NM());
         sl_cd.setText(item.getSL_CD());
-        qty.setText(item.getOUT_QTY());
-        tracking_no.setText(item.getTRACKING_NO());
-        wms_good_on_hand_qty.setText(item.getWMS_GOOD_ON_HAND_QTY());
-        prodt_order_no.setText(item.getPRODT_ORDER_NO());
+
 
         return convertView;
     }
 
-    public void add_Item(String ITEM_CD, String ITEM_NM, String REQ_QTY, String ISSUED_QTY, String LOCATION, String SL_CD, String OUT_QTY, String TRACKING_NO, String PRODT_ORDER_NO, String REMAIN_QTY, String WMS_GOOD_ON_HAND_QTY) {
+    public void add_Item(String ITEM_CD,String ITEM_NM,String LOCATION,String SL_CD,String SL_NM,String GOOD_QTY) {
         I39_SET2 item = new I39_SET2();
 
-        item.setPRODT_ORDER_NO(PRODT_ORDER_NO);
         item.setITEM_CD(ITEM_CD);
         item.setITEM_NM(ITEM_NM);
-        item.setREQ_QTY(REQ_QTY);
-        item.setISSUED_QTY(ISSUED_QTY);
+        item.setGOOD_QTY(GOOD_QTY);
         item.setLOCATION(LOCATION);
-
         item.setSL_CD(SL_CD);
-        item.setOUT_QTY(OUT_QTY);
-        item.setTRACKING_NO(TRACKING_NO);
-        item.setPRODT_ORDER_NO(PRODT_ORDER_NO);
-
-        item.setREMAIN_QTY(REMAIN_QTY);
-        item.setWMS_GOOD_ON_HAND_QTY(WMS_GOOD_ON_HAND_QTY);
+        item.setSL_CD(SL_NM);
 
         listViewItem.add(item);
     }

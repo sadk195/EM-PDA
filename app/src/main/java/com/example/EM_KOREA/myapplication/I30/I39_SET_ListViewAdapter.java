@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.EM_KOREA.myapplication.R;
@@ -18,6 +19,9 @@ public class I39_SET_ListViewAdapter extends BaseAdapter {
 
     public I39_SET_ListViewAdapter() {
 
+    }
+    public ArrayList<I39_SET> getItems() {
+        return listViewItem;
     }
 
     @Override
@@ -45,63 +49,57 @@ public class I39_SET_ListViewAdapter extends BaseAdapter {
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_view_i39_dtl, parent, false);
+            convertView = inflater.inflate(R.layout.list_view_i39_set, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
 
-        TextView item_cd                = (TextView) convertView.findViewById(R.id.item_cd);
-        TextView item_nm                = (TextView) convertView.findViewById(R.id.item_nm);
-        TextView remain_qty             = (TextView) convertView.findViewById(R.id.remain_qty);
-        TextView issued_qty             = (TextView) convertView.findViewById(R.id.issued_qty);
-        TextView location               = (TextView) convertView.findViewById(R.id.location);
 
-        TextView sl_cd                  = (TextView) convertView.findViewById(R.id.sl_cd);
-        TextView qty                    = (TextView) convertView.findViewById(R.id.qty);
-        TextView tracking_no            = (TextView) convertView.findViewById(R.id.tracking_no);
-        TextView wms_good_on_hand_qty   = (TextView) convertView.findViewById(R.id.wms_good_on_hand_qty);
+
         TextView prodt_order_no         = (TextView) convertView.findViewById(R.id.prodt_order_no);
+        TextView tracking_no            = (TextView) convertView.findViewById(R.id.tracking_no);
+        TextView job_nm                    = (TextView) convertView.findViewById(R.id.job_nm);
+        TextView req_qty                    = (TextView) convertView.findViewById(R.id.req_qty);
         CheckBox chk_out                = (CheckBox) convertView.findViewById(R.id.chk_out);
 
-        // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         I39_SET item = listViewItem.get(position);
+        chk_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(item.getCHK_OUT())
+                {
+                    item.setCheckBool(false);
+                }
+                else{
+                    item.setCheckBool(true);
 
+                }
+            }
+        });
+
+
+        // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         // 아이템 내 각 위젯에 데이터 반영
-        item_cd.setText(item.getITEM_CD());
-        item_nm.setText(item.getITEM_NM());
-        remain_qty.setText(item.getREQ_QTY());
-        issued_qty.setText(item.getISSUED_QTY());
-        location.setText(item.getLOCATION());
-
-        sl_cd.setText(item.getSL_CD());
-        qty.setText(item.getOUT_QTY());
-        tracking_no.setText(item.getTRACKING_NO());
-        wms_good_on_hand_qty.setText(item.getWMS_GOOD_ON_HAND_QTY());
         prodt_order_no.setText(item.getPRODT_ORDER_NO());
-
+        tracking_no.setText(item.getTRACKING_NO());
+        job_nm.setText(item.getJOB_NM());
+        req_qty.setText(item.getREQ_QTY());
         chk_out.setChecked(item.getCHK_OUT());
 
         return convertView;
     }
 
-    public void add_Item(String ITEM_CD, String ITEM_NM, String REQ_QTY, String ISSUED_QTY, String LOCATION, String SL_CD, String OUT_QTY, String TRACKING_NO, String PRODT_ORDER_NO, String REMAIN_QTY, String WMS_GOOD_ON_HAND_QTY,boolean CHK_OUT) {
+    public void add_Item(String PRODT_ORDER_NO, String OPR_NO,  String TRACKING_NO,String JOB_NM,String REQ_QTY,String SEQ,  boolean CHK_OUT) {
         I39_SET item = new I39_SET();
 
         item.setPRODT_ORDER_NO(PRODT_ORDER_NO);
-        item.setITEM_CD(ITEM_CD);
-        item.setITEM_NM(ITEM_NM);
+        item.setOPR_NO(OPR_NO);
         item.setREQ_QTY(REQ_QTY);
-        item.setISSUED_QTY(ISSUED_QTY);
-        item.setLOCATION(LOCATION);
-
-        item.setSL_CD(SL_CD);
-        item.setOUT_QTY(OUT_QTY);
         item.setTRACKING_NO(TRACKING_NO);
-        item.setPRODT_ORDER_NO(PRODT_ORDER_NO);
-
-        item.setREMAIN_QTY(REMAIN_QTY);
-        item.setWMS_GOOD_ON_HAND_QTY(WMS_GOOD_ON_HAND_QTY);
+        item.setJOB_NM(JOB_NM);
         item.setCHK_OUT(CHK_OUT);
+        item.setSEQ(SEQ);
+
         listViewItem.add(item);
     }
 

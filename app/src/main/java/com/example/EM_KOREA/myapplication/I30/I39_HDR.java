@@ -16,12 +16,8 @@ public class I39_HDR implements Serializable {   //Serializable 객체를 파라
     private String REMAIN_QTY;
     private String BAD_QTY;
     private String SL_CD;
-    private String SL_NM;
-    private String INSP_REQ_NO;
-    private String INSP_STATUS;
     private String JOB_NM;
-    private String MACHINE;
-
+    private String OPR_NO;
 
     public String getPRODT_ORDER_NO() {
         return PRODT_ORDER_NO;
@@ -67,24 +63,11 @@ public class I39_HDR implements Serializable {   //Serializable 객체를 파라
         return SL_CD;
     }
 
-    public String getSL_NM() {
-        return SL_NM;
-    }
-
-    public String getINSP_REQ_NO() {
-        return INSP_REQ_NO;
-    }
-
-    public String getINSP_STATUS() {
-        return INSP_STATUS;
-    }
-
     public String getJOB_NM() {
         return JOB_NM;
     }
-
-    public String getMACHINE() {
-        return MACHINE;
+    public String getOPR_NO() {
+        return OPR_NO;
     }
 
 
@@ -133,24 +116,13 @@ public class I39_HDR implements Serializable {   //Serializable 객체를 파라
         SL_CD = sl_cd;
     }
 
-    public void setSL_NM(String sl_nm) {
-        SL_NM = sl_nm;
-    }
-
-    public void setINSP_REQ_NO(String insp_req_no) {
-        INSP_REQ_NO = insp_req_no;
-    }
-
-    public void setINSP_STATUS(String insp_status) {
-        INSP_STATUS = insp_status;
-    }
-
     public void setJOB_NM(String job_nm) {
         JOB_NM = job_nm;
     }
-    public void setMACHINE(String machine) {
-        MACHINE = machine;
+    public void setOPR_NO(String opr_no) {
+        OPR_NO = opr_no;
     }
+
 
 }
 
@@ -169,8 +141,5 @@ public class I39_HDR implements Serializable {   //Serializable 객체를 파라
 //REMAIN_QTY
 //SL_CD
 //SL_NM
-//INSP_REQ_NO
-//INSP_STATUS
 //JOB_NM
-//MACHINE
 

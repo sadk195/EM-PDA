@@ -101,7 +101,7 @@ public class I39_HDR_Activity extends BaseActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-               // I39_HDR vItem = (I39_HDR) parent.getItemAtPosition(position);
+                // I39_HDR vItem = (I39_HDR) parent.getItemAtPosition(position);
 
                 selected_idx = position;
             }
@@ -170,7 +170,7 @@ public class I39_HDR_Activity extends BaseActivity {
 
             // 빈 데이터 리스트 생성.
             //final ArrayList<String> items = new ArrayList<String>();
-            listViewAdapter.Clear();
+            //listViewAdapter.Clear();
 
             for (int idx = 0; idx < ja.length(); idx++) {
                 JSONObject jObject = ja.getJSONObject(idx);
@@ -188,12 +188,8 @@ public class I39_HDR_Activity extends BaseActivity {
                 item.setBAD_QTY             (jObject.getString("BAD_QTY"));
                 item.setREMAIN_QTY          (jObject.getString("REMAIN_QTY"));
                 item.setSL_CD               (jObject.getString("SL_CD"));
-                item.setSL_NM               (jObject.getString("SL_NM"));
-                item.setINSP_REQ_NO         (jObject.getString("INSP_REQ_NO"));
-                item.setINSP_STATUS         (jObject.getString("INSP_STATUS"));
                 item.setJOB_NM              (jObject.getString("JOB_NM"));
-                item.setMACHINE             ("");
-
+                item.setOPR_NO              (jObject.getString("OPR_NO"));
                 listViewAdapter.addHDRItem(item);
             }
 
@@ -216,7 +212,6 @@ public class I39_HDR_Activity extends BaseActivity {
                 sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "' ";
                // sql += " ,@ITEM_CD = '" + item_cd + "'";
 
-                System.out.println("sql:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -247,14 +242,14 @@ public class I39_HDR_Activity extends BaseActivity {
             switch (requestCode) {
                 case I39_DTL_REQUEST_CODE:
                     String sign = data.getStringExtra("SIGN");
-                  /*  if (sign.equals("EXIT")) {
+                   /* if (sign.equals("EXIT")) {
                         TGSClass.AlterMessage(this, "저장 되었습니다.");
                         finish();
                     } else if (sign.equals("ADD")) {
                         TGSClass.AlterMessage(this, "추가 되었습니다.");
                         start();
                     }*/
-                    start();
+                    finish();
                     break;
                 default:
                     break;

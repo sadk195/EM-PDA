@@ -49,6 +49,7 @@ public class I39_DTL_Activity extends BaseActivity {
     I39_DTL_ListViewAdapter listViewAdapter;
     I39_DTL_ListViewAdapter2 listViewAdapter_dtl;
     ArrayList<I39_HDR> I39_HDR_ITEMS;
+    ArrayList<I39_DTL> I39_DTL_ITEMS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +72,7 @@ public class I39_DTL_Activity extends BaseActivity {
         vStartCommand   = getIntent().getStringExtra("START_COMMAND"); //다음 페이지에 가지고 넘어갈 코드
 
         I39_HDR_ITEMS   = (ArrayList<I39_HDR>)getIntent().getSerializableExtra("I39_HDR");
-
+        I39_DTL_ITEMS   = new ArrayList<>();
         //== ID 값 바인딩 ==//
 
         txt_Scan_item_cd     = (EditText) findViewById(R.id.txt_Scan_item_cd);
@@ -90,8 +91,29 @@ public class I39_DTL_Activity extends BaseActivity {
         btn_query.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getDatas();//기본적으로 리스트 조회
+                //주소참조로 가져오므로 데이터만 가져와서 비교한후 temp에 add하여 적용
+                ArrayList<I39_DTL> listItem = listViewAdapter_dtl.getItems();
+                ArrayList<I39_DTL> temp = new ArrayList<>();//실젝 적용되는 리스트
 
-                start();
+                String scan_item = txt_Scan_item_cd.getText().toString();
+
+                if(!scan_item.equals("")){//빈값일 경우 전체 품목 표시
+                    for(int i =0 ; i <listViewAdapter_dtl.getCount(); i++){
+                        if(listItem.get(i).getITEM_CD().contains(scan_item)){//해당 문자열을 포함하는 경우 표시
+                            temp.add(listItem.get(i));
+                        }
+                    }
+
+                    listViewAdapter_dtl.clear();//아래 리스트 초기화
+
+                    for(I39_DTL dtl : temp){
+                        listViewAdapter_dtl.addHDRItem(dtl);
+                    }
+                    listViewAdapter_dtl.notifyDataSetChanged();
+                }
+                TGSClass.AlterMessage(getApplicationContext(), listViewAdapter_dtl.getCount() + "건 조회되었습니다.");
+
             }
         });
         btn_cancle.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +143,6 @@ public class I39_DTL_Activity extends BaseActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-              dbQuery("1");
             }
         });
 
@@ -130,73 +151,62 @@ public class I39_DTL_Activity extends BaseActivity {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 I39_DTL vItem = (I39_DTL) parent.getItemAtPosition(position);
 
-                Intent intent = TGSClass.ChangeView(getPackageName(), I39_SET_Activity.class);
+                ArrayList<I39_DTL> DTL_SEL = new ArrayList<>();
+                for(I39_DTL dtl : I39_DTL_ITEMS){
+                    if(vItem.getITEM_CD().equals(dtl.getITEM_CD())){
+                        DTL_SEL.add(dtl);
+                    }
+                }
 
-                intent.putExtra("HDR", vItem);  // 선택한 리스트를 파라메터로 다음페이지에 넘김.
+                Intent intent = TGSClass.ChangeView(getPackageName(), I39_SET_Activity.class);
+                intent.putExtra("MENU_ID", "I39");
+                intent.putExtra("MENU_REMARK", vMenuRemark);
+                intent.putExtra("START_COMMAND", vStartCommand);
+
+                intent.putExtra("ITEMS", vItem);  // 선택한 리스트를 파라메터로 다음페이지에 넘김.
+                intent.putExtra("DTL", DTL_SEL);  // 선택한 리스트를 파라메터로 다음페이지에 넘김.
+
 
                 startActivityForResult(intent, I39_SET_REQUEST_CODE);
             }
         });
 
     }
-
     private void initializeData() {
-        for(I39_HDR ITEM: I39_HDR_ITEMS ){
+        getDatas();
+        TGSClass.AlterMessage(getApplicationContext(), listViewAdapter_dtl.getCount() + "건 조회되었습니다.");
+
+    }
+
+    private void getDatas() {
+        listViewAdapter.clear();
+        listViewAdapter_dtl.clear();
+
+        for(I39_HDR ITEM: I39_HDR_ITEMS ){ //위쪽 그리드 내용은 앞페이지에서 조회한 내용 표시(마지막 페이지까지 사용)
             listViewAdapter.addHDRItem(ITEM);
+            start(ITEM.getPRODT_ORDER_NO(),ITEM.getOPR_NO());//품목 조회 시작
         }
 
         listview.setAdapter(listViewAdapter);
         listViewAdapter.notifyDataSetChanged();
 
-        txtItemCd = I39_HDR_ITEMS.get(0).getITEM_CD();
-        txt_Scan_item_cd.setText(txtItemCd);
-
-        start();
+        setStockData();//제조오더에 해당하는 품목을 모두 조회한 후 품목별로 그룹핑
+        listview_dtl.setAdapter(listViewAdapter_dtl);
+        listViewAdapter_dtl.notifyDataSetChanged();
     }
 
-    private void start() {
-        String txt_item_cd   = txt_Scan_item_cd.getText().toString();
-
-        dbQuery(txt_item_cd);
-
-        try {
-            JSONArray ja = new JSONArray(sJson);
-
-            // 빈 데이터 리스트 생성.
-            //final ArrayList<String> items = new ArrayList<String>();
-
-            for (int idx = 0; idx < ja.length(); idx++) {
-                JSONObject jObject = ja.getJSONObject(idx);
-
-                I39_DTL item = new I39_DTL();
-
-                item.setITEM_CD             (jObject.getString("ITEM_CD"));
-                item.setITEM_NM             (jObject.getString("ITEM_NM"));
-                item.setLOCATION            (jObject.getString("LOCATION"));
-                item.setSL_CD               (jObject.getString("SL_CD"));
-                item.setGOOD_ON_HAND_QTY    (jObject.getString("GOOD_ON_HAND_QTY"));
-                item.setBAD_ON_HAND_QTY     (jObject.getString("BAD_ON_HAND_QTY"));
-
-                listViewAdapter_dtl.addHDRItem(item);
-            }
-
-            listview_dtl.setAdapter(listViewAdapter_dtl);
-
-
-            TGSClass.AlterMessage(getApplicationContext(), ja.length() + "건 조회되었습니다.");
-        } catch (JSONException ex) {
-            TGSClass.AlterMessage(this, ex.getMessage());
-        } catch (Exception e1) {
-            TGSClass.AlterMessage(this, e1.getMessage());
-        }
+    private void start(String prodt_order_no,String opr_no) {
+        dbQuery(prodt_order_no,opr_no); //조회 및 리스트 추가
     }
 
-    private void dbQuery(final String item_cd) {
+    private void dbQuery(String prodt_order_no,String opr_no) {
         Thread workThd_dbQuery = new Thread() {
             public void run() {
                 String sql = " EXEC XUSP_MES_PRODT_ORDER_MULTI_INFO_SUB_GET ";
                 sql += " @PLANT_CD = '" + vPLANT_CD + "'";
-                sql += " ,@ITEM_CD = '" + item_cd + "'";
+                sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "'";
+                sql += " ,@OPR_NO = '" + opr_no + "'";
+
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
@@ -214,12 +224,73 @@ public class I39_DTL_Activity extends BaseActivity {
         workThd_dbQuery.start();   //스레드 시작
         try {
             workThd_dbQuery.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+            try {
+                JSONArray ja = new JSONArray(sJson);
 
+                // 빈 데이터 리스트 생성.
+                //final ArrayList<String> items = new ArrayList<String>();
+                I39_DTL_ITEMS.clear();
+                for (int idx = 0; idx < ja.length(); idx++) {
+                    JSONObject jObject = ja.getJSONObject(idx);
+
+                    I39_DTL item = new I39_DTL();
+
+                    item.setPRODT_ORDER_NO(jObject.getString("PRODT_ORDER_NO"));
+                    item.setOPR_NO(jObject.getString("OPR_NO"));
+                    item.setITEM_CD(jObject.getString("ITEM_CD"));
+                    item.setITEM_NM(jObject.getString("ITEM_NM"));
+                    item.setSPEC(jObject.getString("SPEC"));
+                    item.setTRACKING_NO(jObject.getString("TRACKING_NO"));
+                    item.setLOCATION(jObject.getString("LOCATION"));
+                    item.setJOB_NM(jObject.getString("JOB_NM"));
+                    item.setQTY(jObject.getString("QTY"));
+                    item.setSEQ(jObject.getString("SEQ"));
+
+                    I39_DTL_ITEMS.add(item);
+                }
+
+            } catch (JSONException ex) {
+                TGSClass.AlterMessage(this, ex.getMessage());
+            } catch (Exception e1) {
+                TGSClass.AlterMessage(this, e1.getMessage());
+            }
         } catch (InterruptedException ex) {
 
         }
     }
 
+
+    private void setStockData(){
+        ArrayList<I39_DTL> temp =  new ArrayList<>();
+        ArrayList<String>  Items = new ArrayList<>();
+
+        for(I39_DTL dtl : I39_DTL_ITEMS){
+            if(Items.contains(dtl.getITEM_CD())) { // 처리완료된 품목이면 다음 리스트로
+                continue;
+            }
+
+            I39_DTL temp_dtl = dtl;
+            String item_cd = dtl.getITEM_CD();
+
+            double temp_qty =  0;//.parseInt(temp_dtl.getQTY());
+
+            for(I39_DTL dtl2 : I39_DTL_ITEMS) {
+                if(dtl2.getITEM_CD().equals(item_cd) ){//현재 찾고있는 품목과 같은 품목의 수량 더하기
+                    temp_qty = temp_qty +  Double.parseDouble(dtl2.getQTY());
+                }
+
+            }
+            temp_dtl.setQTY(String.valueOf(temp_qty));
+            temp.add(temp_dtl);
+        }
+        listViewAdapter_dtl.clear();
+
+        for(I39_DTL dtl : temp){
+            listViewAdapter_dtl.addHDRItem(dtl);
+        }
+
+        listViewAdapter_dtl.notifyDataSetChanged();
+    }
 
 
     @Override
@@ -229,15 +300,14 @@ public class I39_DTL_Activity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case I39_SET_REQUEST_CODE:
-                    /*String sign = data.getStringExtra("SIGN");
+                    String sign = data.getStringExtra("SIGN");
                     if (sign.equals("EXIT")) {
                         TGSClass.AlterMessage(this, "저장 되었습니다.");
                         finish();
                     } else if (sign.equals("ADD")) {
                         TGSClass.AlterMessage(this, "추가 되었습니다.");
-                        start();
-                    }*/
-                    finish();
+                        getDatas();
+                    }
                     break;
                 default:
                     break;

@@ -125,7 +125,7 @@ public class I31_HDR_Activity extends BaseActivity {
             TGSClass.AlterMessage(getApplicationContext(), "제조오더 정보가 없습니다.");
             return;
         } else {
-            dbQuery_HDR(prodtorder_no_data);
+            dbQuery_HDR(prodtorder_no_data,item_cd.getText().toString());
             SELECT_HDR();
         }
     }
@@ -189,13 +189,15 @@ public class I31_HDR_Activity extends BaseActivity {
         }
     }
 
-    private void dbQuery_HDR(final String prodt_order_no) {
+    private void dbQuery_HDR(final String prodt_order_no,final String item_cd) {
         Thread workThd_HDR = new Thread() {
             public void run() {
                 String sql = " EXEC XUSP_MES_APP_P1001MA1_GET1 ";
                 sql += " @PLANT_CD = '" + vPLANT_CD + "' ";
                 sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "' ";
 
+
+                System.out.println("i31:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 

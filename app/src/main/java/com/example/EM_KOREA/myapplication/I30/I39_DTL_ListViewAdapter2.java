@@ -24,10 +24,17 @@ public class I39_DTL_ListViewAdapter2 extends BaseAdapter {
     public int getCount() {
         return listViewItem.size();
     }
+    public void clear() {
+        listViewItem.clear();
+    }
 
     @Override
     public Object getItem(int position) {
         return listViewItem.get(position);
+    }
+
+    public ArrayList<I39_DTL>  getItems() {
+        return listViewItem;
     }
 
     @Override
@@ -57,31 +64,30 @@ public class I39_DTL_ListViewAdapter2 extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         I39_DTL item = listViewItem.get(position);
 
+
         // 아이템 내 각 위젯에 데이터 반영
         item_cd.setText(item.getITEM_CD());
         item_nm.setText(item.getITEM_NM());
         location.setText(item.getLOCATION());
         qty.setText(item.getQTY());
-        //ITEM_CD
-        //ITEM_NM
-        //LOCATION
-        //SL_CD
-        //GOOD_ON_HAND_QTY
-        //BAD_ON_HAND_QTY
 
         return convertView;
     }
 
-    public void add_Item(String ITEM_CD,String ITEM_NM,String LOCATION,String SL_CD,String GOOD_ON_HAND_QTY,String BAD_ON_HAND_QTY,String QTY) {
+    public void add_Item(String PRODT_ORDER_NO,String OPR_NO,String ITEM_CD,String ITEM_NM,String SPEC,
+                         String TRACKING_NO,String LOCATION,String JOB_NM,String QTY,String SEQ) {
         I39_DTL item = new I39_DTL();
 
+        item.setPRODT_ORDER_NO(PRODT_ORDER_NO);
+        item.setOPR_NO(OPR_NO);
         item.setITEM_CD(ITEM_CD);
         item.setITEM_NM(ITEM_NM);
+        item.setSPEC(SPEC);
+        item.setTRACKING_NO(TRACKING_NO);
         item.setLOCATION(LOCATION);
-        item.setSL_CD(SL_CD);
+        item.setJOB_NM(JOB_NM);
         item.setQTY(QTY);
-        item.setGOOD_ON_HAND_QTY(GOOD_ON_HAND_QTY);
-        item.setBAD_ON_HAND_QTY(BAD_ON_HAND_QTY);
+        item.setSEQ(SEQ);
 
         listViewItem.add(item);
     }

@@ -43,6 +43,9 @@ public class I39_HDR_ListViewAdapter extends BaseAdapter {
     }
 
     protected void DelItem(int idx){
+        if(listViewItem.size() < idx){
+            idx = listViewItem.size() - 1; //인덱스가 아이템 개수보다 많을때 마지막 아이템의 인덱스로 설정
+        }
         listViewItem.remove(idx);
     }
     @Override
@@ -73,7 +76,7 @@ public class I39_HDR_ListViewAdapter extends BaseAdapter {
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
 
         TextView prodt_order_no         = (TextView) convertView.findViewById(R.id.prodt_order_no);
-        TextView machine                = (TextView) convertView.findViewById(R.id.machine);
+        TextView item_nm                = (TextView) convertView.findViewById(R.id.item_nm);
         TextView tracking_no            = (TextView) convertView.findViewById(R.id.tracking_no);
         TextView job_nm                 = (TextView) convertView.findViewById(R.id.job_nm);
 
@@ -82,8 +85,7 @@ public class I39_HDR_ListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영
         prodt_order_no.setText(item.getPRODT_ORDER_NO());
-        machine.setText(item.getMACHINE());
-
+        item_nm.setText(item.getITEM_NM());
         tracking_no.setText(item.getTRACKING_NO());
         job_nm.setText(item.getJOB_NM());
 
@@ -101,9 +103,6 @@ public class I39_HDR_ListViewAdapter extends BaseAdapter {
                          String BAD_QTY,
                          String REMAIN_QTY,
                          String SL_CD,
-                         String SL_NM,
-                         String INSP_REQ_NO,
-                         String INSP_STATUS,
                          String JOB_NM,
                          String MACHINE) {
 
@@ -120,11 +119,8 @@ public class I39_HDR_ListViewAdapter extends BaseAdapter {
         item.setBAD_QTY(BAD_QTY);
         item.setREMAIN_QTY(REMAIN_QTY);
         item.setSL_CD(SL_CD);
-        item.setSL_NM(SL_NM);
-        item.setINSP_REQ_NO(INSP_REQ_NO);
-        item.setINSP_STATUS(INSP_STATUS);
+
         item.setJOB_NM(JOB_NM);
-        item.setMACHINE(MACHINE);
         listViewItem.add(item);
     }
 

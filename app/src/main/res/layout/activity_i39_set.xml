@@ -39,7 +39,7 @@
             <LinearLayout
                 android:id="@+id/app_view1"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="20dp"
                 android:orientation="horizontal"
                 android:weightSum="10">
 
@@ -65,7 +65,7 @@
                         android:id="@+id/item_cd"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="2dp"
+                        android:layout_marginLeft="2dp"
                         android:layout_weight="9"
                         android:gravity="left"
                         android:inputType="text"
@@ -76,7 +76,7 @@
             <LinearLayout
                 android:id="@+id/app_view2"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="20dp"
                 android:orientation="horizontal"
                 android:weightSum="10">
 
@@ -102,7 +102,7 @@
                         android:id="@+id/item_nm"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="2dp"
+                        android:layout_marginLeft="2dp"
                         android:layout_weight="9"
                         android:gravity="left"
                         android:inputType="text"
@@ -114,7 +114,7 @@
             <LinearLayout
                 android:id="@+id/app_view3"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="20dp"
                 android:orientation="horizontal"
                 android:weightSum="10">
 
@@ -140,7 +140,7 @@
                         android:id="@+id/spec"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="2dp"
+                        android:layout_marginLeft="2dp"
                         android:layout_weight="9"
                         android:gravity="left"
                         android:inputType="text"
@@ -151,7 +151,7 @@
             <LinearLayout
                 android:id="@+id/app_view4"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="20dp"
                 android:orientation="horizontal"
                 android:weightSum="10">
 
@@ -177,7 +177,7 @@
                         android:id="@+id/qty"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="2dp"
+                        android:layout_marginLeft="2dp"
                         android:layout_weight="9"
                         android:gravity="left"
                         android:inputType="text"
@@ -210,7 +210,7 @@
         <ListView
             android:id="@+id/listOrder"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:layout_below ="@+id/lbl_information"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
@@ -244,6 +244,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/bg_box"
+            android:listSelector="@color/colorGray"
             android:padding="10dp" />
     </RelativeLayout>
 
@@ -296,7 +297,7 @@
                         android:layout_margin="2dp"
                         android:layout_weight="9"
                         android:background="@drawable/bg_text_ess"
-                        android:gravity="left"
+                        android:gravity="center"
                         android:inputType="number"
                         android:textSize="15dp" />
                 </LinearLayout>
