@@ -29,7 +29,7 @@ import org.ksoap2.serialization.PropertyInfo;
 
 import java.util.ArrayList;
 
-public class P14_QUERY_Activity extends BaseActivity {
+public class P15_QUERY_Activity extends BaseActivity {
 
     private final long INTERVAL_TIME = 500;  //간격
     private long inputEnterPressedTime = 0;  //엔터키 입력 시간.
@@ -119,7 +119,7 @@ public class P14_QUERY_Activity extends BaseActivity {
                         dbQuery_XUSP_MES_APP_PH50_CHECK(prodt_order_no, opr_no);    //이전공정 체크
 
                         if (!Msg.equals("")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(P14_QUERY_Activity.this);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(P15_QUERY_Activity.this);
                             builder.setTitle("이전공정 체크")
                                     .setMessage(Msg)
                                     .setPositiveButton("확인", null)
@@ -131,7 +131,7 @@ public class P14_QUERY_Activity extends BaseActivity {
                         dbQuery_chk_outsourcing(prodt_order_no, opr_no);            //외주공정 체크
 
                         if (!Msg.equals("")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(P14_QUERY_Activity.this);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(P15_QUERY_Activity.this);
                             builder.setTitle("외주공정 체크")
                                     .setMessage(Msg)
                                     .setPositiveButton("확인", null)
@@ -199,7 +199,7 @@ public class P14_QUERY_Activity extends BaseActivity {
 
                 dbQuery_XUSP_MES_APP_PH50_CHECK(prodt_order_no, opr_no);    //이전공정 체크
                 if (!Msg.equals("")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(P14_QUERY_Activity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(P15_QUERY_Activity.this);
                     builder.setTitle("이전공정 체크");
                     builder.setMessage(Msg);
                     builder.setPositiveButton("확인", null);
@@ -210,7 +210,7 @@ public class P14_QUERY_Activity extends BaseActivity {
 
                 dbQuery_chk_outsourcing(prodt_order_no, opr_no);            //외주공정 체크.
                 if (!Msg.equals("")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(P14_QUERY_Activity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(P15_QUERY_Activity.this);
                     builder.setTitle("공정별 실적등록");
                     builder.setMessage(Msg);
                     builder.setPositiveButton("확인", null);
