@@ -35,7 +35,10 @@
             android:id="@+id/box_view1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/bg_text"
             android:orientation="vertical"
             android:padding="5dp">
@@ -104,7 +107,7 @@
                         android:id="@+id/location"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
+                        android:gravity="left|center"
                         android:textColor="@color/colorBodyContent"
                         android:textSize="15dp" />
 
@@ -325,7 +328,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="           Tracking     | LOT    |      양품   |    불량   |  적치장 "
+                android:text="           Tracking     |    LOT    |      양품   |    불량   |  적치장 "
                 android:textColor="@color/design_default_color_primary"
                 android:textSize="15dp" />
 
@@ -337,7 +340,10 @@
             android:layout_height="match_parent"
             android:layout_above="@id/box_view2"
             android:layout_below="@+id/lbl_information"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/bg_box"
             android:padding="10dp">
 
@@ -470,37 +476,58 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layout_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="9">
 
         <Button
-            android:id="@+id/btn_add"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:id="@+id/btn_del"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:background="@drawable/bg_toggle"
             android:gravity="center"
-            android:text="위치이동 / 추가"
+            android:text="출고 삭제"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:layout_margin="2dp"
+            android:layout_weight = "3"/>
+
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/bg_toggle"
+            android:gravity="center"
+            android:text="위치이동/\n추가"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="18dp"
+            android:layout_margin="2dp"
+            android:layout_weight = "3"/>
+
 
         <Button
             android:id="@+id/btn_save"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@drawable/bg_toggle"
             android:gravity="center"
-            android:text="위치 이동/종료"
+            android:text="위치 이동/\n종료"
             android:textColor="@android:color/white"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:layout_margin="2dp"
+            android:layout_weight = "3"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
 

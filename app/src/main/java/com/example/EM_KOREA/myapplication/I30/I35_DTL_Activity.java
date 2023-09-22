@@ -45,7 +45,7 @@ public class I35_DTL_Activity extends BaseActivity {
     private EditText move_date, out_qty_insert;
 
     //== View 선언(Button) ==//
-    private Button btn_add, btn_save;
+    private Button btn_add, btn_save,btn_del;
 
     //== 날짜 관련 변수 선언 ==//
     private Calendar cal;
@@ -92,7 +92,7 @@ public class I35_DTL_Activity extends BaseActivity {
 
         btn_save            = (Button)findViewById(R.id.btn_save);
         btn_add             = (Button)findViewById(R.id.btn_add);
-
+        btn_del             = (Button)findViewById(R.id.btn_del);
         listview            = (ListView) findViewById(R.id.listOrder);
     }
 
@@ -158,7 +158,24 @@ public class I35_DTL_Activity extends BaseActivity {
 
             }
         });
+        btn_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                // 기존 소스
+                Intent intent = TGSClass.ChangeView(getPackageName(), I35_HDR_Activity.class.getSimpleName());
+                startActivity(intent);
+                 */
+
+                // 기존 소스는 DBSave() 메서드로 옮김
+                dbSave("DEL");
+
+            }
+        });
     }
+
+
+
 
     private void initializeData() {
         storage_location.setText(vGetHDRItem.getSL_CD());
@@ -386,9 +403,10 @@ public class I35_DTL_Activity extends BaseActivity {
                 String RTN_ITEM_DOCUMENT_NO = jObject.getString("RTN_ITEM_DOCUMENT_NO");
 
                 I35_DTL_ListViewAdapter listViewAdapter2 = (I35_DTL_ListViewAdapter) listview.getAdapter();
-
-                for (int idx2 = 0; idx2 < listViewAdapter2.getCount(); idx2++) {
-                    I35_DTL item = (I35_DTL) listViewAdapter2.getItem(idx2);
+                if(value.equals("DEL"))
+                {
+                    I35_DTL item = (I35_DTL) listViewAdapter2.getItem(0);
+                    System.out.println("location1:"+location.getText().toString());
 
                     if (item.getCHK() == "Y") {
                         String sl_cd            = item.getSL_CD();
@@ -401,10 +419,32 @@ public class I35_DTL_Activity extends BaseActivity {
                         String location         = item.getLOCATION();
                         String bad_on_hand_qty  = item.getBAD_ON_HAND_QTY();
                         String chk_qty          = item.getCHK_QTY();
+                        System.out.println("location2:"+location);
+                        dbSave_DTL(RTN_ITEM_DOCUMENT_NO, sl_cd, item_cd, tracking_no, lot_no, lot_sub_no, qty, basic_unit, "출고대기장",location, bad_on_hand_qty, chk_qty);
+                    }
 
-                        dbSave_DTL(RTN_ITEM_DOCUMENT_NO, sl_cd, item_cd, tracking_no, lot_no, lot_sub_no, qty, basic_unit, location, bad_on_hand_qty, chk_qty);
+                }
+                else {
+                    for (int idx2 = 0; idx2 < listViewAdapter2.getCount(); idx2++) {
+                        I35_DTL item = (I35_DTL) listViewAdapter2.getItem(idx2);
+
+                        if (item.getCHK() == "Y") {
+                            String sl_cd            = item.getSL_CD();
+                            String item_cd          = item.getITEM_CD();
+                            String tracking_no      = item.getTRACKING_NO();
+                            String lot_no           = item.getLOT_NO();
+                            String lot_sub_no       = item.getLOT_SUB_NO();
+                            String qty              = item.getGOOD_ON_HAND_QTY();
+                            String basic_unit       = item.getBASIC_UNIT();
+                            String location         = item.getLOCATION();
+                            String bad_on_hand_qty  = item.getBAD_ON_HAND_QTY();
+                            String chk_qty          = item.getCHK_QTY();
+
+                            dbSave_DTL(RTN_ITEM_DOCUMENT_NO, sl_cd, item_cd, tracking_no, lot_no, lot_sub_no, qty, basic_unit, location,"출고대기장", bad_on_hand_qty, chk_qty);
+                        }
                     }
                 }
+
                 TGSClass.AlterMessage(getApplicationContext(), RTN_ITEM_DOCUMENT_NO + "자동입력번호로 저장되었습니다.");
 
                 // 저장 후 결과 값 돌려주기
@@ -476,8 +516,8 @@ public class I35_DTL_Activity extends BaseActivity {
     }
 
     private boolean dbSave_DTL(final String ITEM_DOCUMENT_NO, final String SL_CD, final String ITEM_CD, final String TRACKING_NO, final String LOT_NO,
-                              final String LOT_SUB_NO, final String QTY, final String BASIC_UNIT, final String LOCATION, final String BAD_ON_HAND_QTY,
-                              final String CHK_QTY) {
+                              final String LOT_SUB_NO, final String QTY, final String BASIC_UNIT, final String LOCATION, final String TRNS_LOCATION,
+                              final String BAD_ON_HAND_QTY,final String CHK_QTY) {
         Thread workThd_dbSave_DTL = new Thread() {
             public void run() {
 
@@ -508,7 +548,7 @@ public class I35_DTL_Activity extends BaseActivity {
                 sql += ",@TRNS_PLANT_CD = '" + vPLANT_CD + "'";                 /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
                 sql += ",@TRNS_SL_CD = '" + SL_CD + "'";                        /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
                 sql += ",@TRNS_ITEM_CD = '" + ITEM_CD + "'";                    /*적치장이동 프로그램에서는 적치장을 제외한 정보는 변하지 않음*/
-                sql += ",@TRNS_LOC_CD = '출고대기장'";                   //이동할 적치장
+                sql += ",@TRNS_LOC_CD = '"+TRNS_LOCATION+"'";//'출고대기장'";                   //이동할 적치장
                 sql += ",@RECORD_NO = '" + vPRODT_ORDER_NO_st + "'";       //제조오더(비고)
 
                 sql += ",@BAD_ON_HAND_QTY = " + BAD_ON_HAND_QTY;                //불량 수량
@@ -530,7 +570,7 @@ public class I35_DTL_Activity extends BaseActivity {
                 parm.setType(String.class);
 
                 pParms.add(parm);
-
+                //System.out.println("sqls_dtl:"+sql);
                 sJson = dba.SendHttpMessage("GetSQLData", pParms);
             }
 

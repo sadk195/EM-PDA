@@ -16,6 +16,7 @@ public class I35_HDR implements Serializable {   //Serializable 객체를 파라
     public String PRODT_ORDER_NO;
 
     public String REMAIN_QTY;
+    public String CHK;
 
     public String getITEM_CD() {
         return ITEM_CD;
@@ -96,4 +97,13 @@ public class I35_HDR implements Serializable {   //Serializable 객체를 파라
     public void setREMAIN_QTY(String remain_qty) {
         REMAIN_QTY = remain_qty;
     }
+
+    public String getCHK() {
+        return CHK;
+    }
+
+    public void setCHK(String chk) {
+        CHK = chk;
+    }
 }
+

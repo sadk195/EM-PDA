@@ -194,8 +194,11 @@ public class I35_HDR_Activity extends BaseActivity {
 
                 item.ITEM_CD          = jObject.getString("ITEM_CD");             //품번
                 item.ITEM_NM          = jObject.getString("ITEM_NM");             //품명
-                item.REQ_QTY          = jObject.getString("REQ_QTY");             //요청량(필요량)
-                item.ISSUED_QTY       = jObject.getString("ISSUED_QTY");          //출고량
+                //item.REQ_QTY          = jObject.getString("REQ_QTY");             //요청량(필요량)
+                //item.ISSUED_QTY       = jObject.getString("ISSUED_QTY");          //출고량
+                item.REQ_QTY          = jObject.getString("SUM_REQ_QTY");             //요청량(필요량)
+
+                item.ISSUED_QTY       = jObject.getString("WMS_REQ_QTY");          //출고량 -2023-09-22 박준하 수정
                 item.LOCATION         = jObject.getString("LOCATION");            //적치장
 
                 item.SL_CD            = jObject.getString("SL_CD");               //창고 (intent)
@@ -203,6 +206,7 @@ public class I35_HDR_Activity extends BaseActivity {
                 item.TRACKING_NO      = jObject.getString("TRACKING_NO");         //
                 item.PRODT_ORDER_NO   = jObject.getString("PRODT_ORDER_NO");      //
                 item.REMAIN_QTY       = jObject.getString("REMAIN_QTY");          //잔량
+                item.CHK              = jObject.getString("CHK");                 //잔량
 
                 listViewAdapter.addHDRItem(item);
             }
@@ -317,6 +321,10 @@ public class I35_HDR_Activity extends BaseActivity {
                         Toast.makeText(I35_HDR_Activity.this, "저장 되었습니다.", Toast.LENGTH_SHORT).show();
                         finish();
                     } else if (sign.equals("ADD")) {
+                        Toast.makeText(I35_HDR_Activity.this, "추가 되었습니다.", Toast.LENGTH_SHORT).show();
+                        start();
+                    }
+                    else if (sign.equals("DEL")) {
                         Toast.makeText(I35_HDR_Activity.this, "추가 되었습니다.", Toast.LENGTH_SHORT).show();
                         start();
                     }

@@ -1,6 +1,7 @@
 package com.example.EM_KOREA.myapplication.I30;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,13 @@ public class I35_HDR_ListViewAdapter extends BaseAdapter {
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         I35_HDR item = listViewItem.get(position);
+        if(item.getCHK().trim().equals("N")){
+            convertView.setBackgroundColor(Color.parseColor("#CCE5FF"));
+        }
+        else {
+            convertView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+        }
 
         // 아이템 내 각 위젯에 데이터 반영
         item_cd.setText(item.getITEM_CD());

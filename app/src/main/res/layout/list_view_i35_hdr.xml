@@ -21,7 +21,7 @@
             android:layout_weight="7"
             android:gravity="center|left"
             android:text="ItemCd"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -36,7 +36,7 @@
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:text="ItemNm"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="RemainQty"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -62,7 +62,7 @@
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="IssuedQty"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -75,7 +75,7 @@
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="Location"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -88,7 +88,7 @@
             android:gravity="center|left"
             android:paddingLeft="10dp"
             android:text="Qty"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -108,7 +108,7 @@
             android:layout_weight="3"
             android:gravity="center|left"
             android:text="SlCd"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -121,7 +121,7 @@
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="Qty2"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -134,7 +134,7 @@
             android:gravity="center|left"
             android:paddingLeft="10dp"
             android:text="TrackingNo"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -147,7 +147,7 @@
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="ReqQty"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 

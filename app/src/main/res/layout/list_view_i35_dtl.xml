@@ -21,7 +21,7 @@
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:gravity="center|left"
             android:layout_weight="1"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
             android:layout_weight="2"
             android:paddingLeft="10dp"
             android:text="TrackingNo"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
             android:layout_weight="2"
             android:paddingLeft="10dp"
             android:text="LotNo"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -60,7 +60,7 @@
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="GoodOnHandQty"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -73,7 +73,7 @@
             android:gravity="center|right"
             android:paddingLeft="10dp"
             android:text="BadOnHandQty"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -86,7 +86,7 @@
             android:layout_weight="2"
             android:paddingLeft="10dp"
             android:text="Location"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -99,7 +99,7 @@
             android:layout_weight="2"
             android:paddingLeft="10dp"
             android:text="ChkQty"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -118,7 +118,7 @@
             android:layout_weight="1"
             android:gravity="center|left"
             android:text="SlCd"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -131,7 +131,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text="ItemCd"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -144,7 +144,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text="LotSubNo"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -157,7 +157,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text="BasicUnit"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -169,7 +169,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text=""
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -189,7 +189,7 @@
             android:gravity="center|left"
             android:paddingLeft="10dp"
             android:text="Location2"
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -201,7 +201,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text=""
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -213,7 +213,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text=""
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -225,7 +225,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text=""
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
@@ -237,7 +237,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text=""
-            android:textColor="@color/colorHeadTitle"
+            android:textColor="@color/colorBlack"
             android:textSize="10dp"
             android:textStyle="bold" />
 
