@@ -25,10 +25,10 @@ public class P10_Activity extends BaseActivity {
     private Button btn_menu;
 
     //== Grant 관련 변수 ==//
-    private String ADMIN_CHK = "N", P14 = "N", P15 = "N";    //Grant
+    private String ADMIN_CHK = "N", P14 = "N";    //Grant
 
     //== Request Code 상수 선언 ==//
-    private final int P14_HDR_REQUEST_CODE = 4,P15_HDR_REQUEST_CODE = 5;
+    private final int P14_HDR_REQUEST_CODE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,6 @@ public class P10_Activity extends BaseActivity {
         btn_c1_traveler_query           = (Button) findViewById(R.id.btn_c1_traveler_query);            // 2. TRAVELER실적조회
         btn_h1_traveler_register        = (Button) findViewById(R.id.btn_h1_traveler_register);         // 3. (함안)TRAVELER실적등록
         btn_h1_outorder_register        = (Button) findViewById(R.id.btn_h1_outorder_register);         // 4. (함안)공정외주실적등록
-        btn_h1_prodt_order_set          = (Button) findViewById(R.id.btn_h1_prodt_order_set);         // 5. (함안)생산실적등록
     }
 
     private void initializeListener() {
@@ -91,19 +90,7 @@ public class P10_Activity extends BaseActivity {
                             }
                         }
                         break;
-                    case R.id.btn_h1_prodt_order_set:     // 4. (함안)공정외주실적등록
-                        if (vPLANT_CD.equals("C1")) {
-                            TGSClass.AlterMessage(getApplicationContext(), "(" + vPLANT_CD + ")" + "창원의 공장코드를 가진 직원은 접속하실 수 없습니다.");
-                        } else if (vPLANT_CD.equals("H1")) {    // 함안 공장코드만 접속 가능
-                            if (start_grant("P15")) {
-                                Intent intent = TGSClass.ChangeView(getPackageName(), P15_QUERY_Activity.class);
-                                intent.putExtra("MENU_ID", "P15");
-                                intent.putExtra("MENU_REMARK", vMenuRemark);
-                                intent.putExtra("START_COMMAND", vStartCommand);
-                                startActivityForResult(intent, P15_HDR_REQUEST_CODE);
-                            }
-                        }
-                        break;
+
                 }
             }
         };
@@ -131,7 +118,6 @@ public class P10_Activity extends BaseActivity {
 
                 ADMIN_CHK = LEVEL_CD.equals("ADMIN") || ADMIN_CHK.equals("Y") ? "Y" : "N";
                 P14 = LEVEL_CD.equals("P14") || P14.equals("Y") ? "Y" : "N";
-                P15 = LEVEL_CD.equals("P15") || P15.equals("Y") ? "Y" : "N";
 
             }
 
@@ -140,10 +126,7 @@ public class P10_Activity extends BaseActivity {
                     TGSClass.AlterMessage(getApplicationContext(), "(함안) 공정외주실적등록 메뉴에 대한 접속 권한이 없습니다.");
                     return false;
                 }
-                if (MenuID.equals("P15") && P15.equals("N")) {
-                    TGSClass.AlterMessage(getApplicationContext(), "(함안) 생산실적등록 메뉴에 대한 접속 권한이 없습니다.");
-                    return false;
-                }
+
             }
             return true;
         } catch (JSONException exJson) {
@@ -164,9 +147,7 @@ public class P10_Activity extends BaseActivity {
                 case P14_HDR_REQUEST_CODE:
                     //Log.d("OK", "P14_HDR");
                     break;
-                case P15_HDR_REQUEST_CODE:
-                    //Log.d("OK", "P14_HDR");
-                    break;
+
                 default:
                     break;
             }
@@ -175,9 +156,7 @@ public class P10_Activity extends BaseActivity {
                 case P14_HDR_REQUEST_CODE:
                     //Log.d("CANCELED", "P14_HDR");
                     break;
-                case P15_HDR_REQUEST_CODE:
-                    //Log.d("CANCELED", "P14_HDR");
-                    break;
+
                 default:
                     break;
             }

@@ -20,13 +20,13 @@ public class M20_Activity extends BaseActivity {
     private String vMenuID, vMenuNm, vMenuRemark, vStartCommand;
 
     //== View 선언(Button) ==//
-    private Button btn_Prodt_Warehousing_Out_save, btn_Prodt_Warehousing_Out_query, btn_menu;
+    private Button btn_Prodt_Warehousing_Out_save, btn_Prodt_Warehousing_Out_query, btn_menu,btn_Prodt_Warehousing_Out_set;
 
     //== Grant 관련 변수 ==//
-    private String ADMIN_CHK = "N", W_IN = "N", M21 = "N", M22 = "N";     //Grant
+    private String ADMIN_CHK = "N", W_IN = "N", M21 = "N", M22 = "N",M23 = "N";     //Grant
 
     //== ActivityForResult 관련 변수 ==//
-    private final int M21_HDR_REQUEST_CODE = 1, M22_QUERY_REQUEST_CODE = 2;
+    private final int M21_HDR_REQUEST_CODE = 1, M22_QUERY_REQUEST_CODE = 2,M23_HDR_REQUEST_CODE=3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class M20_Activity extends BaseActivity {
         //== ID값 바인딩 ==//
         btn_Prodt_Warehousing_Out_save  = findViewById(R.id.btn_Prodt_Warehousing_Out_save);    // 1. 생산입고등록
         btn_Prodt_Warehousing_Out_query = findViewById(R.id.btn_Prodt_Warehousing_Out_query);   // 2. 생산입고조회
+        btn_Prodt_Warehousing_Out_set   = findViewById(R.id.btn_Prodt_Warehousing_Out_set);   // 3. 생산입고등록(함안)
         btn_menu                        = (Button) findViewById(R.id.btn_menu);                 // 메뉴
     }
 
@@ -91,12 +92,26 @@ public class M20_Activity extends BaseActivity {
                         startActivityForResult(intent, M22_QUERY_REQUEST_CODE);
                     }
                 }
+                else if (v == btn_Prodt_Warehousing_Out_set) {  // 생산입고조회 버튼
+                    if (start_grant("M23")) {
+                        String sMenuName = "메뉴 > 생산입고관리 > 생산입고등록(함안)";
+
+                        Intent intent = TGSClass.ChangeView(getPackageName(), M23_HDR_Activity.class);
+                        intent.putExtra("MENU_ID", "M23");
+                        intent.putExtra("MENU_NM", sMenuName);
+                        intent.putExtra("MENU_REMARK", vMenuRemark);
+                        intent.putExtra("START_COMMAND", vStartCommand);
+                        startActivityForResult(intent, M23_HDR_REQUEST_CODE);
+                    }
+                }
             }
         };
         //== 이벤트 부여 ==//
         btn_menu.setOnClickListener(clickListener);
         btn_Prodt_Warehousing_Out_save.setOnClickListener(clickListener);
         btn_Prodt_Warehousing_Out_query.setOnClickListener(clickListener);
+        btn_Prodt_Warehousing_Out_set.setOnClickListener(clickListener);
+
     }
 
     private void initializeData() {
@@ -116,14 +131,20 @@ public class M20_Activity extends BaseActivity {
                 W_IN = LEVEL_CD.equals("W_IN") || W_IN.equals("Y") ? "Y" : "N";
                 M21 = LEVEL_CD.equals("M21") || M21.equals("Y") ? "Y" : "N";
                 M22 = LEVEL_CD.equals("M22") || M22.equals("Y") ? "Y" : "N";
+                M23 = LEVEL_CD.equals("M23") || M23.equals("Y") ? "Y" : "N";
+
             }
 
             if (ADMIN_CHK.equals("N") && W_IN.equals("N")) {
                 if (MenuID.equals("M21") && M21.equals("N")) {
-                    TGSClass.AlterMessage(getApplicationContext(), "적치장재고조회 메뉴에 대한 접속 권한이 없습니다.");
+                    TGSClass.AlterMessage(getApplicationContext(), "생산입고등록 메뉴에 대한 접속 권한이 없습니다.");
                     return false;
                 } else if (MenuID.equals("M22") && M22.equals("N")) {
-                    TGSClass.AlterMessage(getApplicationContext(), "창고재고조회 메뉴에 대한 접속 권한이 없습니다.");
+                    TGSClass.AlterMessage(getApplicationContext(), "생산입고조회 메뉴에 대한 접속 권한이 없습니다.");
+                    return false;
+                }
+                else if (MenuID.equals("M23") && M23.equals("N")) {
+                    TGSClass.AlterMessage(getApplicationContext(), "생산입고등록(함안) 메뉴에 대한 접속 권한이 없습니다.");
                     return false;
                 }
             }
@@ -149,6 +170,8 @@ public class M20_Activity extends BaseActivity {
                 case M22_QUERY_REQUEST_CODE:
                     //Log.d("OK", "M22_QUERY");
                     break;
+                case M23_HDR_REQUEST_CODE:
+                    break;
                 default:
                     break;
             }
@@ -159,6 +182,8 @@ public class M20_Activity extends BaseActivity {
                     break;
                 case M22_QUERY_REQUEST_CODE:
                     //Log.d("CANCELED", "M22_QUERY");
+                    break;
+                case M23_HDR_REQUEST_CODE:
                     break;
                 default:
                     break;

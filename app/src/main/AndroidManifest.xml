@@ -203,6 +203,12 @@
             android:name=".M20.M22_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
+            android:name=".M20.M23_HDR_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
+            android:name=".M20.M23_DTL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
             android:name=".M30.M30_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
@@ -255,9 +261,6 @@
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
             android:name=".P10.P14_SAVE_Activity"
-            android:screenOrientation="portrait" /> <!-- 세로고정 -->
-        <activity
-            android:name=".P10.P15_QUERY_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <!-- 안드로이드 7.0 버전 이상 부터는. 파일 경로 보안처리를해주어야 합니다. -->
         <provider
