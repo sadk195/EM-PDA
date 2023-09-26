@@ -34,13 +34,15 @@ public class M23_DTL_Activity extends BaseActivity {
 
     //== Intent에서 받을 값 선언 ==//
     private String vMenuID, vMenuNm, vMenuRemark, vStartCommand;
-    private String prodt_order_no_ex;
+    private String prodt_order_no_ex,sl_cd;
 
     //== View 선언(EditText) ==//
-    private EditText prodt_order_no,item_cd,item_nm,sts_nm,good_qty,bad_qty,remain_qty,sl_nm,in_dt;
+    private EditText prodt_order_no,item_cd,item_nm,sts_nm,good_qty,bad_qty,stock_qty,sl_nm,in_dt,in_qty,opr_no;
 
     //== View 선언(Button) ==//
     private Button btn_save;
+    private String txt_prodt_order_no,txt_opr_no,txt_item_cd,txt_seq,txt_report_type,txt_prod_qty_in_base_unit;
+    private String txt_base_unit,txt_lot_no,txt_lot_sub_no,txt_tracking_no,txt_sl_cd,txt_wc_cd,txt_order_status;
 
 
     //== 날짜관련 변수 선언 ==//
@@ -66,7 +68,8 @@ public class M23_DTL_Activity extends BaseActivity {
 
         //== Intent 값 바인딩 ==//
         //ScanData에서 스캔 한 값을 받아 QM_10의 INSP_REQ_NO(검사의뢰번호)를 받아서 QM_11로 받아 오는 소스
-        prodt_order_no_ex   = getIntent().getStringExtra("REQ_NO");
+        prodt_order_no_ex   = getIntent().getStringExtra("PRODT_ORDER_NO");
+
         vMenuNm             = getIntent().getStringExtra("MENU_NM");
         vMenuRemark         = getIntent().getStringExtra("MENU_REMARK");
         vStartCommand       = getIntent().getStringExtra("START_COMMAND"); //다음 페이지에 가지고 넘어온 코드
@@ -74,15 +77,17 @@ public class M23_DTL_Activity extends BaseActivity {
         //== ID 값 바인딩 ==//
 
         prodt_order_no      = (EditText) findViewById(R.id.prodt_order_no);
+        opr_no              = (EditText) findViewById(R.id.opr_no);
+
         item_cd             = (EditText) findViewById(R.id.item_cd);
         item_nm             = (EditText) findViewById(R.id.item_nm);
         sts_nm              = (EditText) findViewById(R.id.sts_nm);
         good_qty            = (EditText) findViewById(R.id.good_qty);
         bad_qty             = (EditText) findViewById(R.id.bad_qty);
-        remain_qty          = (EditText) findViewById(R.id.remain_qty);
+        stock_qty           = (EditText) findViewById(R.id.stock_qty);
         sl_nm               = (EditText) findViewById(R.id.sl_nm);
         in_dt               = (EditText) findViewById(R.id.in_dt);
-
+        in_qty              = (EditText) findViewById(R.id.in_qty);
         btn_save            = (Button) findViewById(R.id.btn_save);
     }
 
@@ -97,23 +102,58 @@ public class M23_DTL_Activity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
+                try {
+                    String str_INSP_DT = in_dt.getText().toString();
 
+                    if (Double.valueOf(txt_prod_qty_in_base_unit) <= 0) {
+                        TGSClass.AlterMessage(getApplicationContext(), "입고수량은 0보다 커야합니다.");
+                        return;
+                    }
 
+                    String prodt_order_no = txt_prodt_order_no;
+                    String opr_no = txt_opr_no;
+                    String item_cd = txt_item_cd;
+                    String seq = txt_seq;
+                    String report_type = txt_report_type;
+                    String prod_qty_in_base_unit = txt_prod_qty_in_base_unit;
+                    String base_unit = txt_base_unit;
+                    String lot_no = txt_lot_no;
+                    String lot_sub_no = txt_lot_sub_no;
+                    String tracking_no = txt_tracking_no;
+                    String sl_cd = txt_sl_cd;
+                    String wc_cd = txt_wc_cd;
+                    String order_status = txt_order_status;
+                    String report_dt = str_INSP_DT;
 
-                String str_INSP_DT = in_dt.getText().toString();
-                int INSP_YYYY = Integer.parseInt(str_INSP_DT.substring(0, 4));
-                int INSP_MM = Integer.parseInt(str_INSP_DT.substring(5, 7));
-                int INSP_DD = Integer.parseInt(str_INSP_DT.substring(8, 10));
+                    DBQuery_GET_BL(prodt_order_no, opr_no, item_cd, seq, report_type, prod_qty_in_base_unit,
+                            base_unit, lot_no, lot_sub_no, tracking_no, sl_cd, wc_cd, order_status, report_dt);
+                    if (result_msg.equals("완료처리 되었습니다.")) {
+                        TGSClass.AlterMessage(getApplicationContext(), "생산입고 완료");
 
-
-                //DBQuery_GET_BL("C", vPLANT_CD, "G", "1", prodt_order_no.getText().toString(), lbl_opr_no_st, "1", "", "1", str_INSP_DT);
+                        // 저장 후 결과 값 돌려주기
+                        Intent resultIntent = new Intent();
+                        // 결과처리 후 부른 Activity에 보낼 값
+                        resultIntent.putExtra("SIGN", "OK");
+                        // 부른 Activity에게 결과 값 반환
+                        setResult(RESULT_OK, resultIntent);
+                        // 현재 Activity 종료
+                        finish();
+                    } else {
+                        TGSClass.AlterMessage(getApplicationContext(), "생산입고 실패\n" + result_msg);
+                    }
+                }
+                catch (Exception e){
+                    TGSClass.AlterMessage(getApplicationContext(), "오류가 발생하였습니다.");
+                }
             }
         });
     }
 
     private void initializeData() {
         in_dt.setText(df.format(cal.getTime()));
+
         prodt_order_no.setText(prodt_order_no_ex);
+
         start();
     }
 
@@ -127,14 +167,10 @@ public class M23_DTL_Activity extends BaseActivity {
         ////////////////////////////// 웹 서비스 호출 시 쓰레드 사용 ////////////////////////////////////////////////////////
         Thread workThd_INSP_REQ_NO_INFO = new Thread() {
             public void run() {
-                String vSTS = "D";
 
-                String sql = " EXEC XUSP_APK_QM21_GET_LIST ";
-                sql += "  @FLAG = 'GRID1'";
-                sql += "  ,@PLANT_CD = '" + vPLANT_CD + "'";
+                String sql = " EXEC XUSP_ANDROID_PRODT_ORDER_GET ";
+                sql += "  @PLANT_CD = '" + vPLANT_CD + "'";
                 sql += "  ,@PRODT_ORDER_NO = '" + prodt_order_no.getText().toString() + "'";
-                sql += "  ,@STS = '" + vSTS + "'";
-                sql += "  ,@ITEM_CD = ''";
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
 
@@ -162,19 +198,35 @@ public class M23_DTL_Activity extends BaseActivity {
                 if (!sJson.equals("[]")) {
                     try {
                         JSONArray ja = new JSONArray(sJson);
+                        for(int i = 0; i<ja.length(); i++){
+                            JSONObject jObject = ja.getJSONObject(i);
 
-                        JSONObject jObject = ja.getJSONObject(0);
+                            prodt_order_no.setText(jObject.getString("PRODT_ORDER_NO"));
+                            item_cd.setText(jObject.getString("ITEM_CD"));
+                            item_nm.setText(jObject.getString("ITEM_NM"));
+                            sts_nm.setText(jObject.getString("ORDER_STATUS"));
+                            good_qty.setText(jObject.getString("GOOD_QTY_IN_ORDER_UNIT"));
+                            bad_qty.setText(jObject.getString("BAD_QTY_IN_ORDER_UNIT"));
+                            stock_qty.setText(jObject.getString("GOOD_STOCK"));
+                            sl_nm.setText(jObject.getString("SL_NM"));
+                            sl_cd = jObject.getString("MAJOR_SL_CD");
+                            //in_dt.setText(jObject.getString("in_dt"));
+                            in_qty.setText(jObject.getString("GOOD_QTY_IN_ORDER_UNIT"));
 
-                        prodt_order_no.setText(jObject.getString("prodt_order_no"));
-                        item_cd.setText(jObject.getString("item_cd"));
-                        item_nm.setText(jObject.getString("item_nm"));
-                        sts_nm.setText(jObject.getString("sts_nm"));
-                        good_qty.setText(jObject.getString("good_qty"));
-                        bad_qty.setText(jObject.getString("bad_qty"));
-                        remain_qty.setText(jObject.getString("remain_qty"));
-                        sl_nm.setText(jObject.getString("sl_nm"));
-                        in_dt.setText(jObject.getString("in_dt"));
-
+                            txt_prodt_order_no = jObject.getString("PRODT_ORDER_NO");
+                            txt_opr_no = jObject.getString("OPR_NO");
+                            txt_item_cd = jObject.getString("ITEM_CD");
+                            txt_seq = jObject.getString("SEQ");
+                            txt_report_type = jObject.getString("REPORT_TYPE");
+                            txt_prod_qty_in_base_unit = jObject.getString("PROD_QTY_IN_BASE_UNIT");
+                            txt_base_unit = jObject.getString("BASE_UNIT");
+                            txt_lot_no = "";//jObject.getString("LOT_NO");
+                            txt_lot_sub_no = "0";//jObject.getString("LOT_SUB_NO");
+                            txt_tracking_no = jObject.getString("TRACKING_NO");
+                            txt_sl_cd = jObject.getString("SL_CD");
+                            txt_wc_cd = jObject.getString("WC_CD");
+                            txt_order_status = jObject.getString("ORDER_STATUS");
+                        }
                     } catch (JSONException ex) {
                         TGSClass.AlterMessage(this, ex.getMessage());
                     } catch (Exception e1) {
@@ -190,95 +242,131 @@ public class M23_DTL_Activity extends BaseActivity {
         }
     }
 
-    public boolean DBQuery_GET_BL(final String cud_flag, final String plant_cd, final String report_type, final String seq, final String prodt_order_no,
-                                  final String opr_no, final String qty, final String b_type_cd, final String qty_in, final String report_dt)
+    public boolean DBQuery_GET_BL(final String prodt_order_no, final String opr_no, final String item_cd, final String seq, final String report_type,
+                                  final String prod_qty_in_base_unit, final String base_unit, final String lot_no, final String lot_sub_no, final String tracking_no,
+                                  final String sl_cd, final String wc_cd, final String order_status, final String report_dt)
     {
         Thread workingThread = new Thread() {
             public void run() {
 
                 global = (MySession)getApplication(); //전역 클래스
 
-                String vUnit_CD = getIntent().getStringExtra("pUNIT_CD");
+                String vUnit_CD = vUNIT_CD;
 
                 if(vUnit_CD == null)
                     vUnit_CD = global.getmUnitCDString();
 
-                String cud_flag_parm             = cud_flag;
-                String plant_cd_parm             = plant_cd;
-                String report_type_parm          = report_type;
-                String seq_parm                  = seq;
-                String prodt_order_no_parm       = prodt_order_no;
-                String opr_no_parm               = opr_no;
-                String qty_parm                  = qty;
-                String b_type_cd_parm            = b_type_cd;
-                String qty_in_parm               = qty_in;
-                String report_dt_parm            = report_dt;
-                String unit_cd_parm              = vUnit_CD;
-
-                String wk_id = vUnit_CD;//lbl_WORKER_CD.getText().toString();
+                String plant_cd_parm                = vPLANT_CD;
+                String prodt_order_no_parm          = prodt_order_no;
+                String opr_no_parm                  = opr_no;
+                String item_cd_parm                 = item_cd;
+                String seq_parm                     = seq;
+                String report_type_parm             = report_type;
+                String prod_qty_in_base_unit_parm   = prod_qty_in_base_unit;
+                String base_unit_parm               = base_unit;
+                String lot_no_parm                  = lot_no;
+                String lot_sub_no_parm              = lot_sub_no;
+                String tracking_no_parm             = tracking_no;
+                String sl_cd_parm                   = sl_cd;
+                String wc_cd_parm                   = wc_cd;
+                String order_status_parm            = order_status;
+                String report_dt_parm               = report_dt;
+                String rcpt_item_document_no_parm    ="";
+                String count_parm                   ="1";
+                String unit_cd_parm                 = vUnit_CD;
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
                 PropertyInfo parm = new PropertyInfo();
-                parm.setName("cud_flag");
-                parm.setValue(cud_flag_parm);
+                parm.setName("plant_cd");
+                parm.setValue(plant_cd_parm);
                 parm.setType(String.class);
 
                 PropertyInfo parm2 = new PropertyInfo();
-                parm2.setName("plant_cd");
-                parm2.setValue(plant_cd_parm);
+                parm2.setName("prodt_order_no");
+                parm2.setValue(prodt_order_no_parm);
                 parm2.setType(String.class);
 
                 PropertyInfo parm3 = new PropertyInfo();
-                parm3.setName("report_type");
-                parm3.setValue(report_type_parm);
+                parm3.setName("opr_no");
+                parm3.setValue(opr_no_parm);
                 parm3.setType(String.class);
 
                 PropertyInfo parm4 = new PropertyInfo();
-                parm4.setName("seq_parm");
-                parm4.setValue(seq_parm);
+                parm4.setName("item_cd");
+                parm4.setValue(item_cd_parm);
                 parm4.setType(String.class);
 
                 PropertyInfo parm5 = new PropertyInfo();
-                parm5.setName("prodt_order_no");
-                parm5.setValue(prodt_order_no_parm);
+                parm5.setName("seq");
+                parm5.setValue(seq_parm);
                 parm5.setType(String.class);
 
                 PropertyInfo parm6 = new PropertyInfo();
-                parm6.setName("opr_no");
-                parm6.setValue(opr_no_parm);
+                parm6.setName("report_type");
+                parm6.setValue(report_type_parm);
                 parm6.setType(String.class);
 
                 PropertyInfo parm7 = new PropertyInfo();
-                parm7.setName("qty");
-                parm7.setValue(qty_parm);
+                parm7.setName("prod_qty_in_base_unit");
+                parm7.setValue(prod_qty_in_base_unit_parm);
                 parm7.setType(String.class);
 
                 PropertyInfo parm8 = new PropertyInfo();
-                parm8.setName("b_type_cd");
-                parm8.setValue(b_type_cd_parm);
-                parm8.setType(Integer.class);
+                parm8.setName("base_unit");
+                parm8.setValue(base_unit_parm);
+                parm8.setType(String.class);
 
                 PropertyInfo parm9 = new PropertyInfo();
-                parm9.setName("qty_in");
-                parm9.setValue(qty_in_parm);
+                parm9.setName("lot_no");
+                parm9.setValue(lot_no_parm);
                 parm9.setType(String.class);
 
                 PropertyInfo parm10 = new PropertyInfo();
-                parm10.setName("report_dt");
-                parm10.setValue(report_dt_parm);
+                parm10.setName("lot_sub_no");
+                parm10.setValue(lot_sub_no_parm);
                 parm10.setType(String.class);
 
                 PropertyInfo parm11 = new PropertyInfo();
-                parm11.setName("wk_id");
-                parm11.setValue(wk_id);
+                parm11.setName("tracking_no");
+                parm11.setValue(tracking_no_parm);
                 parm11.setType(String.class);
 
                 PropertyInfo parm12 = new PropertyInfo();
-                parm12.setName("unit_cd");
-                parm12.setValue(unit_cd_parm);
+                parm12.setName("sl_cd");
+                parm12.setValue(sl_cd_parm);
                 parm12.setType(String.class);
+
+                PropertyInfo parm13 = new PropertyInfo();
+                parm13.setName("wc_cd");
+                parm13.setValue(wc_cd_parm);
+                parm13.setType(String.class);
+
+                PropertyInfo parm14 = new PropertyInfo();
+                parm14.setName("order_status");
+                parm14.setValue(order_status_parm);
+                parm14.setType(String.class);
+
+                PropertyInfo parm15 = new PropertyInfo();
+                parm15.setName("report_dt");
+                parm15.setValue(report_dt_parm);
+                parm15.setType(String.class);
+
+                PropertyInfo parm16 = new PropertyInfo();
+                parm16.setName("rcpt_item_document_no");
+                parm16.setValue(rcpt_item_document_no_parm);
+                parm16.setType(String.class);
+
+                PropertyInfo parm17 = new PropertyInfo();
+                parm17.setName("count");
+                parm17.setValue(count_parm);
+                parm17.setType(String.class);
+
+                PropertyInfo parm18 = new PropertyInfo();
+                parm18.setName("unit_cd");
+                parm18.setValue(unit_cd_parm);
+                parm18.setType(String.class);
 
                 pParms.add(parm);
                 pParms.add(parm2);
@@ -292,8 +380,14 @@ public class M23_DTL_Activity extends BaseActivity {
                 pParms.add(parm10);
                 pParms.add(parm11);
                 pParms.add(parm12);
+                pParms.add(parm13);
+                pParms.add(parm14);
+                pParms.add(parm15);
+                pParms.add(parm16);
+                pParms.add(parm17);
+                pParms.add(parm18);
 
-                result_msg = dba.SendHttpMessage("BL_SetProductionResult_ANDROID", pParms);
+                result_msg = dba.SendHttpMessage("BL_SetProductionRcpt_ANDROID", pParms);
             }
         };
         workingThread.start();   //스레드 시작
@@ -413,3 +507,5 @@ public class M23_DTL_Activity extends BaseActivity {
         return true;
     }
 }
+
+

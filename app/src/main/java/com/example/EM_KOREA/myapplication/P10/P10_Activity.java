@@ -21,7 +21,7 @@ public class P10_Activity extends BaseActivity {
 
     //== View 선언(버튼) ==//
     private Button btn_c1_traveler_register, btn_c1_traveler_query, btn_h1_traveler_register,
-            btn_h1_outorder_register,btn_h1_prodt_order_set;
+            btn_h1_outorder_register;
     private Button btn_menu;
 
     //== Grant 관련 변수 ==//
@@ -100,7 +100,6 @@ public class P10_Activity extends BaseActivity {
         btn_c1_traveler_query.setOnClickListener(clickListener);        // 2. TRAVELER실적조회
         btn_h1_traveler_register.setOnClickListener(clickListener);     // 3. (함안)TRAVELER실적등록
         btn_h1_outorder_register.setOnClickListener(clickListener);     // 4. (함안)공정외주실적등록
-        btn_h1_prodt_order_set.setOnClickListener(clickListener);       // 5. (함안)생산실적등록
     }
 
     private void initializeData() {

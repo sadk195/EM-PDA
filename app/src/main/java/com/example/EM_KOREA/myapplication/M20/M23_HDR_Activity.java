@@ -81,7 +81,7 @@ public class M23_HDR_Activity extends BaseActivity {
                         TGSClass.AlterMessage(getApplicationContext(), "제조오더번호를 입력하십시오.");
                         return false;
                     }
-                    return setScanData(vStartCommand);
+                    return setScanData();
                 }
                 return false;
             }
@@ -103,7 +103,7 @@ public class M23_HDR_Activity extends BaseActivity {
 
             public void afterTextChanged(Editable s) {
                 if (txt_Scan.getText().toString().length() >= 20) {
-                    if (!setScanData(vStartCommand)) return;
+                    if (!setScanData()) return;
                 }
             }
         });
@@ -117,15 +117,14 @@ public class M23_HDR_Activity extends BaseActivity {
 
     private void changeView(String REQ_NO, String pMenuRemark) {
         Intent intent = TGSClass.ChangeView(getPackageName(), M23_DTL_Activity.class);
-        intent.putExtra("REQ_NO", REQ_NO);
+        intent.putExtra("PRODT_ORDER_NO", REQ_NO);
         intent.putExtra("MENU_REMARK", pMenuRemark);
         intent.putExtra("START_COMMAND", vStartCommand);
         startActivityForResult(intent, M23_DTL_REQUEST_CODE);
     }
 
     //스캔 데이터 값 처리.
-    private boolean setScanData(String pJobCD) {
-        String txt_Scan_st = txt_Scan.getText().toString();
+    private boolean setScanData() {
 
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - inputEnterPressedTime;
@@ -137,16 +136,18 @@ public class M23_HDR_Activity extends BaseActivity {
             inputEnterPressedTime = tempTime;
         }
 
-        //스캔 데이터 생성 클래스
-        ScanData scan = new ScanData(txt_Scan_st);
+        String txt_Scan_st = txt_Scan.getText().toString();
 
-        String vINSP_REQ_NO = scan.getm_INSP_REQ_No();
+        if(txt_Scan_st.length() < 9){
+            TGSClass.AlterMessage(getApplicationContext(), "제조오더번호를 확인하십시오.");
+            return false;
+        }
 
-        dbQuery_get_REQ_NO_INFO(vINSP_REQ_NO);         //검사요청번호
+        txt_Scan_st = txt_Scan_st.substring(0, 8);
 
-        System.out.println("sJson:"+sJson);
+        dbQuery_get_REQ_NO_INFO(txt_Scan_st);         //검사요청번호
 
-        if (sJson.equals("[]")) {
+        if (sJson.equals("[]") || sJson.equals("[{\"Column1\":\"N\"}]") ) {
             TGSClass.AlterMessage(getApplicationContext(), "검색 된 제조오더번호 결과가 없습니다.");
             return false;
         }
@@ -158,16 +159,15 @@ public class M23_HDR_Activity extends BaseActivity {
         return true;
     }
 
-    private void dbQuery_get_REQ_NO_INFO(final String pINSP_REQ_NO) {
+    private void dbQuery_get_REQ_NO_INFO(String order_no) {
         ////////////////////////////// 웹 서비스 호출 시 쓰레드 사용 ////////////////////////////////////////////////////////
         Thread workThd_dbQuery = new Thread() {
             public void run() {
                 String txt_Scan_st = txt_Scan.getText().toString();
 
-
-                String sql = " EXEC XUSP_ANDROID_PRODT_ORDER_GET ";
+                String sql = " EXEC XUSP_MES_PRODT_ORDER_SET_CHECK ";
                 sql += "  @PLANT_CD = '" + vPLANT_CD + "'";
-                sql += "  ,@PRODT_ORDER_NO = '" + txt_Scan_st + "'";
+                sql += "  ,@PRODT_ORDER_NO = '" + order_no + "'";
 
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
@@ -222,15 +222,10 @@ public class M23_HDR_Activity extends BaseActivity {
             switch (requestCode) {
                 case M23_DTL_REQUEST_CODE:
                     String sign = data.getStringExtra("SIGN");
-                    if (sign.equals("EXIT")) {
-                        TGSClass.AlterMessage(getApplicationContext(), "스캔완료");
-                        //Toast.makeText(M23_HDR_Activity.this, "저장 되었습니다.", Toast.LENGTH_SHORT).show();
-                        //finish();
-                        txt_Scan.requestFocus();
-                    } else if (sign.equals("ADD")) {
-                        //Toast.makeText(M23_HDR_Activity.this, "추가 되었습니다.", Toast.LENGTH_SHORT).show();
-                        // Start();
-                    }
+                   if (sign.equals("OK")) {
+                       //TGSClass.AlterMessage(this, "저장 되었습니다.");
+                       finish();
+                   }
                     break;
                 default:
                     break;
