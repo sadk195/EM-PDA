@@ -606,7 +606,6 @@ public class MainActivity extends AppCompatActivity {
         Thread workThd_dbQuery = new Thread() {
             public void run() {
                 String sql = " exec XUSP_AND_APK_DEVICE_CHECK @UNIT_CD='" + pDevice + "'";
-                System.out.println("sql:"+sql);
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
 

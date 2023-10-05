@@ -35,6 +35,30 @@ public class I39_SET_ListViewAdapter extends BaseAdapter {
         return listViewItem.get(position);
     }
 
+    public void setChecked(int position){
+
+        boolean temp = listViewItem.get(position).getCHK_OUT();
+
+        if(temp){
+            temp = false;
+        }
+        else{
+            temp = true;
+        }
+        System.out.println("temp:"+temp);
+        listViewItem.get(position).setCHK_OUT(temp);
+    }
+
+    public String getChecked(){
+
+        int result =0;
+        for(I39_SET set : listViewItem){
+            if(set.getCHK_OUT()){
+                result++;
+            }
+        }
+        return  String.valueOf(result);
+    }
     @Override
     public long getItemId(int position) {
         return position;
@@ -63,20 +87,6 @@ public class I39_SET_ListViewAdapter extends BaseAdapter {
         CheckBox chk_out                = (CheckBox) convertView.findViewById(R.id.chk_out);
 
         I39_SET item = listViewItem.get(position);
-        chk_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(item.getCHK_OUT())
-                {
-                    item.setCheckBool(false);
-                }
-                else{
-                    item.setCheckBool(true);
-
-                }
-            }
-        });
-
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         // 아이템 내 각 위젯에 데이터 반영

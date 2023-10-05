@@ -45,6 +45,8 @@ public class I39_HDR_Activity extends BaseActivity {
     public Button btn_up,btn_down,btn_del,btn_order_start;
 
     private int selected_idx;
+
+    private String txt_ProdtNO="";
     //== ActivityForResult 관련 변수 선언 ==//
     private final int I39_DTL_REQUEST_CODE = 0;
     I39_HDR_ListViewAdapter listViewAdapter;
@@ -81,6 +83,11 @@ public class I39_HDR_Activity extends BaseActivity {
         btn_order_start     = (Button) findViewById(R.id.btn_order_start);
         listview            = (ListView) findViewById(R.id.listOrder);
         listViewAdapter     = new I39_HDR_ListViewAdapter();
+
+        //리스트뷰를 다시 쓸때 포커스가 리스트뷰로 이동하기때문에 포커스를 가지고 있지 못하도록 수정
+        //리스트의 항목선택은 리스트뷰 안의 어댑터와 로우가 가지고 있기 때문에 리스트뷰 자체의 포커스와 무관
+        listview.setFocusable(false);
+
     }
 
     private void initializeListener() {
@@ -91,12 +98,17 @@ public class I39_HDR_Activity extends BaseActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    txt_ProdtNO = txt_Scan_prodt_order_no.getText().toString();
+
                     start();
+                    txt_Scan_prodt_order_no.requestFocus();
+                    txt_Scan_prodt_order_no.setText("");
                     return true;
                 }
                 return false;
             }
         });
+
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -104,27 +116,29 @@ public class I39_HDR_Activity extends BaseActivity {
                 // I39_HDR vItem = (I39_HDR) parent.getItemAtPosition(position);
 
                 selected_idx = position;
+                listViewAdapter.setSelected(position);
+                listViewAdapter.notifyDataSetChanged();
             }
         });
 
         btn_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listViewAdapter.UpItem(selected_idx);
+                selected_idx = listViewAdapter.UpItem(selected_idx);
                 listViewAdapter.notifyDataSetChanged();
             }
         });
         btn_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listViewAdapter.DownItem(selected_idx);
+                selected_idx = listViewAdapter.DownItem(selected_idx);
                 listViewAdapter.notifyDataSetChanged();
             }
         });
         btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listViewAdapter.DelItem(selected_idx);
+                selected_idx = listViewAdapter.DelItem(selected_idx);
                 listViewAdapter.notifyDataSetChanged();
             }
         });
@@ -161,9 +175,8 @@ public class I39_HDR_Activity extends BaseActivity {
     }
 
     private void start() {
-        String txt_Scan_prodt_order_no_st   = txt_Scan_prodt_order_no.getText().toString();
 
-        dbQuery(txt_Scan_prodt_order_no_st);
+        dbQuery(txt_ProdtNO);
 
         try {
             JSONArray ja = new JSONArray(sJson);

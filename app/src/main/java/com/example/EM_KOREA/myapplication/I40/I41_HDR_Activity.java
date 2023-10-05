@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.EM_KOREA.myapplication.BaseActivity;
 import com.example.EM_KOREA.myapplication.DBAccess;
+import com.example.EM_KOREA.myapplication.ErrorList_Popup;
+import com.example.EM_KOREA.myapplication.ErrorPopupActivity2;
 import com.example.EM_KOREA.myapplication.R;
 import com.example.EM_KOREA.myapplication.TGSClass;
 
@@ -143,6 +145,7 @@ public class I41_HDR_Activity extends BaseActivity {
 
                 int ct = listview.getCount();
 
+                String err_txt = "";
                 for (int i = 0; i < ct; i++) {
 
                     I41_HDR vItem = (I41_HDR) Adap.getItem(i);
@@ -156,21 +159,21 @@ public class I41_HDR_Activity extends BaseActivity {
                     String qty = vItem.getREQ_QTY();
                     String document_text ="";
                     String mov_type = vItem.getMOV_TYPE();
+                    String wc_cd = vItem.getWC_CD();
                     switch (mov_type){
                         case "I03" : document_text = "-- PDA 작업장 반출 --";
                                 break;
                         case "I97" : document_text = "-- PDA 미사용잔량 반입 --";
                             break;
-                        case "I99" : document_text = "-- PDA 작업장 반입";
+                        case "I99" : document_text = "-- PDA 작업장 반입 --";
                             break;
                     }
                     if(vItem.getMOV_STATUS().trim().equals("S")){
                         continue;
                     }
                     String unit_cd = vUNIT_CD;
-                    BL_DATASET_SELECT(prodt_order_no, plant_cd, item_cd, tracking_no, lot_no, sl_cd, qty, document_text, mov_type,unit_cd);
-                    System.out.println("result_msg:"+result_msg);
-                    if(result_msg.equals("OK")){
+                    BL_DATASET_SELECT(prodt_order_no, plant_cd, item_cd, tracking_no, lot_no, sl_cd, qty, document_text, mov_type,unit_cd,wc_cd);
+                    if(result_msg.contains("OK")){
                         listViewAdapter.setHDRStatus("S",i);//성공
                         dbSave(vItem,"S");
                     }
@@ -180,10 +183,18 @@ public class I41_HDR_Activity extends BaseActivity {
                         dbSave(vItem,"E");
                         //listViewAdapter.notifyDataSetChanged();//변경데이터 저장(adapter의 getview실행)
                         //return;
+                        err_txt += prodt_order_no +" 오류발생 :"+result_msg+"\n";
                     }
 
                 }//for문
-                TGSClass.AlterMessage(getApplicationContext(), "반입/반출 처리가 완료되었습니다.");
+                if(!err_txt.equals("")){
+                    Intent error_intent = TGSClass.ChangeView(getPackageName(), ErrorPopupActivity2.class);
+                    error_intent.putExtra("MSG", err_txt);
+                    startActivity(error_intent);
+                }
+                else{
+                    TGSClass.AlterMessage(getApplicationContext(), "반입/반출 처리가 완료되었습니다.");
+                }
                 listViewAdapter.notifyDataSetChanged();//변경데이터 저장(adapter의 getview실행)
                 Runed = true;
             }
@@ -212,6 +223,8 @@ public class I41_HDR_Activity extends BaseActivity {
 
                     I41_HDR item = new I41_HDR();
                     item.setPRODT_ORDER_NO(jObject.getString("PRODT_ORDER_NO"));//제조오더번호
+                    item.setOPR_NO(jObject.getString("OPR_NO"));//제조오더번호
+                    item.setWC_CD(jObject.getString("WC_CD"));//제조오더번호
                     item.setITEM_CD(jObject.getString("ITEM_CD"));//품목
                     item.setITEM_NM(jObject.getString("ITEM_NM"));//품명
                     item.setTRACKING_NO(jObject.getString("TRACKING_NO"));//tracking no
@@ -249,7 +262,6 @@ public class I41_HDR_Activity extends BaseActivity {
                 sql += " @PRODT_REQ_NO = '" + order_no + "' ";
                 //sql += " ,@PLANT_CD = '" + vPLANT_CD + "' ";
 
-                System.out.println("sql: "+ sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -285,8 +297,6 @@ public class I41_HDR_Activity extends BaseActivity {
                 sql += " ,@NO_SEQ = '" + I41.getNO_SEQ() + "' ";
                 sql += " ,@MOV_STATUS = '" + status + "' ";
 
-                System.out.println("sql: "+ sql);
-
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -315,13 +325,16 @@ public class I41_HDR_Activity extends BaseActivity {
 
     private boolean BL_DATASET_SELECT(final String prodt_order_no,final String plant_cd,final String item_cd,final String tracking_no,
                                       final String lot_no,final String sl_cd, final String qty, final String document_text,
-                                      final String mov_type,final String unit_cd) {
+                                      final String mov_type,final String unit_cd,final String wc_cd) {
 
         Thread workThd_BL_DATASET_SELECT = new Thread() {
             public void run() {
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
+
+
+
 
                 PropertyInfo parm = new PropertyInfo();
                 parm.setName("prodt_order_no");
@@ -344,39 +357,52 @@ public class I41_HDR_Activity extends BaseActivity {
                 parm4.setType(String.class);
 
                 PropertyInfo parm5 = new PropertyInfo();
-                parm5.setName("item_cd");
-                parm5.setValue(item_cd);
+                parm5.setName("lot_no");
+                parm5.setValue(lot_no);
                 parm5.setType(String.class);
 
                 PropertyInfo parm6 = new PropertyInfo();
-                parm6.setName("lot_no");
-                parm6.setValue(lot_no);
+                parm6.setName("sl_cd");
+                parm6.setValue(sl_cd);
                 parm6.setType(String.class);
 
                 PropertyInfo parm7 = new PropertyInfo();
-                parm7.setName("sl_cd");
-                parm7.setValue(sl_cd);
+                parm7.setName("qty");
+                parm7.setValue(qty);
                 parm7.setType(String.class);
 
                 PropertyInfo parm8 = new PropertyInfo();
-                parm8.setName("qty");
-                parm8.setValue(qty);
+                parm8.setName("document_text");
+                parm8.setValue(document_text);
                 parm8.setType(String.class);
 
                 PropertyInfo parm9 = new PropertyInfo();
-                parm9.setName("document_text");
-                parm9.setValue(document_text);
+                parm9.setName("mov_type");
+                parm9.setValue(mov_type);
                 parm9.setType(String.class);
 
                 PropertyInfo parm10 = new PropertyInfo();
-                parm10.setName("mov_type");
-                parm10.setValue(mov_type);
+                parm10.setName("unit_cd");
+                parm10.setValue(unit_cd);
                 parm10.setType(String.class);
 
                 PropertyInfo parm11 = new PropertyInfo();
-                parm11.setName("unit_cd");
-                parm11.setValue(unit_cd);
+                parm11.setName("wc_cd");
+                parm11.setValue(wc_cd);
                 parm11.setType(String.class);
+
+
+                System.out.println("prodt_order_no:"+prodt_order_no);
+                System.out.println("plant_cd:"+plant_cd);
+                System.out.println("item_cd:"+item_cd);
+                System.out.println("tracking_no:"+tracking_no);
+                System.out.println("lot_no:"+lot_no);
+                System.out.println("sl_cd:"+sl_cd);
+                System.out.println("qty:"+qty);
+                System.out.println("document_text:"+document_text);
+                System.out.println("mov_type:"+mov_type);
+                System.out.println("unit_cd:"+unit_cd);
+                System.out.println("wc_cd:"+wc_cd);
 
 
                 pParms.add(parm);
@@ -392,6 +418,7 @@ public class I41_HDR_Activity extends BaseActivity {
                 pParms.add(parm11);
 
                 result_msg = dba.SendHttpMessage("BL_SetPartListETCOut_ANDROID2", pParms);
+                System.out.println("result_msg:"+result_msg);
             }
         };
         workThd_BL_DATASET_SELECT.start();   //스레드 시작

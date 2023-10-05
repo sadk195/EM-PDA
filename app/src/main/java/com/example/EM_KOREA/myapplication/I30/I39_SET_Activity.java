@@ -26,20 +26,11 @@ import java.util.Date;
 
 
 public class I39_SET_Activity extends BaseActivity {
-    public String PRODT_ORDER_NO_DataSET = "";
-    public String OPR_NO_DataSET = "";
-    public String SL_CD_DataSET = "";
-    public String ITEM_CD_DataSET = "";
-    public String TRACKING_NO_DataSET = "";
-    public String LOT_NO_DataSET = "";
-    public String LOT_SUB_NO_DataSET = "";
-    public String ENTRY_QTY_DataSET = "";
-    public String ENTRY_UNIT_DataSET = "";
     //== JSON 선언 ==//
     private String sJson = "";
 
     //== Intent에서 받을 변수 선언 ==//
-    private String vMenuID, vMenuNm, vMenuRemark, vStartCommand;
+    private String vMenuID, vMenuNm, vMenuRemark, vStartCommand,param_sl_cd;
 
     //== View 선언(ListView) ==//
     private ListView listview,listview_dtl;
@@ -48,7 +39,7 @@ public class I39_SET_Activity extends BaseActivity {
     private Button btn_add,btn_end;
 
     //== View 선언(TextView) ==//
-    private TextView txt_item_cd,txt_item_nm,txt_spec,txt_qty;
+    private TextView txt_item_cd,txt_item_nm,txt_spec,txt_qty,txt_sl_cd;
 
     //== View 선언(EditText) ==//
     private EditText edt_total_qty;
@@ -83,6 +74,8 @@ public class I39_SET_Activity extends BaseActivity {
         vMenuRemark     = getIntent().getStringExtra("MENU_REMARK");
         vStartCommand   = getIntent().getStringExtra("START_COMMAND"); //다음 페이지에 가지고 넘어갈 코드
 
+        param_sl_cd     = getIntent().getStringExtra("SL_CD"); //이전 페이지에서 설정한 출고창고
+
         i39_dtls   = (ArrayList<I39_DTL>)getIntent().getSerializableExtra("DTL");
         i39_Item    = (I39_DTL) getIntent().getSerializableExtra("ITEMS");
 
@@ -91,13 +84,14 @@ public class I39_SET_Activity extends BaseActivity {
         txt_item_nm         = (TextView) findViewById(R.id.item_nm);
         txt_spec            = (TextView) findViewById(R.id.spec);
         txt_qty             = (TextView) findViewById(R.id.qty);
+        txt_sl_cd           = (TextView) findViewById(R.id.sl_cd);
 
         btn_add             = (Button) findViewById(R.id.btn_add);
         btn_end             = (Button) findViewById(R.id.btn_end);
 
         edt_total_qty       = (EditText) findViewById(R.id.total_qty);
 
-        listview            = (ListView) findViewById(R.id.listOrder);
+        listview            = (ListView) findViewById(R.id.listOrder1);
         listview_dtl        = (ListView) findViewById(R.id.listOrder2);
         listViewAdapter     = new I39_SET_ListViewAdapter();
         listViewAdapter_dtl = new I39_SET_ListViewAdapter2();
@@ -119,9 +113,18 @@ public class I39_SET_Activity extends BaseActivity {
             }
         });
 
+
+
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
+                //vItem = (I39_SET2) parent.getItemAtPosition(position);
+
+                listViewAdapter.setChecked(position);//열을 선택할 경우에도 체크 상태 변경
+                listViewAdapter.notifyDataSetChanged();
+
+                edt_total_qty.setText(listViewAdapter.getChecked());
             }
         });
 
@@ -145,13 +148,16 @@ public class I39_SET_Activity extends BaseActivity {
         txt_item_nm.setText(i39_Item.getITEM_NM());
         txt_spec.setText(i39_Item.getSPEC());
         txt_qty.setText(i39_Item.getQTY());
+        txt_sl_cd.setText(param_sl_cd);
 
         for(I39_DTL dtl : i39_dtls){
             listViewAdapter.add_Item(dtl.getPRODT_ORDER_NO(),dtl.getOPR_NO(),dtl.getTRACKING_NO(),
                     dtl.getJOB_NM(),dtl.getQTY(),dtl.getSEQ(),true);
-
         }
         listview.setAdapter(listViewAdapter);
+
+        edt_total_qty.setText(listViewAdapter.getChecked());//총 출고량 설정
+
         start();
     }
 

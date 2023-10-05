@@ -30,8 +30,8 @@ public class TGSClass {
     //public static String ws_url = "http://125.135.140.21/MES_ANDROID_TEST/webService.asmx"; //-- EMK 테스트DB(unierp5_dev)
 //    public static String ws_url= "http://localhost:6260/MES_ANDROID_TEST/WebServiceEM"; //-- EMK 테스트DB(local)
       //public static String ws_url="http://106.245.142.3/WMS_TEST/webService.asmx"; //--TGS내부 테스트 DB
-      //public static String ws_url="http://125.135.140.14/WMS_TEST/webService.asmx"; //--EM내부 테스트 DB
-      public static String ws_url="http://192.168.12.14/WMS_TEST/webService.asmx"; //--EM사내  테스트 DB
+      public static String ws_url="http://125.135.140.14/WMS_TEST/webService.asmx"; //--EM내부 테스트 DB
+      //public static String ws_url="http://192.168.12.14/WMS_TEST/webService.asmx"; //--EM사내  테스트 DB
 
     public TGSClass() {
 

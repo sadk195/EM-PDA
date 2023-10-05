@@ -118,7 +118,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/bg_box"
-            android:listSelector="@color/colorGray"
+            android:choiceMode="singleChoice"
             android:padding="10dp" />
     </RelativeLayout>
 

@@ -6,13 +6,16 @@ import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.example.EM_KOREA.myapplication.BaseActivity;
 import com.example.EM_KOREA.myapplication.DBAccess;
+import com.example.EM_KOREA.myapplication.GetComboData;
 import com.example.EM_KOREA.myapplication.R;
 import com.example.EM_KOREA.myapplication.TGSClass;
 
@@ -27,13 +30,16 @@ import java.util.ArrayList;
 public class I39_DTL_Activity extends BaseActivity {
 
     //== JSON 선언 ==//
-    private String sJson = "";
+    private String sJson = "", sJsonCombo = "";;
 
     //== Intent에서 받을 변수 선언 ==//
     private String vMenuID, vMenuNm, vMenuRemark, vStartCommand,txtItemCd;
 
     //== View 선언(EditText) ==//
     private EditText  txt_Scan_item_cd;
+
+    //== View 선언(Spinner) ==//
+    private Spinner storage_location;
 
     //== View 선언(ImageView) ==//
     private ImageView  img_barcode_item_cd;
@@ -43,6 +49,9 @@ public class I39_DTL_Activity extends BaseActivity {
 
     //== View 선언(Button) ==//
     public Button btn_query,btn_cancle;
+
+    //== Spinner 관련 변수 선언 ==//
+    private String sl_cd_query = "";
 
     //== ActivityForResult 관련 변수 선언 ==//
     private final int I39_SET_REQUEST_CODE = 0;
@@ -80,10 +89,14 @@ public class I39_DTL_Activity extends BaseActivity {
         btn_query            = (Button) findViewById(R.id.btn_query);
         btn_cancle           = (Button) findViewById(R.id.btn_cancle);
 
+        storage_location        = (Spinner) findViewById(R.id.storage_location);
+
         listview            = (ListView) findViewById(R.id.listOrder);
         listview_dtl        = (ListView) findViewById(R.id.listOrder2);
         listViewAdapter     = new I39_DTL_ListViewAdapter();
         listViewAdapter_dtl = new I39_DTL_ListViewAdapter2();
+
+
     }
 
     private void initializeListener() {
@@ -151,6 +164,7 @@ public class I39_DTL_Activity extends BaseActivity {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 I39_DTL vItem = (I39_DTL) parent.getItemAtPosition(position);
 
+                //선택한 품목과 같은 리스트를 넘김
                 ArrayList<I39_DTL> DTL_SEL = new ArrayList<>();
                 for(I39_DTL dtl : I39_DTL_ITEMS){
                     if(vItem.getITEM_CD().equals(dtl.getITEM_CD())){
@@ -165,6 +179,7 @@ public class I39_DTL_Activity extends BaseActivity {
 
                 intent.putExtra("ITEMS", vItem);  // 선택한 리스트를 파라메터로 다음페이지에 넘김.
                 intent.putExtra("DTL", DTL_SEL);  // 선택한 리스트를 파라메터로 다음페이지에 넘김.
+                intent.putExtra("SL_CD", sl_cd_query);  // 선택한 리스트를 파라메터로 다음페이지에 넘김.
 
 
                 startActivityForResult(intent, I39_SET_REQUEST_CODE);
@@ -176,11 +191,14 @@ public class I39_DTL_Activity extends BaseActivity {
         getDatas();
         TGSClass.AlterMessage(getApplicationContext(), listViewAdapter_dtl.getCount() + "건 조회되었습니다.");
 
+        dbQuery_get_storage_location();
+
     }
 
     private void getDatas() {
         listViewAdapter.clear();
         listViewAdapter_dtl.clear();
+        I39_DTL_ITEMS.clear();
 
         for(I39_HDR ITEM: I39_HDR_ITEMS ){ //위쪽 그리드 내용은 앞페이지에서 조회한 내용 표시(마지막 페이지까지 사용)
             listViewAdapter.addHDRItem(ITEM);
@@ -207,8 +225,6 @@ public class I39_DTL_Activity extends BaseActivity {
                 sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "'";
                 sql += " ,@OPR_NO = '" + opr_no + "'";
 
-                System.out.println("sqls:"+sql);
-
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -230,7 +246,7 @@ public class I39_DTL_Activity extends BaseActivity {
 
                 // 빈 데이터 리스트 생성.
                 //final ArrayList<String> items = new ArrayList<String>();
-                I39_DTL_ITEMS.clear();
+                //I39_DTL_ITEMS.clear();
 
                 for (int idx = 0; idx < ja.length(); idx++) {
                     JSONObject jObject = ja.getJSONObject(idx);
@@ -250,7 +266,6 @@ public class I39_DTL_Activity extends BaseActivity {
                     item.setJOB_NM(jObject.getString("JOB_NM"));
 
                     I39_DTL_ITEMS.add(item);
-                    System.out.println("i39 count2:"+I39_DTL_ITEMS.size());
 
                 }
 
@@ -278,15 +293,16 @@ public class I39_DTL_Activity extends BaseActivity {
             I39_DTL temp_dtl = dtl;
             String item_cd = dtl.getITEM_CD();
 
-            double temp_qty =  0;//.parseInt(temp_dtl.getQTY());
+            double temp_qty = 0;//.parseInt(temp_dtl.getQTY());
 
             for(I39_DTL dtl2 : I39_DTL_ITEMS) {
-
                 if(dtl2.getITEM_CD().equals(item_cd) ){//현재 찾고있는 품목과 같은 품목의 수량 더하기
+
                     temp_qty = temp_qty +  Double.parseDouble(dtl2.getQTY());
                 }
-
             }
+
+            Items.add(item_cd);
             temp_dtl.setQTY(String.valueOf(temp_qty));
             temp.add(temp_dtl);
         }
@@ -299,6 +315,129 @@ public class I39_DTL_Activity extends BaseActivity {
         listViewAdapter_dtl.notifyDataSetChanged();
     }
 
+    private void dbQuery_get_storage_location() {   //창고 스피너
+        Thread workThd_dbQuery_get_storage_location = new Thread() {
+            public void run() {
+
+                String sql = " exec XUSP_WMS_LOCATION_I_GOODS_MOVEMENT_GET_COMBODATA ";
+                sql += " @FLAG = 'storage_location' ";
+                sql += " ,@PLANT_CD = '" + vPLANT_CD + "'";
+
+                DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
+
+                ArrayList<PropertyInfo> pParms = new ArrayList<>();
+
+                PropertyInfo parm = new PropertyInfo();
+                parm.setName("pSQL_Command");
+                parm.setValue(sql);
+                parm.setType(String.class);
+
+                pParms.add(parm);
+
+                sJsonCombo = dba.SendHttpMessage("GetSQLData", pParms);
+            }
+        };
+        workThd_dbQuery_get_storage_location.start();   //스레드 시작
+        try {
+            workThd_dbQuery_get_storage_location.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+
+        } catch (InterruptedException ex) {
+            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+        }
+
+        try {
+            JSONArray ja = new JSONArray(sJsonCombo);
+
+            final ArrayList<GetComboData> listItem = new ArrayList<>();
+
+            /*기본값 세팅*/
+            GetComboData itemBase = new GetComboData();
+
+
+            String basic_sl_cd = getUserSl_cd(vUSER_ID);
+            int basic_idx = 0;
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject jObject = ja.getJSONObject(i);
+
+                final String vMINOR_CD = jObject.getString("CODE");
+                final String vMINOR_NM = jObject.getString("NAME");
+
+                if(vMINOR_CD.equals(basic_sl_cd)){
+                    basic_idx = i;
+                }
+
+                GetComboData item = new GetComboData();
+                item.setMINOR_CD(vMINOR_CD);
+                item.setMINOR_NM(vMINOR_NM);
+
+                listItem.add(item);
+            }
+
+            ArrayAdapter<GetComboData> adapter = new ArrayAdapter<GetComboData>(this, android.R.layout.simple_dropdown_item_1line, listItem);
+            storage_location.setAdapter(adapter);
+
+            //로딩시 기본값 세팅
+            //storage_location.setSelection(adapter.getPosition(itemBase));
+            storage_location.setSelection(basic_idx);
+            //cmbBizPartner.setSelection();
+
+
+
+            //콤보박스 클릭 이벤트 정의
+            storage_location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    sl_cd_query = ((GetComboData) parent.getSelectedItem()).getMINOR_CD();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+
+        } catch (JSONException ex) {
+            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+        } catch (Exception ex) {
+            TGSClass.AlterMessage(getApplicationContext(), ex.getMessage());
+        }
+    }
+
+
+    private String getUserSl_cd(final String user_id) {
+        String sl_cd ="";
+        Thread workThd_dbQuery = new Thread() {
+            public void run() {
+                String sql = "SELECT ISNULL(SL_CD,'') AS SL_CD FROM CA_USER_MASTER WHERE USER_ID = '"+user_id+"'";
+
+                DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
+                ArrayList<PropertyInfo> pParms = new ArrayList<>();
+
+                PropertyInfo parm = new PropertyInfo();
+                parm.setName("pSQL_Command");
+                parm.setValue(sql);
+                parm.setType(String.class);
+
+                pParms.add(parm);
+
+                sJson = dba.SendHttpMessage("GetSQLData", pParms);
+            }
+        };
+        workThd_dbQuery.start();   //스레드 시작
+        try {
+            workThd_dbQuery.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+            JSONArray ja = new JSONArray(sJson);
+
+            for (int idx = 0; idx < ja.length(); idx++) {
+                JSONObject jObject = ja.getJSONObject(idx);
+
+                sl_cd          = jObject.getString("SL_CD");             //품번
+            }
+
+        } catch (Exception ex) {
+
+        }
+        return sl_cd;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

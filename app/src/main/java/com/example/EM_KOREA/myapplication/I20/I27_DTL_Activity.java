@@ -376,7 +376,6 @@ public class I27_DTL_Activity extends BaseActivity {
                 sql += ", @ITEM_CD = '" + txt_item_cd.getText().toString() + "'";
                 sql += ", @SL_CD = '" + sl_cd + "'";
 
-                System.out.println("sql:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
 
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();

@@ -5,7 +5,9 @@ import java.io.Serializable;
 public class I41_HDR implements Serializable {   //Serializable 객체를 파라미터로 다른 ACTIVITY에 전달할때 필요함.
 
     private  String PRODT_ORDER_NO;
-    //private  String OPR_NO;
+    private  String OPR_NO;
+    private  String WC_CD;
+
     private  String ITEM_CD;
     private  String ITEM_NM;
     private  String TRACKING_NO;
@@ -21,8 +23,11 @@ public class I41_HDR implements Serializable {   //Serializable 객체를 파라
     public String getPRODT_ORDER_NO() { return PRODT_ORDER_NO;}
     public void setPRODT_ORDER_NO(String prodt_order_no) { PRODT_ORDER_NO = prodt_order_no; }
 
-   /* public String getOPR_NO() { return OPR_NO;}
-    public void setOPR_NO(String opr_no) { OPR_NO = opr_no; }*/
+    public String getOPR_NO() { return OPR_NO;}
+    public void setOPR_NO(String opr_no) { OPR_NO = opr_no; }
+
+    public String getWC_CD() { return WC_CD;}
+    public void setWC_CD(String wc_cd) { WC_CD = wc_cd; }
 
     public String getITEM_CD() { return ITEM_CD; }
     public void setITEM_CD(String item_cd) { ITEM_CD = item_cd; }

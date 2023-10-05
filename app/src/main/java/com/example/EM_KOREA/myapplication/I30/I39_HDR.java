@@ -19,6 +19,8 @@ public class I39_HDR implements Serializable {   //Serializable 객체를 파라
     private String JOB_NM;
     private String OPR_NO;
 
+    private boolean Selected;
+
     public String getPRODT_ORDER_NO() {
         return PRODT_ORDER_NO;
     }
@@ -121,6 +123,13 @@ public class I39_HDR implements Serializable {   //Serializable 객체를 파라
     }
     public void setOPR_NO(String opr_no) {
         OPR_NO = opr_no;
+    }
+
+    public void setSelected(boolean selected) {
+        Selected = selected;
+    }
+    public boolean getSelected() {
+        return Selected;
     }
 
 

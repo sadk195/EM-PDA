@@ -1,6 +1,7 @@
 package com.example.EM_KOREA.myapplication.I30;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,25 +30,53 @@ public class I39_HDR_ListViewAdapter extends BaseAdapter {
         return listViewItem.size();
     }
 
-    protected void UpItem(int idx){
+    protected int UpItem(int idx){
         if(idx <1){
-            return;
+            return idx;
         }
         Collections.swap(listViewItem, idx, idx-1);
+
+        setSelected(idx -1);
+        return idx-1;
     }
-    protected void DownItem(int idx){
+    protected int DownItem(int idx){
         if(idx >=listViewItem.size()-1){
-            return;
+            return idx;
         }
         Collections.swap(listViewItem, idx, idx+1);
+        setSelected(idx +1);
+        return (idx+1);
     }
 
-    protected void DelItem(int idx){
+    protected int DelItem(int idx){
         if(listViewItem.size() < idx){
             idx = listViewItem.size() - 1; //인덱스가 아이템 개수보다 많을때 마지막 아이템의 인덱스로 설정
         }
         listViewItem.remove(idx);
+        if(idx > 0){
+            setSelected(idx-1);
+            return idx-1;
+
+        }
+        else if(idx ==0){
+            setSelected(idx);
+            return idx;
+
+        }
+        return 0;
     }
+
+    protected void setSelected(int idx) {
+
+        for (int i = 0; i < listViewItem.size(); i++) {
+            if (idx == i) {
+                listViewItem.get(i).setSelected(true);
+                continue;
+            }
+            listViewItem.get(i).setSelected(false);
+        }
+    }
+
     @Override
     public Object getItem(int position) {
         return listViewItem.get(position);
@@ -72,7 +101,6 @@ public class I39_HDR_ListViewAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_view_i39_hdr, parent, false);
         }
-
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
 
         TextView prodt_order_no         = (TextView) convertView.findViewById(R.id.prodt_order_no);
@@ -83,6 +111,14 @@ public class I39_HDR_ListViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         I39_HDR item = listViewItem.get(position);
 
+       System.out.println("item.getSelected():"+item.getSelected());
+        if(item.getSelected()){
+            convertView.setBackgroundColor(Color.parseColor("#DDDDDD"));
+        }
+        else{
+            convertView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+        }
         // 아이템 내 각 위젯에 데이터 반영
         prodt_order_no.setText(item.getPRODT_ORDER_NO());
         item_nm.setText(item.getITEM_NM());

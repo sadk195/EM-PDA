@@ -38,6 +38,7 @@
             android:name=".MenuActivity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity android:name=".DownloadActivity" />
+
         <activity
             android:name=".I10.I10_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
@@ -286,6 +287,9 @@
         <activity
             android:name=".ErrorPopupActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ErrorPopupActivity2"
+            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>
