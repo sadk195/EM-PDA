@@ -352,6 +352,7 @@ public class MainActivity extends AppCompatActivity {
         strClientIP     = TGSClass.getLocalIpAddress();
         strClientHostNm = TGSClass.getMacAddress();
 
+        System.out.println("strClientHostNm:"+strClientHostNm);
         //== SESSION에 값 저장 ==//
         global.setUserIPString(strClientIP);
         global.setUnitCDString(strClientHostNm);
@@ -452,7 +453,6 @@ public class MainActivity extends AppCompatActivity {
 
                 global.setLoginString(pID);
                 global.setPlantCDString(strPlantCD);
-
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
                 PropertyInfo parmID = new PropertyInfo();
@@ -792,6 +792,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void start() {
         strPlantCD = dbQuery(strClientHostNm); // 등록된 기기이면 공장 코드값을 불러옴.
+        System.out.println("strPlantCD:"+strPlantCD);
 
         if (strPlantCD.equals("")) {
             //등록되지 않은 단말기 이면 단말기 등록 요청 페이지로 이동한다.
@@ -941,17 +942,37 @@ public class MainActivity extends AppCompatActivity {
                 boolean jSonType = TGSClass.isJsonData(strJson_Auto_LogIn);
 
                 if (jSonType) {
+                    //반환받은 id 값을 가지고 프로그램 실행
+                    JSONArray ja = new JSONArray(strJson_Auto_LogIn);
+
+                    String id = "";
+
+                    for (int idx = 0; idx < ja.length(); idx++) {
+                        JSONObject jObject = ja.getJSONObject(idx);
+                        id = jObject.getString("USER_ID");
+                    }
+
+                    if(id.equals("")){
+                        return;
+                    }
                     if (!strJson_Auto_LogIn.equals("[]")) {
                         Intent intent = TGSClass.ChangeView(getPackageName(), MenuActivity.class);
                         //== SESSION에도 값 추가 ==//
-                        global.setLoginString(strClientHostNm);
+
+                        //LOGINS STRING에는 로그인 ID가 들어가도록 수정
+                        //global.setLoginString(strClientHostNm);
+                        global.setLoginString(id);
+
                         global.setUnitCDString(strClientHostNm);
                         global.setPlantCDString(strPlantCD);
                         startActivity(intent);
                         finish();
+
                     }
                 }
-            } catch (Exception e) {
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+            }catch (Exception e) {
                 e.printStackTrace();
             }
         } catch (InterruptedException ex) {
