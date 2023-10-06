@@ -197,7 +197,6 @@ public class I31_HDR_Activity extends BaseActivity {
                 sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "' ";
 
 
-                System.out.println("i31:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 

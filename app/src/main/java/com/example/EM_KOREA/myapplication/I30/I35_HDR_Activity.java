@@ -161,7 +161,6 @@ public class I35_HDR_Activity extends BaseActivity {
     }
 
     private void initializeData() {
-        System.out.println("vplant:"+vPLANT_CD);
         if (vPLANT_CD.equals("C1")) {
             txt_Scan_sl_cd.setText("창원 자재 창고");
             txt_Scan_sl_cd.setFocusable(false);
@@ -259,7 +258,6 @@ public class I35_HDR_Activity extends BaseActivity {
                 pParms.add(parm);
 
                 sJson = dba.SendHttpMessage("GetSQLData", pParms);
-                System.out.println("sjson : "+sJson);
             }
         };
         workThd_dbQuery.start();   //스레드 시작
@@ -277,7 +275,6 @@ public class I35_HDR_Activity extends BaseActivity {
             public void run() {
                 String sql = "SELECT ISNULL(SL_CD,'') AS SL_CD FROM CA_USER_MASTER WHERE USER_ID = '"+user_id+"'";
 
-                System.out.println("sqls: "+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -305,7 +302,6 @@ public class I35_HDR_Activity extends BaseActivity {
         } catch (Exception ex) {
 
         }
-        System.out.println("sl_cd :"+sl_cd);
         return sl_cd;
     }
 

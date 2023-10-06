@@ -38,7 +38,6 @@ public class ErrorPopupActivity2 extends Activity {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("handler1:");
 
                 Message msg = handler.obtainMessage();
                 handler.sendMessage(msg);
@@ -57,7 +56,6 @@ public class ErrorPopupActivity2 extends Activity {
     final Handler handler = new Handler(){
         public void handleMessage(Message msg){
             // 원래 하려던 동작 (UI변경 작업 등)
-            System.out.println("handler2:");
            /* if(col){
                 lbl_error_msg.setBackgroundColor(Color.parseColor("#ED1C24"));
                 col = false;

@@ -398,7 +398,6 @@ public class I27_DTL_Activity extends BaseActivity {
 
             JSONArray ja = new JSONArray(sJson);
 
-            System.out.println("sJson:"+sJson);
             // 빈 데이터 리스트 생성.
             //final ArrayList<String> items = new ArrayList<String>();
 
@@ -624,7 +623,7 @@ public class I27_DTL_Activity extends BaseActivity {
 
                 //== STEP 1. BL 실행 ==//
                 BL_DATASET_SELECT(sl_cd, item_cd, tracking_no, lot_no, lot_sub_no,move_qty);
-                System.out.println("result_msg:"+result_msg+":");
+
                 //== STEP 2. BL 실행 후 반환 메시지 확인 ==//
                 if (!result_msg.contains("재고이동 성공")) {
                     msg +=result_msg;
@@ -656,7 +655,7 @@ public class I27_DTL_Activity extends BaseActivity {
 
                         dbSave_DTL(RTN_ITEM_DOCUMENT_NO, dtl_sl_cd, dtl_item_cd, dtl_tracking_no, dtl_lot_no, dtl_lot_sub_no,
                                 dtl_qty, dtl_basic_unit, dtl_location, dtl_bad_on_hand_qty,move_qty);
-                        System.out.println("dtl:"+sJsonDTL);
+
 
                     } catch (JSONException exJson) {
                         TGSClass.AlterMessage(getApplicationContext(), exJson.getMessage());
@@ -712,7 +711,6 @@ public class I27_DTL_Activity extends BaseActivity {
             finish();*/
         } catch (Exception e1) {
             TGSClass.AlterMessage(getApplicationContext(), e1.getMessage());
-            System.out.println("err:"+e1);
         }
         finally {
             isrun = false;
@@ -727,7 +725,6 @@ public class I27_DTL_Activity extends BaseActivity {
 
                 String str_move_date    = getCurrentDate();
                 //str_move_date    = "2022-12-26"
-                System.out.println("str_move_date:"+str_move_date);
                 GetComboNUM spinner_move= (GetComboNUM) cmb_move.getSelectedItem();
                 GetComboNUM spinner_origin= (GetComboNUM) cmb_origin.getSelectedItem();
 
@@ -746,17 +743,6 @@ public class I27_DTL_Activity extends BaseActivity {
                 //String qty              = str_move_qty;
                 String qty              = MOVE_QTY;
                 String document_dt      = str_move_date;
-
-                System.out.println("item_cd:"+item_cd+":");
-                System.out.println("tracking_no:"+tracking_no+":");
-                System.out.println("trns_tracking_no:"+trns_tracking_no+":");
-                System.out.println("lot_no:"+lot_no+":");
-                System.out.println("lot_sub_no:"+lot_sub_no+":");
-                System.out.println("major_sl_cd:"+major_sl_cd+":");
-                System.out.println("issued_sl_cd:"+issued_sl_cd+":");
-                System.out.println("qty:"+qty+":");
-                System.out.println("document_dt:"+document_dt+":");
-
 
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);

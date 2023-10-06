@@ -619,7 +619,6 @@ public class MainActivity extends AppCompatActivity {
                 pParms.add(parm);
 
                 strJson = dba.SendHttpMessage("GetSQLData", pParms);
-                System.out.println("strJson:"+strJson);
             }
         };
         workThd_dbQuery.start();   //스레드 시작

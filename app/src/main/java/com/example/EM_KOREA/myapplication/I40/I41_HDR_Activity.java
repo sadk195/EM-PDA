@@ -391,20 +391,6 @@ public class I41_HDR_Activity extends BaseActivity {
                 parm11.setValue(wc_cd);
                 parm11.setType(String.class);
 
-
-                System.out.println("prodt_order_no:"+prodt_order_no);
-                System.out.println("plant_cd:"+plant_cd);
-                System.out.println("item_cd:"+item_cd);
-                System.out.println("tracking_no:"+tracking_no);
-                System.out.println("lot_no:"+lot_no);
-                System.out.println("sl_cd:"+sl_cd);
-                System.out.println("qty:"+qty);
-                System.out.println("document_text:"+document_text);
-                System.out.println("mov_type:"+mov_type);
-                System.out.println("unit_cd:"+unit_cd);
-                System.out.println("wc_cd:"+wc_cd);
-
-
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
@@ -418,7 +404,6 @@ public class I41_HDR_Activity extends BaseActivity {
                 pParms.add(parm11);
 
                 result_msg = dba.SendHttpMessage("BL_SetPartListETCOut_ANDROID2", pParms);
-                System.out.println("result_msg:"+result_msg);
             }
         };
         workThd_BL_DATASET_SELECT.start();   //스레드 시작

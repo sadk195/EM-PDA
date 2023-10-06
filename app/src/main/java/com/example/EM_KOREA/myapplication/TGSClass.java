@@ -179,7 +179,6 @@ public class TGSClass {
     public static boolean isIntentAvailable(Context pContext, String pPackageName, String pClassName) {
 
         String vComponentName = pPackageName + "." + pClassName;
-        System.out.println("vComponentName:"+vComponentName);
         final PackageManager packageManager = pContext.getPackageManager();
 
         final Intent intent = new Intent();

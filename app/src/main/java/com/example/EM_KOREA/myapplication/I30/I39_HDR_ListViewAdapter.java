@@ -111,7 +111,6 @@ public class I39_HDR_ListViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         I39_HDR item = listViewItem.get(position);
 
-       System.out.println("item.getSelected():"+item.getSelected());
         if(item.getSelected()){
             convertView.setBackgroundColor(Color.parseColor("#DDDDDD"));
         }

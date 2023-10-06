@@ -77,6 +77,9 @@ public class I39_SET_Activity extends BaseActivity {
         param_sl_cd     = getIntent().getStringExtra("SL_CD"); //이전 페이지에서 설정한 출고창고
 
         i39_dtls   = (ArrayList<I39_DTL>)getIntent().getSerializableExtra("DTL");
+        for(I39_DTL DTL : i39_dtls){
+
+        }
         i39_Item    = (I39_DTL) getIntent().getSerializableExtra("ITEMS");
 
 
@@ -403,7 +406,7 @@ public class I39_SET_Activity extends BaseActivity {
                 /* I_ONHAND_STOCK_DETAIL 에서 바인딩 받아야 하므로 ListView에 조회되도록 SELECT 프로시저에 DTL항목 추가하고 바인딩 한 후 가져와야됨*/
                 sql += ",@SL_CD = '" + SL_CD + "'";                             //창고코드
                 sql += ",@ITEM_CD = '" + ITEM_CD + "'";                         //품목코드
-                sql += ",@TRACKING_NO = '" + TRACKING_NO + "'";                 //TRACKING_NO
+                sql += ",@TRACKING_NO ='*'" ;//+ TRACKING_NO + "'";                 //TRACKING_NO
                 sql += ",@LOT_NO = '" + LOT_NO + "'";                           //LOT_NO
                 sql += ",@LOT_SUB_NO = " + LOT_SUB_NO;                          //LOT_SUB_NO
                 sql += ",@QTY = " + QTY;                                        //양품수량
@@ -429,7 +432,6 @@ public class I39_SET_Activity extends BaseActivity {
                 sql += ",@EXTRA_FIELD2 = 'I35_DTL_Activity'";
 
 
-                System.out.println("sqls:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 

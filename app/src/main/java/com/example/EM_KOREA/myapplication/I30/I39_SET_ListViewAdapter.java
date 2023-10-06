@@ -45,7 +45,6 @@ public class I39_SET_ListViewAdapter extends BaseAdapter {
         else{
             temp = true;
         }
-        System.out.println("temp:"+temp);
         listViewItem.get(position).setCHK_OUT(temp);
     }
 

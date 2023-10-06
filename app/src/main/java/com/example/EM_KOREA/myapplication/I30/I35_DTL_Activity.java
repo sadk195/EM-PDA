@@ -406,7 +406,6 @@ public class I35_DTL_Activity extends BaseActivity {
                 if(value.equals("DEL"))
                 {
                     I35_DTL item = (I35_DTL) listViewAdapter2.getItem(0);
-                    System.out.println("location1:"+location.getText().toString());
 
                     if (item.getCHK() == "Y") {
                         String sl_cd            = item.getSL_CD();
@@ -419,7 +418,7 @@ public class I35_DTL_Activity extends BaseActivity {
                         String location         = item.getLOCATION();
                         String bad_on_hand_qty  = item.getBAD_ON_HAND_QTY();
                         String chk_qty          = item.getCHK_QTY();
-                        System.out.println("location2:"+location);
+
                         dbSave_DTL(RTN_ITEM_DOCUMENT_NO, sl_cd, item_cd, tracking_no, lot_no, lot_sub_no, qty, basic_unit, "출고대기장",location, bad_on_hand_qty, chk_qty);
                     }
 
@@ -536,7 +535,7 @@ public class I35_DTL_Activity extends BaseActivity {
                 /* I_ONHAND_STOCK_DETAIL 에서 바인딩 받아야 하므로 ListView에 조회되도록 SELECT 프로시저에 DTL항목 추가하고 바인딩 한 후 가져와야됨*/
                 sql += ",@SL_CD = '" + SL_CD + "'";                             //창고코드
                 sql += ",@ITEM_CD = '" + ITEM_CD + "'";                         //품목코드
-                sql += ",@TRACKING_NO = '" + TRACKING_NO + "'";                 //TRACKING_NO
+                sql += ",@TRACKING_NO = ='*'" ;         //TRACKING_NO
                 sql += ",@LOT_NO = '" + LOT_NO + "'";                           //LOT_NO
                 sql += ",@LOT_SUB_NO = " + LOT_SUB_NO;                          //LOT_SUB_NO
                 sql += ",@QTY = " + QTY;                                        //양품수량
@@ -570,7 +569,6 @@ public class I35_DTL_Activity extends BaseActivity {
                 parm.setType(String.class);
 
                 pParms.add(parm);
-                //System.out.println("sqls_dtl:"+sql);
                 sJson = dba.SendHttpMessage("GetSQLData", pParms);
             }
 
