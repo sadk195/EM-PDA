@@ -200,13 +200,13 @@ public class I35_HDR_Activity extends BaseActivity {
                 item.ISSUED_QTY       = jObject.getString("WMS_REQ_QTY");          //출고량 -2023-09-22 박준하 수정
                 item.LOCATION         = jObject.getString("LOCATION");            //적치장
 
-                item.SL_CD            = jObject.getString("SL_CD");               //창고 (intent)
+                item.SL_CD            = jObject.getString("SL_CD");               //창고 c(intent)
                 item.OUT_QTY          = jObject.getString("QTY");                 //현재고
                 item.TRACKING_NO      = jObject.getString("TRACKING_NO");         //
                 item.PRODT_ORDER_NO   = jObject.getString("PRODT_ORDER_NO");      //
                 item.REMAIN_QTY       = jObject.getString("REMAIN_QTY");          //잔량
-                item.CHK              = jObject.getString("CHK");                 //잔량
-
+                //item.CHK              = jObject.getString("CHK");                 //잔량
+                //item.CHK = "N";
                 listViewAdapter.addHDRItem(item);
             }
 

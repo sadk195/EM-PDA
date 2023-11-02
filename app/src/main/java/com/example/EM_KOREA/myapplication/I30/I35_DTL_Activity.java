@@ -445,7 +445,7 @@ public class I35_DTL_Activity extends BaseActivity {
                 }
 
                 TGSClass.AlterMessage(getApplicationContext(), RTN_ITEM_DOCUMENT_NO + "자동입력번호로 저장되었습니다.");
-
+                System.out.println("자동입력: "+RTN_ITEM_DOCUMENT_NO);
                 // 저장 후 결과 값 돌려주기
                 Intent resultIntent = new Intent();
                 // 결과처리 후 부른 Activity에 보낼 값
@@ -484,6 +484,7 @@ public class I35_DTL_Activity extends BaseActivity {
                 sql += ",@MSG_TEXT = ''";
                 sql += ",@RTN_ITEM_DOCUMENT_NO = ''";
 
+                System.out.println("sqls:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -535,7 +536,7 @@ public class I35_DTL_Activity extends BaseActivity {
                 /* I_ONHAND_STOCK_DETAIL 에서 바인딩 받아야 하므로 ListView에 조회되도록 SELECT 프로시저에 DTL항목 추가하고 바인딩 한 후 가져와야됨*/
                 sql += ",@SL_CD = '" + SL_CD + "'";                             //창고코드
                 sql += ",@ITEM_CD = '" + ITEM_CD + "'";                         //품목코드
-                sql += ",@TRACKING_NO = ='*'" ;         //TRACKING_NO
+                sql += ",@TRACKING_NO  ='*'" ;         //TRACKING_NO
                 sql += ",@LOT_NO = '" + LOT_NO + "'";                           //LOT_NO
                 sql += ",@LOT_SUB_NO = " + LOT_SUB_NO;                          //LOT_SUB_NO
                 sql += ",@QTY = " + QTY;                                        //양품수량
@@ -560,6 +561,7 @@ public class I35_DTL_Activity extends BaseActivity {
                 sql += ",@EXTRA_FIELD1 = 'ANDROID'";
                 sql += ",@EXTRA_FIELD2 = 'I35_DTL_Activity'";
 
+                System.out.println("sqls2:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
