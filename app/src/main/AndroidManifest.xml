@@ -110,6 +110,9 @@
             android:name=".I30.I37_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
+            android:name=".I30.I37_DEL_Activity"
+            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+        <activity
             android:name=".I30.I38_HDR_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity

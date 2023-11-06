@@ -445,7 +445,6 @@ public class I35_DTL_Activity extends BaseActivity {
                 }
 
                 TGSClass.AlterMessage(getApplicationContext(), RTN_ITEM_DOCUMENT_NO + "자동입력번호로 저장되었습니다.");
-                System.out.println("자동입력: "+RTN_ITEM_DOCUMENT_NO);
                 // 저장 후 결과 값 돌려주기
                 Intent resultIntent = new Intent();
                 // 결과처리 후 부른 Activity에 보낼 값
@@ -484,7 +483,6 @@ public class I35_DTL_Activity extends BaseActivity {
                 sql += ",@MSG_TEXT = ''";
                 sql += ",@RTN_ITEM_DOCUMENT_NO = ''";
 
-                System.out.println("sqls:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -561,7 +559,6 @@ public class I35_DTL_Activity extends BaseActivity {
                 sql += ",@EXTRA_FIELD1 = 'ANDROID'";
                 sql += ",@EXTRA_FIELD2 = 'I35_DTL_Activity'";
 
-                System.out.println("sqls2:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 

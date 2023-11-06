@@ -2,12 +2,14 @@ package com.example.EM_KOREA.myapplication.I30;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.EM_KOREA.myapplication.BaseActivity;
 import com.example.EM_KOREA.myapplication.DBAccess;
@@ -19,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ksoap2.serialization.PropertyInfo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +35,7 @@ public class I37_DTL_Activity extends BaseActivity {
     //== Intent에서 받을 변수 선언 ==//
     private String vMenuID, vMenuNm, vMenuRemark, vStartCommand;
     private I37_HDR vGetHDRItem;
-
+    private I37_DTL vItem;
     //== View 선언(TextView) ==//
     private TextView item_cd, tracking_no, out_qty_query, resvd_issued;
 
@@ -43,7 +46,7 @@ public class I37_DTL_Activity extends BaseActivity {
     private EditText out_date, out_qty_insert;
 
     //== View 선언(Button) ==//
-    private Button btn_add, btn_save;
+    private Button btn_add, btn_save,btn_del;
 
     //== 날짜 관련 변수 선언 ==//
     private Calendar cal;
@@ -53,6 +56,7 @@ public class I37_DTL_Activity extends BaseActivity {
     public String ITEM_CD_DataSET = "", TRACKING_NO_DataSET = "", LOT_NO_DataSET = "";
     public String LOT_SUB_NO_DataSET = "", ENTRY_QTY_DataSET = "", ENTRY_UNIT_DataSET = "";
 
+    private final int I37_DEL_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +97,7 @@ public class I37_DTL_Activity extends BaseActivity {
 
         btn_save            = (Button) findViewById(R.id.btn_save);
         btn_add             = (Button) findViewById(R.id.btn_add);
+        btn_del             = (Button) findViewById(R.id.btn_del);
     }
 
     private void initializeCalendar() {
@@ -121,6 +126,26 @@ public class I37_DTL_Activity extends BaseActivity {
             public void onClick(View v) {
                 // 기존 소스는 DBSave() 메서드로 옮김
                 dbSave("ADD");
+            }
+        });
+        btn_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = TGSClass.ChangeView(getPackageName(), I37_DEL_Activity.class);
+                intent.putExtra("PRODT_NO", vGetHDRItem.PRODT_ORDER_NO);
+                intent.putExtra("ITEM_CD", vItem.ITEM_CD);
+                intent.putExtra("ITEM_NM", vItem.ITEM_NM);
+
+                startActivityForResult(intent, I37_DEL_REQUEST_CODE);
+            }
+        });
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                vItem = new I37_DTL();
+                vItem = (I37_DTL) parent.getItemAtPosition(position);
+
             }
         });
     }
@@ -165,6 +190,8 @@ public class I37_DTL_Activity extends BaseActivity {
 
                 item.ITEM_CD      = jObject.getString("ITEM_CD");  //
                 item.ITEM_NM      = jObject.getString("ITEM_NM");  //
+
+
                 item.GOOD_QTY     = jObject.getString("GOOD_QTY");  //
                 item.SL_CD        = jObject.getString("SL_CD");  //
                 item.SL_NM        = jObject.getString("SL_NM");  //
@@ -176,12 +203,7 @@ public class I37_DTL_Activity extends BaseActivity {
             }
             listview.setAdapter(listViewAdapter);
 
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView parent, View v, int position, long id) {
 
-                }
-            });
         } catch (JSONException ex) {
             TGSClass.AlterMessage(this, ex.getMessage());
         } catch (Exception e1) {
@@ -596,6 +618,8 @@ public class I37_DTL_Activity extends BaseActivity {
         setResult(bool, "");
     }
 
+
+
     private void setResult(boolean bool, String val) {
         // 저장 후 결과 값 돌려주기
         Intent resultIntent = new Intent();
@@ -612,5 +636,26 @@ public class I37_DTL_Activity extends BaseActivity {
 
         // 현재 Activity 종료 (validation에 걸려 return되어도 무조건 현재 activity가 꺼진다. 수정이 필요)
         finish();
+    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case I37_DEL_REQUEST_CODE:
+                    start();
+                    break;
+                default:
+                    break;
+            }
+        } else if (resultCode == RESULT_CANCELED) {
+            switch (requestCode) {
+                case I37_DEL_REQUEST_CODE:
+                    start();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

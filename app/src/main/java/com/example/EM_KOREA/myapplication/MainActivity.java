@@ -352,7 +352,6 @@ public class MainActivity extends AppCompatActivity {
         strClientIP     = TGSClass.getLocalIpAddress();
         strClientHostNm = TGSClass.getMacAddress();
 
-        System.out.println("strClientHostNm:"+strClientHostNm);
         //== SESSION에 값 저장 ==//
         global.setUserIPString(strClientIP);
         global.setUnitCDString(strClientHostNm);
@@ -792,7 +791,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void start() {
         strPlantCD = dbQuery(strClientHostNm); // 등록된 기기이면 공장 코드값을 불러옴.
-        System.out.println("strPlantCD:"+strPlantCD);
 
         if (strPlantCD.equals("")) {
             //등록되지 않은 단말기 이면 단말기 등록 요청 페이지로 이동한다.

@@ -346,17 +346,33 @@
 
         <LinearLayout
             android:id="@+id/layout_query"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/box_view2"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_margin="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="10">
+            <CheckBox
+                android:id="@+id/chkPROD"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/colorBodyContent"
+                android:text="제조오더 건으로 가져오기"
+                android:textSize="15dp"
+                android:checked="true"
+                android:focusable="false"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight = "3" />
 
             <Button
                 android:id="@+id/btn_query"
-                android:layout_width="150dp"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_weight = "7"
                 android:background="@drawable/bg_btn"
                 android:focusable="false"
                 android:gravity="center"

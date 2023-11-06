@@ -14,6 +14,7 @@ public class I37_DTL implements Serializable {   //Serializable 객체를 파라
     public  String WMS_QTY;
 
 
+
     public String getITEM_CD() { return ITEM_CD; }
     public void setITEM_CD(String item_cd) { ITEM_CD = item_cd; }
 

@@ -192,8 +192,12 @@
         android:layout_height="match_parent"
         android:layout_above="@id/box_view2"
         android:layout_below="@+id/lbl_information"
-        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/bg_box"
+        android:listSelector="@color/colorGray"
         android:padding="10dp" />
 
     <LinearLayout
@@ -284,16 +288,30 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layout_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp">
-
+        android:layout_margin="10dp"
+        android:weightSum="9">
+        <Button
+            android:id="@+id/btn_del"
+            android:layout_width="0dp"
+            android:layout_weight= "3"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/bg_toggle_blue"
+            android:gravity="center"
+            android:text="삭제"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="18dp"
+            android:layout_marginRight="10dp"/>
         <Button
             android:id="@+id/btn_add"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
+            android:layout_weight= "3"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:background="@drawable/bg_toggle"
@@ -301,11 +319,13 @@
             android:text="출고 / 추가"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:layout_marginRight="10dp"/>
 
         <Button
             android:id="@+id/btn_save"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
+            android:layout_weight= "3"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/bg_toggle"
@@ -314,7 +334,7 @@
             android:textColor="@android:color/white"
             android:textSize="20dp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
 

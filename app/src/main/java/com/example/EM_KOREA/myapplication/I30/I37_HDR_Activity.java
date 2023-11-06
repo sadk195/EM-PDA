@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -45,6 +46,8 @@ public class I37_HDR_Activity extends BaseActivity {
     //== View 선언(TextView) ==//
     private TextView item_cd, item_nm, tracking_no, prodt_qty, remain_qty, good_qty, bad_qty;
 
+    //== View 선언(CheckBox) ==//
+    private CheckBox chkPROD;
     //== View 선언(ListView) ==//
     private ListView listview;
 
@@ -109,6 +112,7 @@ public class I37_HDR_Activity extends BaseActivity {
 
         btn_query           = (Button) findViewById(R.id.btn_query);
         btn_save            = (Button) findViewById((R.id.btn_save));
+        chkPROD             = (CheckBox) findViewById((R.id.chkPROD));
     }
 
     private void initializeCalendar() {
@@ -233,6 +237,13 @@ public class I37_HDR_Activity extends BaseActivity {
 
 
         });
+
+        chkPROD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                start();
+            }
+        });
     }
 
     private void initializeData() {
@@ -255,7 +266,8 @@ public class I37_HDR_Activity extends BaseActivity {
                     TGSClass.AlterMessage(getApplicationContext(), "제조오더 정보가 없습니다.");
                     return;
                 } else {
-                    dbQuery_HDR(prodtorder_no, opr_no);
+                    dbQuery_HDR(prodtorder_no, opr_no,chkPROD.isChecked());
+
                 }
             } else {
                 TGSClass.AlterMessage(getApplicationContext(), "제조오더번호를 정확히 입력하여주시기 바랍니다.");
@@ -324,14 +336,19 @@ public class I37_HDR_Activity extends BaseActivity {
         }
     }
 
-    private void dbQuery_HDR(final String prodt_order_no, final String opr_no) {
+    private void dbQuery_HDR(final String prodt_order_no, final String opr_no,Boolean chkPr) {
         Thread workThd_dbQuery_HDR = new Thread() {
             public void run() {
+                String flag = chkPr? "Y" : "N";
+
                 String sql = " EXEC XUSP_MES_LOCATION_PROD_OUT_ANDROID_QUERY_HDR ";
                 sql += " @PLANT_CD = '" + vPLANT_CD + "' ";
                 sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "' ";
                 sql += " ,@OPR_NO = '" + opr_no + "' ";
+                sql += " ,@PROD_FLAG = '" + flag + "' ";
 
+
+                System.out.println("sql hdr:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
