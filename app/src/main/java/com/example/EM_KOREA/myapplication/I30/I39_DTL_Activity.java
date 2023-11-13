@@ -202,19 +202,23 @@ public class I39_DTL_Activity extends BaseActivity {
 
         for(I39_HDR ITEM: I39_HDR_ITEMS ){ //위쪽 그리드 내용은 앞페이지에서 조회한 내용 표시(마지막 페이지까지 사용)
             listViewAdapter.addHDRItem(ITEM);
-            start(ITEM.getPRODT_ORDER_NO(),ITEM.getOPR_NO());//품목 조회 시작
         }
 
         listview.setAdapter(listViewAdapter);
         listViewAdapter.notifyDataSetChanged();
 
-        setStockData();//제조오더에 해당하는 품목을 모두 조회한 후 품목별로 그룹핑
         listview_dtl.setAdapter(listViewAdapter_dtl);
-        listViewAdapter_dtl.notifyDataSetChanged();
+        start();
     }
 
-    private void start(String prodt_order_no,String opr_no) {
-        dbQuery(prodt_order_no,opr_no); //조회 및 리스트 추가
+    private void start() {
+        I39_DTL_ITEMS.clear();
+
+        for(I39_HDR ITEM: I39_HDR_ITEMS ){ //위쪽 그리드 내용은 앞페이지에서 조회한 내용 표시(마지막 페이지까지 사용)
+            dbQuery(ITEM.getPRODT_ORDER_NO(),ITEM.getOPR_NO());//품목 조회 시작
+        }
+
+        setStockData();//제조오더에 해당하는 품목을 모두 조회한 후 품목별로 그룹핑
     }
 
     private void dbQuery(String prodt_order_no,String opr_no) {
@@ -224,6 +228,7 @@ public class I39_DTL_Activity extends BaseActivity {
                 sql += " @PLANT_CD = '" + vPLANT_CD + "'";
                 sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "'";
                 sql += " ,@OPR_NO = '" + opr_no + "'";
+                sql += " ,@SL_CD = '" + sl_cd_query + "'";
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
@@ -285,17 +290,20 @@ public class I39_DTL_Activity extends BaseActivity {
         ArrayList<String>  Items = new ArrayList<>();
 
         for(I39_DTL dtl : I39_DTL_ITEMS){
-
             if(Items.contains(dtl.getITEM_CD())) { // 처리완료된 품목이면 다음 리스트로
                 continue;
             }
 
-            I39_DTL temp_dtl = dtl;
+            //DTL클래스를 =으로 연결하면 값참조로 두군데 클래스 모두 변경되므로 COPY 함수 사용해서
+            //
+            I39_DTL temp_dtl = CopyDtl(dtl);
+
             String item_cd = dtl.getITEM_CD();
 
             double temp_qty = 0;//.parseInt(temp_dtl.getQTY());
 
             for(I39_DTL dtl2 : I39_DTL_ITEMS) {
+
                 if(dtl2.getITEM_CD().equals(item_cd) ){//현재 찾고있는 품목과 같은 품목의 수량 더하기
 
                     temp_qty = temp_qty +  Double.parseDouble(dtl2.getQTY());
@@ -304,6 +312,7 @@ public class I39_DTL_Activity extends BaseActivity {
 
             Items.add(item_cd);
             temp_dtl.setQTY(String.valueOf(temp_qty));
+
             temp.add(temp_dtl);
         }
         listViewAdapter_dtl.clear();
@@ -388,6 +397,7 @@ public class I39_DTL_Activity extends BaseActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     sl_cd_query = ((GetComboData) parent.getSelectedItem()).getMINOR_CD();
+                    start();
                 }
 
                 @Override
@@ -437,6 +447,24 @@ public class I39_DTL_Activity extends BaseActivity {
 
         }
         return sl_cd;
+    }
+
+    //DTL클래스의 값만 복사
+    private I39_DTL CopyDtl(I39_DTL dtl){
+        I39_DTL retunrdtl = new I39_DTL();
+        retunrdtl.setPRODT_ORDER_NO(dtl.getPRODT_ORDER_NO());
+        retunrdtl.setOPR_NO(dtl.getOPR_NO());
+        retunrdtl.setITEM_CD(dtl.getITEM_CD());
+        retunrdtl.setITEM_NM(dtl.getITEM_NM());
+        retunrdtl.setSPEC(dtl.getSPEC());
+        retunrdtl.setTRACKING_NO(dtl.getTRACKING_NO());
+        retunrdtl.setLOCATION(dtl.getLOCATION());
+        retunrdtl.setQTY(dtl.getQTY());
+        retunrdtl.setSEQ(dtl.getSEQ());
+        retunrdtl.setSL_CD(dtl.getSL_CD());
+        retunrdtl.setJOB_NM(dtl.getJOB_NM());
+
+        return retunrdtl;
     }
 
     @Override

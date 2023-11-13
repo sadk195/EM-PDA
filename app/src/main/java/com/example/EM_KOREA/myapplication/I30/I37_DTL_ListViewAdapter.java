@@ -29,6 +29,9 @@ public class I37_DTL_ListViewAdapter extends BaseAdapter {
     public Object getItem(int position) {
         return listViewItem.get(position);
     }
+    public ArrayList<I37_DTL> getItems() {
+        return listViewItem;
+    }
 
     @Override
     public long getItemId(int position) {

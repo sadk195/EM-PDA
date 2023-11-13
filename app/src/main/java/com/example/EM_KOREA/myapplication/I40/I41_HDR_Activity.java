@@ -153,7 +153,7 @@ public class I41_HDR_Activity extends BaseActivity {
                     String prodt_order_no = vItem.getPRODT_ORDER_NO();
                     String plant_cd =vPLANT_CD;
                     String item_cd =vItem.getITEM_CD();
-                    String tracking_no =vItem.getTRACKING_NO();
+                    String tracking_no = "*";//vItem.getTRACKING_NO();
                     String lot_no  = vItem.getLOT_NO();
                     String sl_cd = vItem.getSL_CD();
                     String qty = vItem.getREQ_QTY();
@@ -340,7 +340,6 @@ public class I41_HDR_Activity extends BaseActivity {
                 parm.setName("prodt_order_no");
                 parm.setValue(prodt_order_no);
                 parm.setType(String.class);
-
                 PropertyInfo parm2 = new PropertyInfo();
                 parm2.setName("plant_cd");
                 parm2.setValue(plant_cd);

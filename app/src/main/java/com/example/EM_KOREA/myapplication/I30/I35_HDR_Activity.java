@@ -220,7 +220,6 @@ public class I35_HDR_Activity extends BaseActivity {
                     Intent intent = TGSClass.ChangeView(getPackageName(), I35_DTL_Activity.class);
 
                     intent.putExtra("HDR", vItem); // 선택한 List의 값을 다음 페이지로 넘김.
-
                     startActivityForResult(intent, I35_DTL_REQUEST_CODE);
                 }
             });

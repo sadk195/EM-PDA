@@ -12,7 +12,6 @@ public class I39_DTL implements Serializable {   //Serializable 객체를 파라
     private String TRACKING_NO;
     private String LOCATION;
     private String QTY;
-
     private String SEQ;
     private String SL_CD;
     private String JOB_NM;

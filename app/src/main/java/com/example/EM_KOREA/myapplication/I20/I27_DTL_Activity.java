@@ -724,7 +724,8 @@ public class I27_DTL_Activity extends BaseActivity {
             public void run() {
 
                 String str_move_date    = getCurrentDate();
-                //str_move_date    = "2022-12-26"
+                //result_msg ="";
+                //str_move_date    = "2023-1-30";
                 GetComboNUM spinner_move= (GetComboNUM) cmb_move.getSelectedItem();
                 GetComboNUM spinner_origin= (GetComboNUM) cmb_origin.getSelectedItem();
 

@@ -55,6 +55,7 @@ public class I37_DTL_Activity extends BaseActivity {
     public String PRODT_ORDER_NO_DataSET = "", OPR_NO_DataSET = "", SL_CD_DataSET = "";
     public String ITEM_CD_DataSET = "", TRACKING_NO_DataSET = "", LOT_NO_DataSET = "";
     public String LOT_SUB_NO_DataSET = "", ENTRY_QTY_DataSET = "", ENTRY_UNIT_DataSET = "";
+    public String tx_item_cd = "", tx_item_nm = "";
 
     private final int I37_DEL_REQUEST_CODE = 1;
     @Override
@@ -133,8 +134,8 @@ public class I37_DTL_Activity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = TGSClass.ChangeView(getPackageName(), I37_DEL_Activity.class);
                 intent.putExtra("PRODT_NO", vGetHDRItem.PRODT_ORDER_NO);
-                intent.putExtra("ITEM_CD", vItem.ITEM_CD);
-                intent.putExtra("ITEM_NM", vItem.ITEM_NM);
+                intent.putExtra("ITEM_CD", tx_item_cd);
+                intent.putExtra("ITEM_NM", tx_item_nm);
 
                 startActivityForResult(intent, I37_DEL_REQUEST_CODE);
             }
@@ -170,11 +171,14 @@ public class I37_DTL_Activity extends BaseActivity {
 
         out_qty_insert.setText(req_issued_st.replace(".0", ""));
 
+        tx_item_cd = vGetHDRItem.getITEM_CD();
+        tx_item_nm= vGetHDRItem.getITEM_NM();
+
         start();
     }
 
     private void start() {
-        dbQuery(vGetHDRItem.getITEM_CD());
+        dbQuery(tx_item_cd);
 
         try {
             JSONArray ja = new JSONArray(sJson);
@@ -640,10 +644,33 @@ public class I37_DTL_Activity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        String sign = data.getStringExtra("SIGN");
+        System.out.println("sign:"+sign);
+        System.out.println("resultCode:"+resultCode);
+        System.out.println("requestCode:"+requestCode);
+
+        boolean DataChk = true;
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case I37_DEL_REQUEST_CODE:
+                    //삭제페이지에서 삭제처리를 하지 않은경우 그대로 실행
+                    if(sign.equals("SQL")){
+                        return;
+                    }
+                    //삭제 처리 한경우 다시 select
                     start();
+                    //삭제후 생산이동할 데이터 남아있는지 체크
+                    I37_DTL_ListViewAdapter adapter =  (I37_DTL_ListViewAdapter) listview.getAdapter();
+                    ArrayList<I37_DTL> dtl_array =  adapter.getItems();
+                    if(dtl_array.size()>0){
+                        return;
+                    }
+                    for(I37_DTL dtl  : dtl_array){
+                        if(dtl.ITEM_CD.equals(tx_item_cd)) {
+                            return;
+                        }
+                    }
+                    DataChk =false;
                     break;
                 default:
                     break;
@@ -651,11 +678,19 @@ public class I37_DTL_Activity extends BaseActivity {
         } else if (resultCode == RESULT_CANCELED) {
             switch (requestCode) {
                 case I37_DEL_REQUEST_CODE:
-                    start();
+
                     break;
                 default:
                     break;
             }
+        }
+        //삭제후 생산이동할 데이터 없으면 첫 페이지로 이동
+        if(!DataChk) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("SIGN", "DEL");
+            // 부른 Activity에게 결과 값 반환
+            setResult(RESULT_OK, resultIntent);
+            finish();
         }
     }
 }

@@ -359,7 +359,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textColor="@color/colorBodyContent"
-                android:text="제조오더 건으로 가져오기"
+                android:text="제조오더 건으로 조회"
                 android:textSize="15dp"
                 android:checked="true"
                 android:focusable="false"/>

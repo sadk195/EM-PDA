@@ -244,6 +244,21 @@ public class I37_HDR_Activity extends BaseActivity {
                 start();
             }
         });
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                I37_HDR vItem = (I37_HDR) parent.getItemAtPosition(position);
+
+                if (!vItem.getLOCATION().equals("출고대기장")) {
+                    TGSClass.AlterMessage(getApplicationContext(), "선택하신 품목의 적치장이 [출고대기장]으로 이동되지 않았습니다.");
+                } else {
+                    Intent intent = TGSClass.ChangeView(getPackageName(), I37_DTL_Activity.class);
+                    intent.putExtra("HDR", vItem);
+                    startActivityForResult(intent, I37_DTL_REQUEST_CODE);
+                }
+            }
+        });
     }
 
     private void initializeData() {
@@ -348,7 +363,6 @@ public class I37_HDR_Activity extends BaseActivity {
                 sql += " ,@PROD_FLAG = '" + flag + "' ";
 
 
-                System.out.println("sql hdr:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -416,20 +430,7 @@ public class I37_HDR_Activity extends BaseActivity {
 
             listview.setAdapter(listViewAdapter);
 
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView parent, View v, int position, long id) {
-                    I37_HDR vItem = (I37_HDR) parent.getItemAtPosition(position);
 
-                    if (!vItem.getLOCATION().equals("출고대기장")) {
-                        TGSClass.AlterMessage(getApplicationContext(), "선택하신 품목의 적치장이 [출고대기장]으로 이동되지 않았습니다.");
-                    } else {
-                        Intent intent = TGSClass.ChangeView(getPackageName(), I37_DTL_Activity.class);
-                        intent.putExtra("HDR", vItem);
-                        startActivityForResult(intent, I37_DTL_REQUEST_CODE);
-                    }
-                }
-            });
 
             TGSClass.AlterMessage(getApplicationContext(), ja.length() + " 건 조회 되었습니다.");
         } catch (JSONException ex) {
@@ -719,6 +720,7 @@ public class I37_HDR_Activity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case I37_DTL_REQUEST_CODE:
@@ -728,6 +730,10 @@ public class I37_HDR_Activity extends BaseActivity {
                         finish();
                     } else if (sign.equals("ADD")) {
                         Toast.makeText(I37_HDR_Activity.this, "추가 되었습니다.", Toast.LENGTH_SHORT).show();
+                        start();
+                    }
+                    else if (sign.equals("DEL")) {
+                        Toast.makeText(I37_HDR_Activity.this, "삭제 되었습니다.", Toast.LENGTH_SHORT).show();
                         start();
                     }
                     break;

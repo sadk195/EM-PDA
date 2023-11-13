@@ -92,7 +92,7 @@ public class I35_DTL_Activity extends BaseActivity {
 
         btn_save            = (Button)findViewById(R.id.btn_save);
         btn_add             = (Button)findViewById(R.id.btn_add);
-        btn_del             = (Button)findViewById(R.id.btn_del);
+        //btn_del             = (Button)findViewById(R.id.btn_del);
         listview            = (ListView) findViewById(R.id.listOrder);
     }
 
@@ -158,20 +158,20 @@ public class I35_DTL_Activity extends BaseActivity {
 
             }
         });
-        btn_del.setOnClickListener(new View.OnClickListener() {
+       /* btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+                *//*
                 // 기존 소스
                 Intent intent = TGSClass.ChangeView(getPackageName(), I35_HDR_Activity.class.getSimpleName());
                 startActivity(intent);
-                 */
+                 *//*
 
                 // 기존 소스는 DBSave() 메서드로 옮김
                 dbSave("DEL");
 
             }
-        });
+        });*/
     }
 
 
@@ -183,7 +183,13 @@ public class I35_DTL_Activity extends BaseActivity {
         item_cd.setText(vGetHDRItem.getITEM_CD());
         item_nm.setText(vGetHDRItem.getITEM_NM());
         qty.setText(vGetHDRItem.getOUT_QTY());
-        req_qty.setText(vGetHDRItem.getREQ_QTY());
+        if(vPLANT_CD.equals("H1")){
+            req_qty.setText(vGetHDRItem.getREMAIN_QTY());
+        }
+        else{
+            req_qty.setText(vGetHDRItem.getREQ_QTY());
+
+        }
 
         grid_chk_qty_sum.setText("0");
 

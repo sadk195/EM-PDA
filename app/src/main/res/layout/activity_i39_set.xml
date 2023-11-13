@@ -267,7 +267,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="    창고명    |    적치장    |    재고량    |    공정명"
+                android:text="    창고코드    |    창고명    |    적치장    |    양품수량"
                 android:textColor="@color/design_default_color_primary"
                 android:textSize="13dp" />
 

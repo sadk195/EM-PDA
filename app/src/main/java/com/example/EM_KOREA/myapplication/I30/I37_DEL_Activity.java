@@ -49,6 +49,8 @@ public class I37_DEL_Activity extends BaseActivity {
 
     private int selidx =-1;
 
+    private boolean delflag= false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +107,9 @@ public class I37_DEL_Activity extends BaseActivity {
                     TGSClass.AlterMessage(getApplicationContext(),  "삭제할 데이터를 선택하세요.");
                     return;
                 }
+                delflag = true;
                 dbDelete(selected_item);
+
                 start();
             }
         });
@@ -160,7 +164,6 @@ public class I37_DEL_Activity extends BaseActivity {
                 sql += " @PLANT_CD = '" + vPLANT_CD + "' ";
                 sql += " ,@ITEM_CD = '" + vitem_cd +"' ";
 
-                System.out.println("sql:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -192,11 +195,10 @@ public class I37_DEL_Activity extends BaseActivity {
                 sql += " @PLANT_CD = '" + vPLANT_CD + "', ";
                 sql += " @ITEM_CD = '" + tx_item_cd + "', ";
                 sql += " @SL_CD = '" + del_data.getSL_CD() + "', ";
-                sql += " @MOVE_QTY = '" + del_data.getGOOD_QTY() + "', ";
-                sql += " @LOCATION = '" + del_data.getLOCATION() + "' ";
+                sql += " @MOVE_QTY = '" + del_data.getGOOD_QTY() + "' ";
+                //sql += " @LOCATION = '" + del_data.getLOCATION() + "' ";
+                System.out.println("sqls:"+sql);
 
-
-                System.out.println("sql2:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -208,7 +210,6 @@ public class I37_DEL_Activity extends BaseActivity {
                 pParms.add(parm);
 
                 sJson = dba.SendHttpMessage("GetSQLData", pParms);
-                System.out.println("sJson:"+sJson);
 
             }
         };
@@ -238,4 +239,22 @@ public class I37_DEL_Activity extends BaseActivity {
         // 현재 Activity 종료 (validation에 걸려 return되어도 무조건 현재 activity가 꺼진다. 수정이 필요)
         finish();
     }
+
+
+    //뒤로가기 누른 경우
+    //현재는 닫기가 뒤로가기 기능에서만 구현됨 추가로 닫기를 만들경우 닫기버튼에 같은기능 추가해야함
+    @Override
+    public void onBackPressed() {
+        Intent resultIntent = new Intent();
+        if(delflag){
+            resultIntent.putExtra("SIGN", "DEL");
+        }
+        else{
+            resultIntent.putExtra("SIGN", "SQL");
+        }
+        setResult(RESULT_OK, resultIntent);
+        super.onBackPressed();
+    }
+
+
 }
