@@ -145,6 +145,7 @@ public class M23_HDR_Activity extends BaseActivity {
 
         txt_Scan_st = txt_Scan_st.substring(0, 8);
 
+
         dbQuery_get_REQ_NO_INFO(txt_Scan_st);         //검사요청번호
 
         if (sJson.equals("[]") || sJson.equals("[{\"Column1\":\"N\"}]") ) {
@@ -168,7 +169,7 @@ public class M23_HDR_Activity extends BaseActivity {
                 String sql = " EXEC XUSP_MES_PRODT_ORDER_SET_CHECK ";
                 sql += "  @PLANT_CD = '" + vPLANT_CD + "'";
                 sql += "  ,@PRODT_ORDER_NO = '" + order_no + "'";
-
+                System.out.println("sql:"+sql);
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
 

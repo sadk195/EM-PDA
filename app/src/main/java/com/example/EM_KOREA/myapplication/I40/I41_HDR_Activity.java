@@ -162,10 +162,12 @@ public class I41_HDR_Activity extends BaseActivity {
                     String wc_cd = vItem.getWC_CD();
                     switch (mov_type){
                         case "I03" : document_text = "-- PDA 작업장 반출 --";
+                            prodt_order_no ="";
                                 break;
                         case "I97" : document_text = "-- PDA 미사용잔량 반입 --";
                             break;
                         case "I99" : document_text = "-- PDA 작업장 반입 --";
+                            prodt_order_no ="";
                             break;
                     }
                     if(vItem.getMOV_STATUS().trim().equals("S")){
@@ -185,7 +187,7 @@ public class I41_HDR_Activity extends BaseActivity {
                         //return;
                         err_txt += prodt_order_no +" 오류발생 :"+result_msg+"\n";
                     }
-
+                System.out.println("err_txt:"+err_txt);
                 }//for문
                 if(!err_txt.equals("")){
                     Intent error_intent = TGSClass.ChangeView(getPackageName(), ErrorPopupActivity2.class);
@@ -262,6 +264,7 @@ public class I41_HDR_Activity extends BaseActivity {
                 sql += " @PRODT_REQ_NO = '" + order_no + "' ";
                 //sql += " ,@PLANT_CD = '" + vPLANT_CD + "' ";
 
+                System.out.println("Sql:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 

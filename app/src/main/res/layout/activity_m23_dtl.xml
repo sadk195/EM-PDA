@@ -336,45 +336,7 @@
 
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal"
-                android:weightSum="20">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5"
-                    android:gravity="right|center"
-                    android:text="입고창고"
-                    android:textColor="@color/colorBodyTitle"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="2dp"
-                    android:layout_weight="15"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp">
-
-                    <EditText
-                        android:id="@+id/sl_nm"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_text"
-                        android:focusable="false"
-                        android:gravity="center"
-                        android:text=""
-                        android:textSize="15dp" />
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
             <LinearLayout
                 android:id="@+id/app_view9"
                 android:layout_width="match_parent"
@@ -640,6 +602,45 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:weightSum="20">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:gravity="right|center"
+                    android:text="입고창고"
+                    android:textColor="@color/colorBodyTitle"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="15"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <Spinner
+                        android:id="@+id/sl_nm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_text"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorBodyContent"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/app_view15"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -668,8 +669,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_text"
-                        android:gravity="center"
-                        android:inputType="date" />
+                        android:gravity="center|center"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:inputType="date"
+                        android:textSize="15dp"/>
 
                 </LinearLayout>
 
@@ -704,13 +708,14 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_text"
                         android:focusable="false"
-                        android:gravity="center"
-                        android:inputType="date" />
+                        android:gravity="center|center"
+                        android:inputType="date"
+                        />
 
                 </LinearLayout>
 
-            </LinearLayout>
 
+            </LinearLayout>
 
         </LinearLayout>
 
