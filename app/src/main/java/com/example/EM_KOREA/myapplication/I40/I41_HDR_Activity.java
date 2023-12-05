@@ -1,8 +1,10 @@
 package com.example.EM_KOREA.myapplication.I40;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,10 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ksoap2.serialization.PropertyInfo;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 
 public class I41_HDR_Activity extends BaseActivity {
 
@@ -36,6 +39,9 @@ public class I41_HDR_Activity extends BaseActivity {
 
     //== Intent에서 받을 변수 선언 ==//
     private String vMenuID, vMenuNm, vMenuRemark, vStartCommand,Str_Order_No="";
+
+    //== 수불번호 받을 변수 선언 ==//
+    private String ITEM_DOCUMENT_NO = "";
 
     //== View 선언(EditText) ==//
     private EditText Order_No;
@@ -292,11 +298,12 @@ public class I41_HDR_Activity extends BaseActivity {
         Thread workThd_dbQuery_PRODT_ORDER_INFO = new Thread() {
             public void run() {
                 String sql = " EXEC XUSP_I41_HDR_SET_LIST ";
-                sql += " @PRODT_REQ_NO = '" + Str_Order_No + "' ";
+                sql += " @PRODT_REQ_NO" +
+                        " = '" + Str_Order_No + "' ";
                 sql += " ,@ITEM_CD = '" + I41.getITEM_CD() + "' ";
                 sql += " ,@NO_SEQ = '" + I41.getNO_SEQ() + "' ";
                 sql += " ,@MOV_STATUS = '" + status + "' ";
-
+                sql += " ,@ITEM_DOCUMENT_NO = '" + ITEM_DOCUMENT_NO + "' ";
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -403,6 +410,7 @@ public class I41_HDR_Activity extends BaseActivity {
                 pParms.add(parm11);
 
                 result_msg = dba.SendHttpMessage("BL_SetPartListETCOut_ANDROID2", pParms);
+                ITEM_DOCUMENT_NO = result_msg.substring(result_msg.lastIndexOf(':') + 1).trim();
             }
         };
         workThd_BL_DATASET_SELECT.start();   //스레드 시작
