@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class TGSClass {
-
     //웹서비스 네임스페이스 정의
     public static String ws_name_space = "http://tgs.com/";
     //public static String ws_url= "http://125.135.140.21/MES_ANDROID/webService.asmx"; //-- EMK 실DB(unierp5)
