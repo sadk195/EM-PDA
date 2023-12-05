@@ -178,7 +178,7 @@ public class I35_HDR_Activity extends BaseActivity {
         String str_chk_option = chk_option.isChecked() ? "Y" : "N";
 
         dbQuery(txt_Scan_prodt_order_no_st, txt_Scan_sl_cd_st, txt_Scan_item_cd_st, str_chk_option);
-
+        txt_Scan_prodt_order_no.requestFocus();
         try {
             JSONArray ja = new JSONArray(sJson);
 
@@ -246,6 +246,7 @@ public class I35_HDR_Activity extends BaseActivity {
                 sql += " ,@ITEM_CD = '" + item_cd + "'";
                 sql += " ,@CHK = '" + chk_option + "'";
 
+                System.out.println("sql:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 

@@ -19,6 +19,8 @@ public class I13_QUERY_ListViewAdapter extends BaseAdapter {
 
     }
 
+    public void ClearItem() { listViewItem.clear(); }
+
     @Override
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     public int getCount() {

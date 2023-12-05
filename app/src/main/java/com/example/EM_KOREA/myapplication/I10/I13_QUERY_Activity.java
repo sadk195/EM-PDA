@@ -63,6 +63,9 @@ public class I13_QUERY_Activity extends BaseActivity {
     //== Header 관련 변수 ==//
     private TextView OPT;
 
+    I13_QUERY_ListViewAdapter listViewAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -253,6 +256,10 @@ public class I13_QUERY_Activity extends BaseActivity {
     //== 조회 ==//
     private void dbQuery_LIST() {
         progressStart(this);
+
+        listViewAdapter = new I13_QUERY_ListViewAdapter();
+        listview.setAdapter(listViewAdapter);
+
         queryList = new DBQueryList();
         queryList.start();
     }
@@ -330,8 +337,7 @@ public class I13_QUERY_Activity extends BaseActivity {
             while (retry) {
                 try {
                     queryList.join();
-
-                    I13_QUERY_ListViewAdapter listViewAdapter = new I13_QUERY_ListViewAdapter();
+                    listViewAdapter.ClearItem();
 
                     try {
                         boolean jSonType = TGSClass.isJsonData(sJsonList);
@@ -354,8 +360,8 @@ public class I13_QUERY_Activity extends BaseActivity {
 
                                     listViewAdapter.addQueryItem(item);
                                 }
-
                                 listview.setAdapter(listViewAdapter);
+                                listViewAdapter.notifyDataSetChanged();
 
                                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
