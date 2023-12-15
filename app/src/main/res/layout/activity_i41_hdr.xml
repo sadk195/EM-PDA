@@ -117,32 +117,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/lbl_information"
-            android:layout_margin="5dp"
-            android:background="@drawable/bg_box"
-            android:padding="10dp" />
-        <LinearLayout
-            android:id="@+id/layout_query"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/listOrder"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
+            android:background="@drawable/bg_box"
+            android:padding="10dp" />
 
-            <Button
-                android:id="@+id/btn_query"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_btn"
-                android:focusable="false"
-                android:gravity="center"
-                android:text="조회"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="18dp" />
 
-        </LinearLayout>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -150,20 +135,78 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp">
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp">
 
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/bg_btn"
-            android:focusable="false"
-            android:gravity="center"
-            android:text="입출고처리"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
+        <LinearLayout
+            android:id="@+id/bottom1"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5"
+                android:gravity="right|center"
+                android:text="수불 일자"
+                android:textColor="@color/colorBodyTitle"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"
+                android:paddingLeft="10dp">
+
+                <EditText
+                    android:id="@+id/out_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="date"
+                    android:background="@drawable/bg_text_ess"
+                    android:text=""
+                    android:textColor="@color/colorBodyContent"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/bottom2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/bottom1"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="5.5"/>
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="4.5"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/bg_btn"
+                android:focusable="false"
+                android:gravity="center"
+                android:text="입출고처리"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

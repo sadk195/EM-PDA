@@ -112,6 +112,7 @@
                     android:paddingLeft="10dp"
                     android:weightSum="10">
 
+
                     <ImageView
                         android:id="@+id/img_barcode_prodt_order_no"
                         android:layout_width="0dp"
@@ -129,7 +130,10 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:hint="바코드 및 RFID 태그 스캔"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        android:focusable="true"
+                        android:imeOptions="actionSearch"
+                        android:nextFocusDown="@id/txt_Scan_prodt_order_no"/>
 
                 </LinearLayout>
 
@@ -159,7 +163,8 @@
                     android:layout_weight="7.5"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:weightSum="10">
+                    android:weightSum="10"
+                    android:focusable="false">
 
                     <ImageView
                         android:id="@+id/img_barcode_item_cd"
@@ -177,8 +182,9 @@
                         android:background="@drawable/bg_text_barcode"
                         android:gravity="center"
                         android:hint="바코드 및 RFID 태그 스캔"
-                        android:textSize="15dp" />
-
+                        android:textSize="15dp"
+                        android:nextFocusDown="@id/txt_Scan_prodt_order_no" />
+                        <!--해당 컨트롤에서 엔터 입력시 포커스 이동할 컨트롤 지정-->
                 </LinearLayout>
 
             </LinearLayout>
@@ -254,7 +260,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/lbl_information"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/bg_box"
             android:padding="10dp" />
 

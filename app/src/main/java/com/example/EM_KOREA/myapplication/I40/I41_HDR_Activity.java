@@ -44,7 +44,7 @@ public class I41_HDR_Activity extends BaseActivity {
     private String ITEM_DOCUMENT_NO = "";
 
     //== View 선언(EditText) ==//
-    private EditText Order_No;
+    private EditText Order_No,out_date;
 
     //== View 선언(ImageView) ==//
     private ImageView img_barcode;
@@ -90,7 +90,8 @@ public class I41_HDR_Activity extends BaseActivity {
         vStartCommand       = getIntent().getStringExtra("START_COMMAND"); //다음 페이지에 가지고 넘어갈 코드
 
         //== ID 값 바인딩 ==//
-        Order_No   = (EditText) findViewById(R.id.Order_No);
+        Order_No            = (EditText) findViewById(R.id.Order_No);
+        out_date            = (EditText) findViewById(R.id.out_date);
         img_barcode         = (ImageView) findViewById(R.id.img_barcode);
 
         listview            = (ListView) findViewById(R.id.listOrder);
@@ -102,6 +103,7 @@ public class I41_HDR_Activity extends BaseActivity {
     private void initializeCalendar() {
         cal = Calendar.getInstance();
         cal.setTime(new Date());
+
     }
 
     private void initializeListener() {
@@ -118,6 +120,14 @@ public class I41_HDR_Activity extends BaseActivity {
                 return false;
             }
         });
+
+        out_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPopupDate(v, out_date, cal);
+            }
+        });
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -166,6 +176,8 @@ public class I41_HDR_Activity extends BaseActivity {
                     String document_text ="";
                     String mov_type = vItem.getMOV_TYPE();
                     String wc_cd = vItem.getWC_CD();
+                    String out_date_data = out_date.getText().toString();
+
                     switch (mov_type){
                         case "I03" : document_text = "-- PDA 작업장 반출 --";
                             prodt_order_no ="";
@@ -173,14 +185,14 @@ public class I41_HDR_Activity extends BaseActivity {
                         case "I97" : document_text = "-- PDA 미사용잔량 반입 --";
                             break;
                         case "I99" : document_text = "-- PDA 작업장 반입 --";
-                            prodt_order_no ="";
+                            //prodt_order_no ="";
                             break;
                     }
                     if(vItem.getMOV_STATUS().trim().equals("S")){
                         continue;
                     }
                     String unit_cd = vUNIT_CD;
-                    BL_DATASET_SELECT(prodt_order_no, plant_cd, item_cd, tracking_no, lot_no, sl_cd, qty, document_text, mov_type,unit_cd,wc_cd);
+                    BL_DATASET_SELECT(prodt_order_no, plant_cd, item_cd, tracking_no, lot_no, sl_cd, qty, document_text, mov_type,unit_cd,wc_cd,out_date_data);
                     if(result_msg.contains("OK")){
                         listViewAdapter.setHDRStatus("S",i);//성공
                         dbSave(vItem,"S");
@@ -210,6 +222,7 @@ public class I41_HDR_Activity extends BaseActivity {
     }
 
     private void initializeData() {
+        out_date.setText(df.format(cal.getTime()));
 
     }
 
@@ -307,6 +320,8 @@ public class I41_HDR_Activity extends BaseActivity {
                 sql += " ,@NO_SEQ = '" + I41.getNO_SEQ() + "' ";
                 sql += " ,@MOV_STATUS = '" + status + "' ";
                 sql += " ,@ITEM_DOCUMENT_NO = '" + ITEM_DOCUMENT_NO + "' ";
+
+                System.out.println("sqls:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -335,7 +350,7 @@ public class I41_HDR_Activity extends BaseActivity {
 
     private boolean BL_DATASET_SELECT(final String prodt_order_no,final String plant_cd,final String item_cd,final String tracking_no,
                                       final String lot_no,final String sl_cd, final String qty, final String document_text,
-                                      final String mov_type,final String unit_cd,final String wc_cd) {
+                                      final String mov_type,final String unit_cd,final String wc_cd, final String out_date) {
 
         Thread workThd_BL_DATASET_SELECT = new Thread() {
             public void run() {
@@ -350,6 +365,7 @@ public class I41_HDR_Activity extends BaseActivity {
                 parm.setName("prodt_order_no");
                 parm.setValue(prodt_order_no);
                 parm.setType(String.class);
+
                 PropertyInfo parm2 = new PropertyInfo();
                 parm2.setName("plant_cd");
                 parm2.setValue(plant_cd);
@@ -400,6 +416,11 @@ public class I41_HDR_Activity extends BaseActivity {
                 parm11.setValue(wc_cd);
                 parm11.setType(String.class);
 
+                PropertyInfo parm12 = new PropertyInfo();
+                parm12.setName("out_date");
+                parm12.setValue(out_date);
+                parm12.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
@@ -411,6 +432,7 @@ public class I41_HDR_Activity extends BaseActivity {
                 pParms.add(parm9);
                 pParms.add(parm10);
                 pParms.add(parm11);
+                pParms.add(parm12);
 
                 result_msg = dba.SendHttpMessage("BL_SetPartListETCOut_ANDROID2", pParms);
                 ITEM_DOCUMENT_NO = result_msg.substring(result_msg.lastIndexOf(':') + 1).trim();

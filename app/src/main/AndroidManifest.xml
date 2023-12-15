@@ -94,7 +94,8 @@
             android:screenOrientation="portrait" /> <!-- 세로고정 -->
         <activity
             android:name=".I30.I35_HDR_Activity"
-            android:screenOrientation="portrait" /> <!-- 세로고정 -->
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/> <!-- 세로고정 -->
         <activity
             android:name=".I30.I35_DTL_Activity"
             android:screenOrientation="portrait" /> <!-- 세로고정 -->

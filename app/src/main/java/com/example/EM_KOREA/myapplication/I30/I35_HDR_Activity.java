@@ -100,7 +100,7 @@ public class I35_HDR_Activity extends BaseActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    txt_Scan_item_cd.requestFocus();
+                    txt_Scan_prodt_order_no.requestFocus();
                     return true;
                 }
                 return false;
@@ -108,7 +108,7 @@ public class I35_HDR_Activity extends BaseActivity {
         });
 
         //** 2021-06-03 김종필 수정
-        View.OnKeyListener keyListener = new View.OnKeyListener() {
+       /* View.OnKeyListener keyListener = new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && i == KeyEvent.KEYCODE_ENTER) {
@@ -119,13 +119,37 @@ public class I35_HDR_Activity extends BaseActivity {
                         start();
                     }
                     // imm.hideSoftInputFromWindow(txt_Scan_prodt_order_no.getWindowToken(), 0);
+                    txt_Scan_prodt_order_no.requestFocus();
+                    txt_Scan_prodt_order_no.setFocusable(true);
                     return true;
                 }
                 return false;
             }
-        };
-        txt_Scan_prodt_order_no.setOnKeyListener(keyListener);
-        txt_Scan_item_cd.setOnKeyListener(keyListener);
+        };*/
+        //2023-12-15 박준하 수정
+        txt_Scan_prodt_order_no.setOnKeyListener(new View.OnKeyListener(){
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    btn_query.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        txt_Scan_item_cd.setOnKeyListener(new View.OnKeyListener(){
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    btn_query.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+/*        txt_Scan_prodt_order_no.setOnKeyListener(keyListener);
+        txt_Scan_item_cd.setOnKeyListener(keyListener);*/
         //**
 
         //** 2021-06-03 김종필 수정
@@ -143,6 +167,7 @@ public class I35_HDR_Activity extends BaseActivity {
                 } else {
                     start();
                 }
+
             }
         });
 
@@ -156,6 +181,8 @@ public class I35_HDR_Activity extends BaseActivity {
                 } else {
                     start();
                 }
+                txt_Scan_prodt_order_no.requestFocus();
+                txt_Scan_prodt_order_no.setFocusable(true);
             }
         });
     }
@@ -178,7 +205,6 @@ public class I35_HDR_Activity extends BaseActivity {
         String str_chk_option = chk_option.isChecked() ? "Y" : "N";
 
         dbQuery(txt_Scan_prodt_order_no_st, txt_Scan_sl_cd_st, txt_Scan_item_cd_st, str_chk_option);
-        txt_Scan_prodt_order_no.requestFocus();
         try {
             JSONArray ja = new JSONArray(sJson);
 
@@ -230,6 +256,7 @@ public class I35_HDR_Activity extends BaseActivity {
         } catch (Exception e1) {
             TGSClass.AlterMessage(this, e1.getMessage());
         }
+
     }
 
     private void dbQuery(final String prodt_order_no, final String sl_cd, final String item_cd, final String chk_option) {
