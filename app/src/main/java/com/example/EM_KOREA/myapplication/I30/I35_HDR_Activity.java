@@ -48,7 +48,7 @@ public class I35_HDR_Activity extends BaseActivity {
     private ListView listview;
 
     //== View 선언(Button) ==//
-    public Button btn_query;
+    public Button btn_query,btn_clear;
 
     //== ActivityForResult 관련 변수 선언 ==//
     private final int I35_DTL_REQUEST_CODE = 0;
@@ -89,6 +89,7 @@ public class I35_HDR_Activity extends BaseActivity {
         chk_option                  = (CheckBox) findViewById(R.id.chk_option);
 
         btn_query                   = (Button) findViewById(R.id.btn_query);
+        btn_clear                   = (Button) findViewById(R.id.btn_clear);
 
         listview                    = (ListView) findViewById(R.id.listOrder);
     }
@@ -185,6 +186,12 @@ public class I35_HDR_Activity extends BaseActivity {
                 txt_Scan_prodt_order_no.setFocusable(true);
             }
         });
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txt_Scan_prodt_order_no.setText(""); //제조오더 번호 지우기 추가
+            }
+        });
     }
 
     private void initializeData() {
@@ -194,11 +201,13 @@ public class I35_HDR_Activity extends BaseActivity {
         }
         else if(vPLANT_CD.equals("H1")) {
             txt_Scan_sl_cd.setText(getUserSl_cd(vUSER_ID));
-            //txt_Scan_sl_cd.setFocusable(false);
         }
+        txt_Scan_prodt_order_no.requestFocus();
+        System.out.println("vuserid : "+vUSER_ID);
     }
 
     private void start() {
+
         String txt_Scan_prodt_order_no_st = txt_Scan_prodt_order_no.getText().toString();
         String txt_Scan_sl_cd_st = txt_Scan_sl_cd.getText().toString();
         String txt_Scan_item_cd_st = txt_Scan_item_cd.getText().toString();
@@ -273,7 +282,6 @@ public class I35_HDR_Activity extends BaseActivity {
                 sql += " ,@ITEM_CD = '" + item_cd + "'";
                 sql += " ,@CHK = '" + chk_option + "'";
 
-                System.out.println("sql:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -302,6 +310,7 @@ public class I35_HDR_Activity extends BaseActivity {
             public void run() {
                 String sql = "SELECT ISNULL(SL_CD,'') AS SL_CD FROM CA_USER_MASTER WHERE USER_ID = '"+user_id+"'";
 
+                System.out.println("sql sl:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 

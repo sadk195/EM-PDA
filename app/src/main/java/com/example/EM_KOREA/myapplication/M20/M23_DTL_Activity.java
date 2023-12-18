@@ -386,6 +386,11 @@ public class M23_DTL_Activity extends BaseActivity {
                 parm18.setValue(unit_cd_parm);
                 parm18.setType(String.class);
 
+                PropertyInfo parm19 = new PropertyInfo();
+                parm19.setName("user_id");
+                parm19.setValue(unit_cd_parm);
+                parm19.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
@@ -404,6 +409,7 @@ public class M23_DTL_Activity extends BaseActivity {
                 pParms.add(parm16);
                 pParms.add(parm17);
                 pParms.add(parm18);
+                pParms.add(parm19);
 
                 result_msg = dba.SendHttpMessage("BL_SetProductionRcpt_ANDROID", pParms);
             }

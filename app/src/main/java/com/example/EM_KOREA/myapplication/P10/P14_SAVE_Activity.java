@@ -1557,8 +1557,9 @@ public class P14_SAVE_Activity extends AppCompatActivity {
 
                 PropertyInfo parm12 = new PropertyInfo();
                 parm12.setName("unit_cd");
-                parm12.setValue(unit_cd_parm);
+                parm12.setValue(global.getLoginString());
                 parm12.setType(String.class);
+
 
                 pParms.add(parm);
                 pParms.add(parm2);

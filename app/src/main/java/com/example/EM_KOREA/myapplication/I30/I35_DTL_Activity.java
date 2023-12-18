@@ -564,6 +564,7 @@ public class I35_DTL_Activity extends BaseActivity {
                 sql += ",@MSG_TEXT = ''";
                 sql += ",@EXTRA_FIELD1 = 'ANDROID'";
                 sql += ",@EXTRA_FIELD2 = 'I35_DTL_Activity'";
+                System.out.println("sql:"+sql);
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();

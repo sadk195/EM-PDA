@@ -421,6 +421,11 @@ public class I41_HDR_Activity extends BaseActivity {
                 parm12.setValue(out_date);
                 parm12.setType(String.class);
 
+                PropertyInfo parm13 = new PropertyInfo();
+                parm13.setName("user_id");
+                parm13.setValue(vUSER_ID);
+                parm13.setType(String.class);
+
                 pParms.add(parm);
                 pParms.add(parm2);
                 pParms.add(parm3);
@@ -433,6 +438,7 @@ public class I41_HDR_Activity extends BaseActivity {
                 pParms.add(parm10);
                 pParms.add(parm11);
                 pParms.add(parm12);
+                pParms.add(parm13);
 
                 result_msg = dba.SendHttpMessage("BL_SetPartListETCOut_ANDROID2", pParms);
                 ITEM_DOCUMENT_NO = result_msg.substring(result_msg.lastIndexOf(':') + 1).trim();

@@ -368,7 +368,7 @@ public class I37_DTL_Activity extends BaseActivity {
                     dataSET();
                     //2021-01-28 예정
                     //기존 ERP BL을 태우면  ZZ_WMS_I_GOODS_MOVEMENT_HDR 같은 사이트 테이블에는 INSERT 되지 않으므로 직접 인서트나 업데이트 프로시저를 제작 2021-01-27 정영진 주임
-
+                    System.out.println("result_msg:"+result_msg);
                     if (result_msg.contains("생산출고 완료")) {
                         if(dbSave_HDR() == true) {
                             try {

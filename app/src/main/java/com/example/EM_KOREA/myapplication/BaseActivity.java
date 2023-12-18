@@ -67,6 +67,7 @@ public class BaseActivity extends AppCompatActivity {
 
         //== SESSION 값 바인딩 ==//
         vUSER_ID = global.getLoginString();
+        System.out.println("vUSER_ID:"+vUSER_ID);
         vPLANT_CD = global.getPlantCDString();
         vUNIT_CD = global.getmUnitCDString();
 
