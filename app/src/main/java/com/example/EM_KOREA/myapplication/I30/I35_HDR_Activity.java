@@ -203,7 +203,6 @@ public class I35_HDR_Activity extends BaseActivity {
             txt_Scan_sl_cd.setText(getUserSl_cd(vUSER_ID));
         }
         txt_Scan_prodt_order_no.requestFocus();
-        System.out.println("vuserid : "+vUSER_ID);
     }
 
     private void start() {
@@ -310,7 +309,6 @@ public class I35_HDR_Activity extends BaseActivity {
             public void run() {
                 String sql = "SELECT ISNULL(SL_CD,'') AS SL_CD FROM CA_USER_MASTER WHERE USER_ID = '"+user_id+"'";
 
-                System.out.println("sql sl:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 

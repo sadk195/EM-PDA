@@ -110,11 +110,7 @@ public class M23_DTL_Activity extends BaseActivity {
                 try {
                     String str_INSP_DT = in_dt.getText().toString();
 
-                    if(1==1){
-                        System.out.println("str_INSP_DT:"+str_INSP_DT);
-                        System.out.println("sl_cd:"+txt_sl_cd);
 
-                    }
                     if (Double.valueOf(txt_prod_qty_in_base_unit) <= 0) {
                         TGSClass.AlterMessage(getApplicationContext(), "입고수량은 0보다 커야합니다.");
                         return;

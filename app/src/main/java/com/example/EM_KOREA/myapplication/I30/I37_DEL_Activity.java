@@ -197,7 +197,6 @@ public class I37_DEL_Activity extends BaseActivity {
                 sql += " @SL_CD = '" + del_data.getSL_CD() + "', ";
                 sql += " @MOVE_QTY = '" + del_data.getGOOD_QTY() + "' ";
                 //sql += " @LOCATION = '" + del_data.getLOCATION() + "' ";
-                System.out.println("sqls:"+sql);
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();

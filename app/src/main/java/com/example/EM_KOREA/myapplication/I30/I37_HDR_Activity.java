@@ -269,23 +269,32 @@ public class I37_HDR_Activity extends BaseActivity {
         String prodtorder_no_st = prodtorder_opr_no.getText().toString();
 
         if (!prodtorder_no_st.equals("")) {
-            if (prodtorder_no_st.contains("-")) {
-                String[] strArray = TGSClass.transHyphen(prodtorder_no_st);
+           /* if (prodtorder_no_st.contains("-")) {
 
-                String prodtorder_no = strArray[0];
-                String opr_no = strArray[1];
-
-                dbQuery_PRODT_ORDER_INFO(prodtorder_no, opr_no);
-
-                if (sJson.equals("")) {
-                    TGSClass.AlterMessage(getApplicationContext(), "제조오더 정보가 없습니다.");
-                    return;
-                } else {
-                    dbQuery_HDR(prodtorder_no, opr_no,chkPROD.isChecked());
-
-                }
             } else {
                 TGSClass.AlterMessage(getApplicationContext(), "제조오더번호를 정확히 입력하여주시기 바랍니다.");
+            }*/
+            String[] strArray = new String[2];
+            if (prodtorder_no_st.contains("-")) {
+                strArray = TGSClass.transHyphen(prodtorder_no_st);
+            }
+            else
+            {
+                strArray[0] = prodtorder_no_st;
+                strArray[1] = "";
+            }
+
+            String prodtorder_no = strArray[0];
+            String opr_no = strArray[1];
+
+            dbQuery_PRODT_ORDER_INFO(prodtorder_no, opr_no);
+
+            if (sJson.equals("")) {
+                TGSClass.AlterMessage(getApplicationContext(), "제조오더 정보가 없습니다.");
+                return;
+            } else {
+                dbQuery_HDR(prodtorder_no, opr_no,chkPROD.isChecked());
+
             }
         } else {
             TGSClass.AlterMessage(getApplicationContext(), "제조오더번호를 스캔해주시기 바랍니다.");
@@ -361,7 +370,6 @@ public class I37_HDR_Activity extends BaseActivity {
                 sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "' ";
                 sql += " ,@OPR_NO = '" + opr_no + "' ";
                 sql += " ,@PROD_FLAG = '" + flag + "' ";
-
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();

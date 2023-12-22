@@ -169,7 +169,6 @@ public class M23_HDR_Activity extends BaseActivity {
                 String sql = " EXEC XUSP_MES_PRODT_ORDER_SET_CHECK ";
                 sql += "  @PLANT_CD = '" + vPLANT_CD + "'";
                 sql += "  ,@PRODT_ORDER_NO = '" + order_no + "'";
-                System.out.println("sql:"+sql);
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
 

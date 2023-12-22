@@ -205,7 +205,6 @@ public class I41_HDR_Activity extends BaseActivity {
                         //return;
                         err_txt += prodt_order_no +" 오류발생 :"+result_msg+"\n";
                     }
-                System.out.println("err_txt:"+err_txt);
                 }//for문
                 if(!err_txt.equals("")){
                     Intent error_intent = TGSClass.ChangeView(getPackageName(), ErrorPopupActivity2.class);
@@ -283,7 +282,6 @@ public class I41_HDR_Activity extends BaseActivity {
                 sql += " @PRODT_REQ_NO = '" + order_no + "' ";
                 //sql += " ,@PLANT_CD = '" + vPLANT_CD + "' ";
 
-                System.out.println("Sql:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
@@ -321,7 +319,6 @@ public class I41_HDR_Activity extends BaseActivity {
                 sql += " ,@MOV_STATUS = '" + status + "' ";
                 sql += " ,@ITEM_DOCUMENT_NO = '" + ITEM_DOCUMENT_NO + "' ";
 
-                System.out.println("sqls:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();
 
