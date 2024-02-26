@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.EM_KOREA.myapplication.BaseActivity;
 import com.example.EM_KOREA.myapplication.DBAccess;
 import com.example.EM_KOREA.myapplication.MySession;
 import com.example.EM_KOREA.myapplication.R;
@@ -35,7 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class P14_SAVE_CHANGWON_Activity extends AppCompatActivity {
+public class P14_SAVE_CHANGWON_Activity extends BaseActivity {
 
 
     Button btn_save;
@@ -322,6 +323,14 @@ public class P14_SAVE_CHANGWON_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return ;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
 
                 String lbl_ORD_QTY_st = lbl_ORD_QTY.getText().toString();
                 String lbl_GOOD_QTY_st = lbl_GOOD_QTY.getText().toString();

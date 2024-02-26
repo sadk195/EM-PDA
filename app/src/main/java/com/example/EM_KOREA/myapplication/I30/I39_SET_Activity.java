@@ -105,6 +105,7 @@ public class I39_SET_Activity extends BaseActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 dbSave("ADD");
             }
         });
@@ -236,6 +237,15 @@ public class I39_SET_Activity extends BaseActivity {
 
 
     private void dbSave(String val) {
+
+        //쿼리중복 방지(쓰레드 중복 방지)
+        if(!QueryOn){
+            return;
+        }
+        QueryOn = false;
+        //중복방지 타이머 실행
+        SetTimerTask();
+
          try {
              if(vItem == null ){
                  TGSClass.AlterMessage(getApplicationContext(),"출고할 항목을 선택하세요.");

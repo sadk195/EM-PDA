@@ -122,6 +122,15 @@ public class I25_QUERY_Activity extends BaseActivity {
         btn_query.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 if (move_type_query.equals("")) {
                     TGSClass.AlterMessage(getApplicationContext(), "조회할 이동유형을 선택해주십시오.");
                 } else {

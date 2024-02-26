@@ -150,6 +150,15 @@ public class I41_HDR_Activity extends BaseActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 if(Str_Order_No.equals("") || listview.getCount() < 1){
                     TGSClass.AlterMessage(getApplicationContext(), "반입/반출할 데이터가 없습니다 먼저 요청번호를 스캔하세요");
                     return;

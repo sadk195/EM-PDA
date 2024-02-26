@@ -88,6 +88,15 @@ public class I21_HDR_Activity extends BaseActivity {
         btn_query.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 start();
 
                 /*
@@ -113,6 +122,15 @@ public class I21_HDR_Activity extends BaseActivity {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && i == KeyEvent.KEYCODE_ENTER) {
+
+                    //쿼리중복 방지(쓰레드 중복 방지)
+                    if(!QueryOn){
+                        return false;
+                    }
+                    QueryOn = false;
+                    //중복방지 타이머 실행
+                    SetTimerTask();
+
                     start();
 
                     /*

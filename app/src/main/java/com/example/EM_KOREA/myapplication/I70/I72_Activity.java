@@ -151,6 +151,16 @@ public class I72_Activity extends BaseActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
+
                 STOCKYARD = txt_stockyard.getText().toString();
                 ITEM_CD = txt_item_cd.getText().toString();
                 INVENTORY_QTY = txt_inventory_qty.getText().toString();

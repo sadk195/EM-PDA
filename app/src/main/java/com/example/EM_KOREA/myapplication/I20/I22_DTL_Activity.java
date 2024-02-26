@@ -108,6 +108,15 @@ public class I22_DTL_Activity extends BaseActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 // 기존 소스 dbSave()로 옮김
                 dbSave("EXIT");
             }
@@ -116,6 +125,15 @@ public class I22_DTL_Activity extends BaseActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 dbSave("ADD");
             }
         });

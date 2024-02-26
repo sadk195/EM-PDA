@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.EM_KOREA.myapplication.BaseActivity;
 import com.example.EM_KOREA.myapplication.DBAccess;
 import com.example.EM_KOREA.myapplication.MySession;
 import com.example.EM_KOREA.myapplication.R;
@@ -32,7 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class P14_SAVE_Activity extends AppCompatActivity {
+public class P14_SAVE_Activity extends BaseActivity {
 
 
     Button btn_save;
@@ -363,6 +364,14 @@ public class P14_SAVE_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
 
                 if (state_message.getText().toString().equals("* 작업 대기 중 *"))
                 {

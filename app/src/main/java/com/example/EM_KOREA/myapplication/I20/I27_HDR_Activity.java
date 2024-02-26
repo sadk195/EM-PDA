@@ -90,6 +90,15 @@ public class I27_HDR_Activity extends BaseActivity {
                         TGSClass.AlterMessage(getApplicationContext(), "품번을 입력해주세요.");
                         return false;
                     } else {
+
+                        //쿼리중복 방지(쓰레드 중복 방지)
+                        if(!QueryOn){
+                            return false;
+                        }
+                        QueryOn = false;
+                        //중복방지 타이머 실행
+                        SetTimerTask();
+
                         str_item_cd = TGSClass.transSemicolon(item_cd);
                         start();
                     }

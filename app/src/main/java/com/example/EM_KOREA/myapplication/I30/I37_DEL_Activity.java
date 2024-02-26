@@ -108,6 +108,15 @@ public class I37_DEL_Activity extends BaseActivity {
                     return;
                 }
                 delflag = true;
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 dbDelete(selected_item);
 
                 start();

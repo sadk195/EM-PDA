@@ -149,6 +149,14 @@ public class M31_HDR_Activity extends BaseActivity {
             @Override
             public void onClick(View v)
             {
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 String dlv_no_data = dlv_no_hide.getText().toString();
 
                 if (import_customs_chk(dlv_no_data) == false) {

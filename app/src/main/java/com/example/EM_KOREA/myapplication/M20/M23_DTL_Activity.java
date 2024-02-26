@@ -107,6 +107,14 @@ public class M23_DTL_Activity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 try {
                     String str_INSP_DT = in_dt.getText().toString();
 

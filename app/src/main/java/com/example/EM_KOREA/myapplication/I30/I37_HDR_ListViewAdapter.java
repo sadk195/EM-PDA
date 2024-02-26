@@ -1,6 +1,7 @@
 package com.example.EM_KOREA.myapplication.I30;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,14 @@ public class I37_HDR_ListViewAdapter extends BaseAdapter {
         String location_st = item.getLOCATION();
         if (location_st.equals("출고대기장")) {
             out_qty.setText(item.getOUT_QTY());
-        } else {
+        }
+        else if(location_st.equals("출고")){
+            convertView.setBackgroundColor(Color.parseColor("#CCFFFF"));
+        }
+        else if(location_st.equals("출고삭제")){
+            convertView.setBackgroundColor(Color.parseColor("#FFFF00"));
+        }
+        else {
             out_qty.setText("");
         }
         seq_no.setText(item.getSEQ_NO());

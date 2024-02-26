@@ -150,6 +150,15 @@ public class S12_DTL_Activity extends BaseActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 GetComboNUM Partner = (GetComboNUM) cmbBizPartner.getSelectedItem();  //Class에 담겨진 데이터를 가져오기
                 GetComboNUM User    = (GetComboNUM) cmbMgmtUser.getSelectedItem();
                 GetComboNUM Trans   = (GetComboNUM) cmbTrans.getSelectedItem();

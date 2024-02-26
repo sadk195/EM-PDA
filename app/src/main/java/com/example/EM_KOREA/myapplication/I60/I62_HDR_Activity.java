@@ -190,6 +190,15 @@ public class I62_HDR_Activity extends BaseActivity {
             @Override
             public void onClick(View v)
             {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 if (issue_date.getText().toString().length() != 10) {
                     TGSClass.AlterMessage(getApplicationContext(), "출고일자를 정확히 입력(선택)해주시기 바랍니다");
                 } else if (TempStorage_location.equals("") || TempStorage_location.equals("") || TempStorage_location.equals("")) {

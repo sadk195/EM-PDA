@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.EM_KOREA.myapplication.BaseActivity;
 import com.example.EM_KOREA.myapplication.DBAccess;
 import com.example.EM_KOREA.myapplication.MySession;
 import com.example.EM_KOREA.myapplication.R;
@@ -27,7 +28,7 @@ import org.ksoap2.serialization.PropertyInfo;
 
 import java.util.ArrayList;
 
-public class I73_Activity extends AppCompatActivity {
+public class I73_Activity extends BaseActivity {
 
     private final long INTERVAL_TIME = 500;  //간격
     private long inputEnterPressedTime = 0;  //엔터키 입력 시간.
@@ -71,6 +72,14 @@ public class I73_Activity extends AppCompatActivity {
         btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
 
                 ListView listview = (ListView) findViewById(R.id.listOrder);
                 I73_ListViewAdapter listViewAdapter = (I73_ListViewAdapter) listview.getAdapter();

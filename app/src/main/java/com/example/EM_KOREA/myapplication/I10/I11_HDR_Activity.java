@@ -111,6 +111,15 @@ public class I11_HDR_Activity extends BaseActivity {
                     start(txt_scan_location_st, txt_scan_item_st);
                 }
                 */
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 String txt_scan_location_st = txt_scan_location.getText().toString();
                 String txt_scan_item_st = txt_scan_item.getText().toString();
 

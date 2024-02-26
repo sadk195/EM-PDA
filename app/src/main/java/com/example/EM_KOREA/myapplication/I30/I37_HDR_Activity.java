@@ -149,6 +149,14 @@ public class I37_HDR_Activity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return ;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 I37_HDR_ListViewAdapter Adap = (I37_HDR_ListViewAdapter) listview.getAdapter();
 
                 int ct = listview.getCount();
@@ -370,6 +378,8 @@ public class I37_HDR_Activity extends BaseActivity {
                 sql += " ,@PRODT_ORDER_NO = '" + prodt_order_no + "' ";
                 sql += " ,@OPR_NO = '" + opr_no + "' ";
                 sql += " ,@PROD_FLAG = '" + flag + "' ";
+
+                System.out.println("sqls:"+sql);
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();

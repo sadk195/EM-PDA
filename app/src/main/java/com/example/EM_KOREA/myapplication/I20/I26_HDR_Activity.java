@@ -142,6 +142,15 @@ public class I26_HDR_Activity extends BaseActivity {
         btn_query.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 if (MOVE_REQ_NO.getText().toString().equals("")) {
                     TGSClass.AlterMessage(getApplicationContext(), "출고요청번호를 스캔해주시기 바랍니다.");
                     return;
@@ -154,6 +163,15 @@ public class I26_HDR_Activity extends BaseActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 save();
             }
         });
@@ -309,6 +327,7 @@ public class I26_HDR_Activity extends BaseActivity {
         String strkey = daynow + rdn;
 
         ex_temp_delete(strkey);
+        System.out.println("extemp del sjson:"+sJson);
 
         for (int i = 0; i < rowCnt; i++) {
             I26_HDR vItem = (I26_HDR) Adap.getItem(i);
@@ -318,6 +337,8 @@ public class I26_HDR_Activity extends BaseActivity {
             String mv_no    = MOVE_REQ_NO.getText().toString();
 
             ex_temp(mv_qty, mv_seq, mv_no, strkey);
+            System.out.println("extemp sjson:"+sJson);
+
         }
         // BL SEND
         if (bl_send(strkey, "A")) {
@@ -431,6 +452,7 @@ public class I26_HDR_Activity extends BaseActivity {
             public void run() {
 
                 String strKeyCd = strkey;
+                //strKeyCd ="2024011711441869904";
                 String istrType = Type; // 현재 A로만 넘김
 
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
@@ -438,7 +460,7 @@ public class I26_HDR_Activity extends BaseActivity {
 
                 PropertyInfo parm = new PropertyInfo();
                 parm.setName("strKeyCd");
-                parm.setValue(strkey);
+                parm.setValue(strKeyCd);
                 parm.setType(String.class);
 
                 PropertyInfo parm2 = new PropertyInfo();
@@ -470,6 +492,8 @@ public class I26_HDR_Activity extends BaseActivity {
         wkThd_BL_SEND.start();   //스레드 시작
         try {
             wkThd_BL_SEND.join();  //workingThread가 종료될때까지 Main 쓰레드를 정지함.
+            System.out.println("result_msg:"+result_msg);
+
             if (result_msg.contains("처리완료")) {
                 return true;
             } else {
@@ -491,6 +515,7 @@ public class I26_HDR_Activity extends BaseActivity {
                 sql += "  ,@KEYCD = '" + strkey + "'";
                 sql += "  ,@USER_ID = '" + vUSER_ID + "'";
 
+                System.out.println("sql:"+sql);
                 DBAccess dba = new DBAccess(TGSClass.ws_name_space, TGSClass.ws_url);
 
                 ArrayList<PropertyInfo> pParms = new ArrayList<>();

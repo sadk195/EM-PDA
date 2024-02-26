@@ -105,6 +105,15 @@ public class I34_QUERY_Activity extends BaseActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                    //쿼리중복 방지(쓰레드 중복 방지)
+                    if(!QueryOn){
+                        return false;
+                    }
+                    QueryOn = false;
+                    //중복방지 타이머 실행
+                    SetTimerTask();
+
                     String prodtorder_no_st = prodtorder_no.getText().toString();
 
                     dbQuery_PRODT_ORDER_INFO(prodtorder_no_st);
@@ -135,6 +144,15 @@ public class I34_QUERY_Activity extends BaseActivity {
         btn_query.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //쿼리중복 방지(쓰레드 중복 방지)
+                if(!QueryOn){
+                    return;
+                }
+                QueryOn = false;
+                //중복방지 타이머 실행
+                SetTimerTask();
+
                 String prodtorder_no_st = "";
 
                 dbQuery_PRODT_ORDER_INFO(prodtorder_no_st);

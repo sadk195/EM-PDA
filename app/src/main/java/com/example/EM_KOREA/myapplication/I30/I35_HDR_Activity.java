@@ -180,6 +180,15 @@ public class I35_HDR_Activity extends BaseActivity {
                     TGSClass.AlterMessage(getApplicationContext(), "제조오더 또는 출고창고의 조회조건은 \n필수 입력 사항입니다!");
                     return;
                 } else {
+
+                    //쿼리중복 방지(쓰레드 중복 방지)
+                    if(!QueryOn){
+                        return ;
+                    }
+                    QueryOn = false;
+                    //중복방지 타이머 실행
+                    SetTimerTask();
+
                     start();
                 }
                 txt_Scan_prodt_order_no.requestFocus();
